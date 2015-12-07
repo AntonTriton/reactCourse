@@ -39,14 +39,38 @@ nav
 
 .folders
   border 1px solid #000
+  li
+    line-height 30px
+    cursor pointer
+    &:hover
+      background-color #c1e5ff
+  .fa
+    font-size 30px
+    margin-right 10px
 
 .notes
   ul
     margin-top 50px
   li
+    display inline-block
+    text-align center
+    margin 0 10px
+    cursor pointer
     .fa
       display block
       font-size 50px
 
 .notes_search
   float right
+  margin-top -50px
+  position relative
+  .fa
+    position absolute
+    left 5px
+    margin 4px 0 0 0
+  input
+    padding-left 25px
+  .advanced-link
+    font-size 12px
+    display inline-block
+    margin-left 5px

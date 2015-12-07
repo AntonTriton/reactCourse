@@ -42,8 +42,25 @@ nav .fa {
 .folders {
   border: 1px solid #000;
 }
+.folders li {
+  line-height: 30px;
+  cursor: pointer;
+}
+.folders li:hover {
+  background-color: #c1e5ff;
+}
+.folders .fa {
+  font-size: 30px;
+  margin-right: 10px;
+}
 .notes ul {
   margin-top: 50px;
+}
+.notes li {
+  display: inline-block;
+  text-align: center;
+  margin: 0 10px;
+  cursor: pointer;
 }
 .notes li .fa {
   display: block;
@@ -51,4 +68,19 @@ nav .fa {
 }
 .notes_search {
   float: right;
+  margin-top: -50px;
+  position: relative;
+}
+.notes_search .fa {
+  position: absolute;
+  left: 5px;
+  margin: 4px 0 0 0;
+}
+.notes_search input {
+  padding-left: 25px;
+}
+.notes_search .advanced-link {
+  font-size: 12px;
+  display: inline-block;
+  margin-left: 5px;
 }

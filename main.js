@@ -3,16 +3,21 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-console.log('!!!');
-
-//var el = React.createElement('h1',null,'Hello, world!');
-var menu = React.createElement(require('./components/menu.js'));
-
-//console.log('menu',require('menu'));
-//console.log('menu',require('/components/menu.js'));//
-//console.log('menu',require('./components/menu.js'));
+var menu = React.createElement(require('./components/menu.js')),
+    folders = React.createElement(require('./components/folders.js')),
+    notes = React.createElement(require('./components/notes.js'));
 
 ReactDOM.render(
     menu,
-    document.getElementById('example')
+    document.querySelector('.left-menu')
+);
+
+ReactDOM.render(
+    folders,
+    document.querySelector('.folders')
+);
+
+ReactDOM.render(
+    notes,
+    document.querySelector('.notes')
 );
