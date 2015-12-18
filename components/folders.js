@@ -22,28 +22,14 @@ var FolderItem = React.createClass({
 
 });
 
+import {foldersData} from './data.js';
+
 var folders = React.createClass({
 
     getInitialState: function(){
 
         return {
-            folders: [
-                {
-                    key: 0,
-                    title : "Corporative",
-                    status: 'closed'
-                },
-                {
-                    key: 1,
-                    title : "Private",
-                    status: 'closed'
-                },
-                {
-                    key: 2,
-                    title : "Activities",
-                    status: 'closed'
-                }
-            ]
+            folders: foldersData
         }
     },
 

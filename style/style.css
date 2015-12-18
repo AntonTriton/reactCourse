@@ -66,6 +66,23 @@ nav .fa {
   display: block;
   font-size: 50px;
 }
+.single-note {
+  width: 900px;
+  margin: 0 auto;
+}
+.single-note .single-note-row {
+  clear: left;
+  margin-bottom: 10px;
+}
+.single-note label {
+  float: left;
+  width: 150px;
+}
+.single-note .content-block {
+  border: 2px solid #000;
+  margin-left: 150px;
+  padding: 5px;
+}
 .notes_search {
   float: right;
   margin-top: -50px;

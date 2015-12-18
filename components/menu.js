@@ -2,13 +2,24 @@
 
 var React = require('react');
 
+import {menuData} from './data.js';
+
+import filter from 'lodash/collection/filter.js';
+
+import indexOf from 'lodash/array/indexOf.js';
+
 var MenuItem = React.createClass({
+
+    handlerClick: function(){
+        var page = this.props.page;
+
+    },
 
     render: function() {
 
         return (
         <li>
-            <a href="#">
+            <a href="#" onClick="handlerClick()">
                 <i className={this.props.cl}></i>
                 <span>{this.props.title}</span>
             </a>
@@ -23,38 +34,29 @@ var menu = React.createClass({
     getInitialState: function(){
 
         return {
-            menu: [
-                {
-                    key: 0,
-                    title : "Add",
-                    class: 'fa fa-plus'
-                },
-                {
-                    key: 1,
-                    title : "Edit",
-                    class: 'fa fa-pencil'
-                },
-                {
-                    key: 2,
-                    title : "Remove",
-                    class: 'fa fa-remove'
-                }
-            ]
+            menu: menuData
         }
     },
 
     render: function() {
 
-        var menu = this.state.menu;
+        var menu = this.state.menu,
+            page = this.props.page;
 
-        var items = menu.map(function(item) {
-            return <MenuItem key={item.key} title={item.title} cl={item.class} />
+        var currentMenu = filter(menu,function(item){
+            return indexOf(item.page,page) != -1
+        });
+
+        var items = currentMenu.map(function(item) {
+            return <MenuItem key={item.key} title={item.title} cl={item.class} action={item.action} />
         });
 
         return (
-            <ul>
-                {items}
-            </ul>
+            <nav className="col-md-1 left-menu">
+                <ul>
+                    {items}
+                </ul>
+            </nav>
         );
     }
 

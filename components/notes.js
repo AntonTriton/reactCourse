@@ -6,132 +6,18 @@ import React, { Component, PropTypes } from 'react';
 
 import { getStates, matchStateToTerm, sortStates, styles } from '../vendor/utils';
 
-import { DragSource, DropTarget } from 'react-dnd';
+import { DragSource, DropTarget, DragDropContext } from 'react-dnd';
 
 import update from 'react/lib/update';
 
-import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
-/**
- * Implements the drag source contract.
- */
-const cardSource = {
-    beginDrag(props) {
-        return {
-            id: props.id,
-            originalIndex: props.findCard(props.id).index
-        };
-    },
+import flow from 'lodash/function/flow';
 
-    endDrag(props, monitor) {
-        const { id: droppedId, originalIndex } = monitor.getItem();
-        const didDrop = monitor.didDrop();
+import Card from './note.js';
 
-        if (!didDrop) {
-            props.moveCard(droppedId, originalIndex);
-        }
-    }
-};
+import {notesData} from './data.js';
 
-const cardTarget = {
-    canDrop() {
-        return false;
-    },
-
-    hover(props, monitor) {
-        const { id: draggedId } = monitor.getItem();
-        const { id: overId } = props;
-
-        if (draggedId !== overId) {
-            const { index: overIndex } = props.findCard(overId);
-            props.moveCard(draggedId, overIndex);
-        }
-    }
-};
-
-DropTarget('Card', cardTarget, connect => ({
-    connectDropTarget: connect.dropTarget()
-}));
-DragSource('Card', cardSource, (connect, monitor) => ({
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
-}));
-
-class Card extends Component {
-
-    static get propTypes() {
-        return {
-            connectDragSource: PropTypes.func.isRequired,
-            connectDropTarget: PropTypes.func.isRequired,
-            isDragging: PropTypes.bool.isRequired,
-            id: PropTypes.any.isRequired,
-            text: PropTypes.string.isRequired,
-            moveCard: PropTypes.func.isRequired,
-            findCard: PropTypes.func.isRequired
-        }
-    }
-
-    constructor(props) {
-        super(props);
-
-        /*this.props = {
-            connectDragSource: PropTypes.func.isRequired,
-            connectDropTarget: PropTypes.func.isRequired,
-            isDragging: PropTypes.bool.isRequired,
-            id: PropTypes.any.isRequired,
-            text: PropTypes.string.isRequired,
-            moveCard: PropTypes.func.isRequired,
-            findCard: PropTypes.func.isRequired
-        };*/
-
-        this.state = {
-            editModeClass: 'hidden',
-            textModeClass: 'visible',
-            value: this.props.title
-        };
-    }
-
-    setEditMode(){
-        this.setState({
-        editModeClass : "visible",
-        textModeClass : "hidden"
-        })
-    }
-
-    setTextMode(){
-        this.setState({
-            editModeClass : "hidden",
-            textModeClass : "visible"
-        })
-    }
-
-    editing(event){
-        this.setState({
-            value: event.target.value
-        })
-    }
-
-    render() {
-        var self = this;
-
-
-        const { text, isDragging, connectDragSource, connectDropTarget } = this.props;
-        const opacity = isDragging ? 0 : 1;
-        console.log('connectDropTarget',connectDropTarget,this.props);
-
-        return connectDragSource(connectDropTarget(
-            <li>
-                <i className="fa fa-file-text-o"></i>
-                <span className={self.state.textModeClass} onClick={self.setEditMode}>{this.state.value}</span>
-                <input className={self.state.editModeClass}
-                       onBlur={self.setTextMode}
-                       onChange={self.editing}
-                       type="text" value={this.state.value}/>
-            </li>
-
-        ));
-    }
-}
 
 var SearchNotes = React.createClass({
 
@@ -165,7 +51,7 @@ var SearchNotes = React.createClass({
 
 });
 
-var NoteItem = React.createClass({
+/*var NoteItem = React.createClass({
 
     getInitialState: function(){
         return {
@@ -211,7 +97,7 @@ var NoteItem = React.createClass({
         );
     }
 
-});
+});*/
 
 class Notes extends Component {
 
@@ -228,6 +114,9 @@ class Notes extends Component {
 
     moveCard(id, atIndex) {
         const { card, index } = this.findCard(id);
+
+        console.log('moveCard',this.state);
+
         this.setState(update(this.state, {
             cards: {
                 $splice: [
@@ -236,11 +125,14 @@ class Notes extends Component {
                 ]
             }
         }));
+
     }
 
     findCard(id) {
         const { cards } = this.state;
         const card = cards.filter(c => c.id === id)[0];
+
+        console.log('findCard',this.state);
 
         return {
             card,
@@ -250,7 +142,7 @@ class Notes extends Component {
 
     render() {
 
-        console.log('notes',this.props);
+        //console.log('notes',this.props);
 
         const { connectDropTarget } = this.props;
         const { cards } = this.state;
@@ -262,13 +154,14 @@ class Notes extends Component {
         var items = cards.map(function(item) {
             return <Card
                 key={item.key}
+                id={item.id}
                 title={item.title}
                 moveCard={self.moveCard}
                 findCard={self.findCard}
                 />
         });
 
-        return (
+        return connectDropTarget(
             <div>
 
                 <SearchNotes />
@@ -282,51 +175,23 @@ class Notes extends Component {
     }
 }
 
-var notes = React.createClass({
+Notes.propTypes = {
+    connectDropTarget: PropTypes.func.isRequired
+};
 
-    getInitialState: function(){
-
-        return {
-            notes: notesData
-        }
-    },
-
-    render: function() {
-
-        var notes = this.state.notes;
-
-        var items = notes.map(function(item) {
-            return <Card key={item.key} title={item.title} />
-        });
-
-        return (
-            <div>
-
-                <SearchNotes />
-
-                <ul>
-                    {items}
-                </ul>
-
-            </div>
-        );
+const cardTarget2 = {
+    drop() {
     }
+};
 
-});
-
-var notesData = [
-    {
-        key: 0,
-        title : "Future"
-    },
-    {
-        key: 1,
-        title : "Birthdays"
-    },
-    {
-        key: 2,
-        title : "ToDo"
+function dropCollect2(connect){
+    return {
+        connectDropTarget: connect.dropTarget()
     }
-];
+}
 
-module.exports = Notes;
+module.exports = flow(
+    DropTarget('card', cardTarget2, dropCollect2),
+    DragDropContext(HTML5Backend)
+)(Notes);
+
