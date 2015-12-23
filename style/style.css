@@ -46,7 +46,8 @@ nav .fa {
   line-height: 30px;
   cursor: pointer;
 }
-.folders li:hover {
+.folders li:hover,
+.folders li.active {
   background-color: #c1e5ff;
 }
 .folders .fa {
@@ -60,7 +61,13 @@ nav .fa {
   display: inline-block;
   text-align: center;
   margin: 0 10px;
-  cursor: pointer;
+}
+.notes li .note-title {
+  display: block;
+  margin-top: 5px;
+}
+.notes li input {
+  max-width: 70px;
 }
 .notes li .fa {
   display: block;

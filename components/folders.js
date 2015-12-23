@@ -1,44 +1,109 @@
 'use strict';
 
-var React = require('react');
+import React, { Component, PropTypes } from 'react';
 
-var FolderItem = React.createClass({
+import ReactDOM from 'react-dom';
 
-    render: function() {
+import {foldersData} from './data.js';
 
-        var cl;
+
+class FolderItem extends Component {
+
+    constructor(props){
+        super(props);
+
+        console.log('constr',this.props);
+
+        this.state = {
+            editModeClass: 'hidden',
+            textModeClass: 'visible',
+            value: this.props.title,
+            margin: this.props.level*30 + "px",
+            id: this.props.id
+        }
+    }
+
+    setEditMode(){
+        this.setState({
+            editModeClass : "visible",
+            textModeClass : "hidden"
+        })
+    }
+
+    setTextMode(){
+        this.setState({
+            editModeClass : "hidden",
+            textModeClass : "visible"
+        })
+    }
+
+    editing(event){
+        this.setState({
+            value: event.target.value
+        })
+    }
+
+    showNotes(){
+
+    }
+
+    componentDidUpdate(){
+        ReactDOM.findDOMNode(this.refs.folderInput).focus();
+    }
+
+    render() {
+
+        console.log('folder',this.props);
+
+        var cl,
+            self = this,
+            isActive = this.props.isActive ? "active" : "";
 
         this.props.status == 'closed' ? cl = 'fa-folder' : cl = "fa-folder-open";
 
         return (
 
-        <li>
-            <i className={"fa " + cl}></i>
-            {this.props.title}
+        <li style={{marginLeft : self.state.margin}} className={isActive} onClick={self.showNotes}>
+            <Link to={"/notes/"+self.state.id}>
+                <i className={"fa " + cl}></i>
+                <span className="note-title">
+                    <span className={self.state.textModeClass+" note-title"}>{self.state.value}</span>
+
+                    <input className={self.state.editModeClass}
+                           onBlur={self.setTextMode.bind(this)}
+                           onChange={self.editing.bind(this)}
+                           ref="folderInput"
+                           type="text" value={self.state.value}/>
+                </span>
+            </Link>
         </li>
 
         );
     }
 
-});
+};
 
-import {foldersData} from './data.js';
+class folders extends Component {
 
-var folders = React.createClass({
+    constructor(){
+        super();
 
-    getInitialState: function(){
-
-        return {
+        this.state = {
             folders: foldersData
         }
-    },
+    }
 
-    render: function() {
+    render() {
 
         var folders = this.state.folders;
 
         var items = folders.map(function(item) {
-            return <FolderItem key={item.key} title={item.title} status={item.status} />
+            return <FolderItem key={item.key}
+                               isActive={item.isActive}
+                               level={item.level}
+                               id={item.id}
+                               title={item.title}
+                               status={item.status} />
         });
 
         return (
@@ -48,6 +113,6 @@ var folders = React.createClass({
         );
     }
 
-});
+};
 
 module.exports = folders;

@@ -17,9 +17,11 @@ var MenuItem = React.createClass({
 
     render: function() {
 
+        var self = this;
+
         return (
         <li>
-            <a href="#" onClick="handlerClick()">
+            <a href="#" onClick={self.handlerClick}>
                 <i className={this.props.cl}></i>
                 <span>{this.props.title}</span>
             </a>

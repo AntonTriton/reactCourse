@@ -149,7 +149,7 @@ var notesData = [{
     key: 0,
     title: "Future",
     content: "Future is now",
-    tags: ["Corporative"]
+    tags: ["Root"]
 }, {
     id: 1,
     key: 1,
@@ -167,16 +167,67 @@ var notesData = [{
 exports.notesData = notesData;
 var foldersData = [{
     key: 0,
-    title: "Corporative",
-    status: 'closed'
+    id: 0,
+    title: "Root",
+    status: 'open',
+    isActive: true,
+    level: 0
 }, {
     key: 1,
+    id: 1,
     title: "Private",
-    status: 'closed'
+    status: 'closed',
+    parentId: 0,
+    level: 1
 }, {
+    id: 4,
+    key: 4,
+    title: "Friends",
+    status: 'closed',
+    parentId: 1,
+    level: 2
+}, {
+    id: 5,
+    key: 5,
+    title: "Secrets",
+    status: 'closed',
+    parentId: 1,
+    level: 2
+}, {
+    id: 2,
     key: 2,
     title: "Activities",
-    status: 'closed'
+    status: 'closed',
+    parentId: 0,
+    level: 1
+}, {
+    id: 6,
+    key: 6,
+    title: "Yoga",
+    status: 'closed',
+    parentId: 2,
+    level: 2
+}, {
+    id: 3,
+    key: 3,
+    title: "Corporative",
+    status: 'closed',
+    parentId: 0,
+    level: 1
+}, {
+    id: 7,
+    key: 7,
+    title: "Documents",
+    status: 'closed',
+    parentId: 3,
+    level: 2
+}, {
+    id: 8,
+    key: 8,
+    title: "Tools",
+    status: 'closed',
+    parentId: 3,
+    level: 2
 }];
 
 exports.foldersData = foldersData;
@@ -210,59 +261,163 @@ exports.menuData = menuData;
 },{}],4:[function(require,module,exports){
 'use strict';
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 var _dataJs = require('./data.js');
 
-var React = require('react');
+var FolderItem = (function (_Component) {
+    _inherits(FolderItem, _Component);
 
-var FolderItem = React.createClass({
-    displayName: 'FolderItem',
+    function FolderItem(props) {
+        _classCallCheck(this, FolderItem);
 
-    render: function render() {
+        _get(Object.getPrototypeOf(FolderItem.prototype), 'constructor', this).call(this, props);
 
-        var cl;
+        console.log('constr', this.props);
 
-        this.props.status == 'closed' ? cl = 'fa-folder' : cl = "fa-folder-open";
-
-        return React.createElement(
-            'li',
-            null,
-            React.createElement('i', { className: "fa " + cl }),
-            this.props.title
-        );
+        this.state = {
+            editModeClass: 'hidden',
+            textModeClass: 'visible',
+            value: this.props.title,
+            margin: this.props.level * 30 + "px",
+            id: this.props.id
+        };
     }
 
-});
+    _createClass(FolderItem, [{
+        key: 'setEditMode',
+        value: function setEditMode() {
+            this.setState({
+                editModeClass: "visible",
+                textModeClass: "hidden"
+            });
+        }
+    }, {
+        key: 'setTextMode',
+        value: function setTextMode() {
+            this.setState({
+                editModeClass: "hidden",
+                textModeClass: "visible"
+            });
+        }
+    }, {
+        key: 'editing',
+        value: function editing(event) {
+            this.setState({
+                value: event.target.value
+            });
+        }
+    }, {
+        key: 'showNotes',
+        value: function showNotes() {}
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate() {
+            _reactDom2['default'].findDOMNode(this.refs.folderInput).focus();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
 
-var folders = React.createClass({
-    displayName: 'folders',
+            console.log('folder', this.props);
 
-    getInitialState: function getInitialState() {
+            var cl,
+                self = this,
+                isActive = this.props.isActive ? "active" : "";
 
-        return {
+            this.props.status == 'closed' ? cl = 'fa-folder' : cl = "fa-folder-open";
+
+            return _react2['default'].createElement(
+                'li',
+                { style: { marginLeft: self.state.margin }, className: isActive, onClick: self.showNotes },
+                _react2['default'].createElement(
+                    Link,
+                    { to: "/notes/" + self.state.id },
+                    _react2['default'].createElement('i', { className: "fa " + cl }),
+                    _react2['default'].createElement(
+                        'span',
+                        { className: 'note-title' },
+                        _react2['default'].createElement(
+                            'span',
+                            { className: self.state.textModeClass + " note-title" },
+                            self.state.value
+                        ),
+                        _react2['default'].createElement('input', { className: self.state.editModeClass,
+                            onBlur: self.setTextMode.bind(this),
+                            onChange: self.editing.bind(this),
+                            ref: 'folderInput',
+                            type: 'text', value: self.state.value })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return FolderItem;
+})(_react.Component);
+
+;
+
+var folders = (function (_Component2) {
+    _inherits(folders, _Component2);
+
+    function folders() {
+        _classCallCheck(this, folders);
+
+        _get(Object.getPrototypeOf(folders.prototype), 'constructor', this).call(this);
+
+        this.state = {
             folders: _dataJs.foldersData
         };
-    },
-
-    render: function render() {
-
-        var folders = this.state.folders;
-
-        var items = folders.map(function (item) {
-            return React.createElement(FolderItem, { key: item.key, title: item.title, status: item.status });
-        });
-
-        return React.createElement(
-            'ul',
-            null,
-            items
-        );
     }
 
-});
+    _createClass(folders, [{
+        key: 'render',
+        value: function render() {
+
+            var folders = this.state.folders;
+
+            var items = folders.map(function (item) {
+                return _react2['default'].createElement(FolderItem, { key: item.key,
+                    isActive: item.isActive,
+                    level: item.level,
+                    id: item.id,
+                    title: item.title,
+                    status: item.status });
+            });
+
+            return _react2['default'].createElement(
+                'ul',
+                null,
+                items
+            );
+        }
+    }]);
+
+    return folders;
+})(_react.Component);
+
+;
 
 module.exports = folders;
 
-},{"./data.js":3,"react":419}],5:[function(require,module,exports){
+},{"./data.js":3,"react":419,"react-dom":236}],5:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -321,12 +476,14 @@ var MenuItem = React.createClass({
 
     render: function render() {
 
+        var self = this;
+
         return React.createElement(
             'li',
             null,
             React.createElement(
                 'a',
-                { href: '#', onClick: 'handlerClick()' },
+                { href: '#', onClick: self.handlerClick },
                 React.createElement('i', { className: this.props.cl }),
                 React.createElement(
                     'span',
@@ -394,6 +551,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 var _reactDnd = require('react-dnd');
 
 var _reactLibUpdate = require('react/lib/update');
@@ -405,6 +566,8 @@ var _lodashFunctionFlow = require('lodash/function/flow');
 var _lodashFunctionFlow2 = _interopRequireDefault(_lodashFunctionFlow);
 
 var _reactRouter = require('react-router');
+
+console.log('ReactDOM', _reactDom2['default']);
 
 /**
  * Implements the drag source contract.
@@ -492,6 +655,11 @@ var Card = (function (_Component) {
             });
         }
     }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate() {
+            _reactDom2['default'].findDOMNode(this.refs.noteInput).focus();
+        }
+    }, {
         key: 'render',
         value: function render() {
             var self = this;
@@ -502,23 +670,26 @@ var Card = (function (_Component) {
             var connectDragSource = _props.connectDragSource;
             var connectDropTarget = _props.connectDropTarget;
 
-            var opacity = isDragging ? 0 : 1;
-
             return connectDragSource(connectDropTarget(_react2['default'].createElement(
                 'li',
                 null,
                 _react2['default'].createElement(
                     _reactRouter.Link,
                     { to: "/note/" + self.state.id },
-                    _react2['default'].createElement('i', { className: 'fa fa-file-text-o' }),
+                    _react2['default'].createElement('i', { className: 'fa fa-file-text-o' })
+                ),
+                _react2['default'].createElement(
+                    'span',
+                    { className: 'note-title' },
                     _react2['default'].createElement(
                         'span',
-                        { className: self.state.textModeClass, onClick: self.setEditMode },
+                        { className: self.state.textModeClass + " note-title", onClick: self.setEditMode.bind(this) },
                         self.state.value
                     ),
                     _react2['default'].createElement('input', { className: self.state.editModeClass,
-                        onBlur: self.setTextMode,
-                        onChange: self.editing,
+                        onBlur: self.setTextMode.bind(this),
+                        onChange: self.editing.bind(this),
+                        ref: 'noteInput',
                         type: 'text', value: self.state.value })
                 )
             )));
@@ -552,7 +723,7 @@ Card.propTypes = {
 
 module.exports = (0, _lodashFunctionFlow2['default'])((0, _reactDnd.DropTarget)('card', cardTarget, dropCollect), (0, _reactDnd.DragSource)('card', cardSource, dragCollect))(Card);
 
-},{"lodash/function/flow":42,"react":419,"react-dnd":174,"react-router":256,"react/lib/update":390}],8:[function(require,module,exports){
+},{"lodash/function/flow":42,"react":419,"react-dnd":174,"react-dom":236,"react-router":256,"react/lib/update":390}],8:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -590,6 +761,14 @@ var _noteJs = require('./note.js');
 var _noteJs2 = _interopRequireDefault(_noteJs);
 
 var _dataJs = require('./data.js');
+
+var _lodashCollectionFilterJs = require('lodash/collection/filter.js');
+
+var _lodashCollectionFilterJs2 = _interopRequireDefault(_lodashCollectionFilterJs);
+
+var _lodashArrayIndexOfJs = require('lodash/array/indexOf.js');
+
+var _lodashArrayIndexOfJs2 = _interopRequireDefault(_lodashArrayIndexOfJs);
 
 var Autocomplete = require('../vendor/Autocomplete.js');
 
@@ -726,19 +905,27 @@ var Notes = (function (_Component) {
             };
         }
     }, {
+        key: 'getCards',
+        value: function getCards(tag) {
+            var cards = this.state.cards;
+
+            return (0, _lodashCollectionFilterJs2['default'])(cards, function (item) {
+                return (0, _lodashArrayIndexOfJs2['default'])(item.tags, tag) != -1;
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
 
             //console.log('notes',this.props);
 
             var connectDropTarget = this.props.connectDropTarget;
-            var cards = this.state.cards;
 
             var self = this;
 
-            //var notes = this.state.notes;
+            var filteredCards = this.getCards('Root');
 
-            var items = cards.map(function (item) {
+            var items = filteredCards.map(function (item) {
                 return _react2['default'].createElement(_noteJs2['default'], {
                     key: item.key,
                     id: item.id,
@@ -780,7 +967,7 @@ function dropCollect2(connect) {
 
 module.exports = (0, _lodashFunctionFlow2['default'])((0, _reactDnd.DropTarget)('card', cardTarget2, dropCollect2), (0, _reactDnd.DragDropContext)(_reactDndHtml5Backend2['default']))(Notes);
 
-},{"../vendor/Autocomplete.js":423,"../vendor/utils":424,"./data.js":3,"./note.js":7,"lodash/function/flow":42,"react":419,"react-dnd":174,"react-dnd-html5-backend":114,"react/lib/update":390}],9:[function(require,module,exports){
+},{"../vendor/Autocomplete.js":423,"../vendor/utils":424,"./data.js":3,"./note.js":7,"lodash/array/indexOf.js":38,"lodash/collection/filter.js":41,"lodash/function/flow":42,"react":419,"react-dnd":174,"react-dnd-html5-backend":114,"react/lib/update":390}],9:[function(require,module,exports){
 'use strict';
 
 var _reactRouter = require('react-router');

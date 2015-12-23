@@ -18,6 +18,10 @@ import Card from './note.js';
 
 import {notesData} from './data.js';
 
+import filter from 'lodash/collection/filter.js';
+
+import indexOf from 'lodash/array/indexOf.js';
+
 
 var SearchNotes = React.createClass({
 
@@ -140,18 +144,25 @@ class Notes extends Component {
         };
     }
 
+    getCards(tag){
+        const { cards } = this.state;
+
+        return filter(cards,function(item){
+            return indexOf(item.tags, tag) != -1;
+        });
+    }
+
     render() {
 
         //console.log('notes',this.props);
 
         const { connectDropTarget } = this.props;
-        const { cards } = this.state;
 
         var self = this;
 
-        //var notes = this.state.notes;
+        var filteredCards = this.getCards('Root');
 
-        var items = cards.map(function(item) {
+        var items = filteredCards.map(function(item) {
             return <Card
                 key={item.key}
                 id={item.id}

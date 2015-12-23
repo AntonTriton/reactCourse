@@ -2,6 +2,8 @@
 
 import React, { Component, PropTypes } from 'react';
 
+import ReactDOM from 'react-dom';
+
 import { DragSource, DropTarget } from 'react-dnd';
 
 import update from 'react/lib/update';
@@ -10,6 +12,7 @@ import flow from 'lodash/function/flow';
 
 import { Link } from 'react-router';
 
+console.log('ReactDOM',ReactDOM);
 
 /**
  * Implements the drag source contract.
@@ -59,12 +62,13 @@ class Card extends Component {
             value: this.props.title,
             id: this.props.id
         };
-    }
+
+   }
 
     setEditMode(){
         this.setState({
-        editModeClass : "visible",
-        textModeClass : "hidden"
+            editModeClass : "visible",
+            textModeClass : "hidden"
         })
     }
 
@@ -81,22 +85,30 @@ class Card extends Component {
         })
     }
 
+    componentDidUpdate(){
+        ReactDOM.findDOMNode(this.refs.noteInput).focus();
+    }
+
     render() {
         var self = this;
 
         const { title, isDragging, connectDragSource, connectDropTarget } = this.props;
-        const opacity = isDragging ? 0 : 1;
 
         return connectDragSource(connectDropTarget(
             <li>
                 <Link to={"/note/"+self.state.id}>
                     <i className="fa fa-file-text-o"></i>
-                    <span className={self.state.textModeClass} onClick={self.setEditMode}>{self.state.value}</span>
-                    <input className={self.state.editModeClass}
-                           onBlur={self.setTextMode}
-                           onChange={self.editing}
-                           type="text" value={self.state.value}/>
                 </Link>
+
+                <span className="note-title">
+                    <span className={self.state.textModeClass+" note-title"} onClick={self.setEditMode.bind(this)}>{self.state.value}</span>
+
+                    <input className={self.state.editModeClass}
+                           onBlur={self.setTextMode.bind(this)}
+                           onChange={self.editing.bind(this)}
+                           ref="noteInput"
+                           type="text" value={self.state.value}/>
+                </span>
             </li>
 
         ));
