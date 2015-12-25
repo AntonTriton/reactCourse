@@ -281,6 +281,8 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _dataJs = require('./data.js');
 
+var _reactRouter = require('react-router');
+
 var FolderItem = (function (_Component) {
     _inherits(FolderItem, _Component);
 
@@ -347,7 +349,7 @@ var FolderItem = (function (_Component) {
                 'li',
                 { style: { marginLeft: self.state.margin }, className: isActive, onClick: self.showNotes },
                 _react2['default'].createElement(
-                    Link,
+                    _reactRouter.Link,
                     { to: "/notes/" + self.state.id },
                     _react2['default'].createElement('i', { className: "fa " + cl }),
                     _react2['default'].createElement(
@@ -417,7 +419,7 @@ var folders = (function (_Component2) {
 
 module.exports = folders;
 
-},{"./data.js":3,"react":419,"react-dom":236}],5:[function(require,module,exports){
+},{"./data.js":3,"react":419,"react-dom":236,"react-router":256}],5:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),

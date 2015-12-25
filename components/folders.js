@@ -6,6 +6,8 @@ import ReactDOM from 'react-dom';
 
 import {foldersData} from './data.js';
 
+import { Link } from 'react-router';
+
 
 class FolderItem extends Component {
 
