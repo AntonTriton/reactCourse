@@ -55,7 +55,7 @@ class FolderItem extends Component {
 
     render() {
 
-        console.log('folder',this.props);
+        //console.log('folder',this.props);
 
         var cl,
             self = this,
@@ -66,7 +66,7 @@ class FolderItem extends Component {
         return (
 
         <li style={{marginLeft : self.state.margin}} className={isActive} onClick={self.showNotes}>
-            <Link to={"/notes/"+self.state.id}>
+            <Link to={"/folder/"+self.state.id}>
                 <i className={"fa " + cl}></i>
                 <span className="note-title">
                     <span className={self.state.textModeClass+" note-title"}>{self.state.value}</span>
@@ -97,11 +97,17 @@ class folders extends Component {
 
     render() {
 
-        var folders = this.state.folders;
+        var folders = this.state.folders,
+            activeFolderId = this.props.activeFolderId;
 
         var items = folders.map(function(item) {
+
+            var isActive = false;
+
+            if(item.id == activeFolderId) isActive = true;
+
             return <FolderItem key={item.key}
-                               isActive={item.isActive}
+                               isActive={isActive}
                                level={item.level}
                                id={item.id}
                                title={item.title}

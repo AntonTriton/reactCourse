@@ -13,14 +13,21 @@ export const notesData = [
         key: 1,
         title : "Birthdays",
         content: "Future is now and tomorrow",
-        tags: ["Private","Activities"]
+        tags: ["Root","Private","Activities"]
     },
     {
         id: 2,
         key: 2,
         title : "ToDo",
         content: "ToDo ToToDo",
-        tags: ["Private"]
+        tags: ["Root","Private"]
+    },
+    {
+        id: 3,
+        key: 3,
+        title : "Friend",
+        content: "Friend",
+        tags: ["Root","Private","Friends"]
     }
 ];
 

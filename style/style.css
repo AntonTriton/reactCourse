@@ -32,7 +32,8 @@ nav li a {
   text-decoration: none;
   color: #000;
 }
-nav li a:hover {
+nav li a:hover,
+nav li a:focus {
   text-decoration: none;
 }
 nav .fa {
@@ -46,9 +47,16 @@ nav .fa {
   line-height: 30px;
   cursor: pointer;
 }
+.folders li a {
+  display: block;
+}
 .folders li:hover,
 .folders li.active {
   background-color: #c1e5ff;
+}
+.folders li:hover a,
+.folders li.active a {
+  text-decoration: none;
 }
 .folders .fa {
   font-size: 30px;
@@ -107,4 +115,22 @@ nav .fa {
   font-size: 12px;
   display: inline-block;
   margin-left: 5px;
+}
+.modal-content {
+  text-align: center;
+}
+.modal-content .modal-item {
+  text-align: left;
+  margin-bottom: 10px;
+}
+.modal-content .modal-item label {
+  display: block;
+  cursor: pointer;
+}
+.modal-content .modal-item label span {
+  display: inline-block;
+  margin-left: 10px;
+}
+.modal-content .btn {
+  margin-left: 10px;
 }

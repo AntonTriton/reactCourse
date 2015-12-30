@@ -2,12 +2,23 @@
 
 import { Router, Route, Link } from 'react-router'
 
+import { createStore } from 'redux'
+
+import { Provider } from 'react-redux'
+
+import App from './components/app.js'
+
+import reducer from './reducers.js'
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var App = require('./components/app.js'),
-    Main = require('./components/main.js'),
+var Main = require('./components/main.js'),
     Content = require('./components/content.js');
+
+
+let store = createStore(reducer);
+
 
 /*ReactDOM.render(
     menu,
@@ -29,10 +40,15 @@ const routeConfig = [
         component: App,
         indexRoute: { component: Main },
         childRoutes: [
-            { path: 'note/:id', component: Content}
+            { path: 'note/:id', component: Content},
+            { path: 'folder/:id', component: Main}
         ]
     }
 ];
 
-ReactDOM.render(<Router routes={routeConfig} />, document.querySelector('.app'));
+ReactDOM.render(
+    <Provider store={store}>
+        <Router routes={routeConfig} />
+    </Provider>,
+    document.querySelector('.app'));
 

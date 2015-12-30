@@ -30,6 +30,7 @@ nav
       text-decoration none
       color #000
       &:hover
+      &:focus
         text-decoration none
   .fa
     display block
@@ -42,9 +43,13 @@ nav
   li
     line-height 30px
     cursor pointer
+    a
+      display block
     &:hover
     &.active
       background-color #c1e5ff
+      a
+        text-decoration none
   .fa
     font-size 30px
     margin-right 10px
@@ -93,3 +98,17 @@ nav
     font-size 12px
     display inline-block
     margin-left 5px
+
+.modal-content
+  text-align center
+  .modal-item
+    text-align left
+    margin-bottom 10px
+    label
+      display block
+      cursor pointer
+      span
+        display inline-block
+        margin-left 10px
+  .btn
+    margin-left 10px

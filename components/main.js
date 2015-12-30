@@ -1,22 +1,57 @@
 'use strict';
 
-var React = require('react'),
-    Menu = require('./menu.js'),
+import React, { Component } from 'react';
+
+import {foldersData} from './data.js';
+
+import filter from 'lodash/collection/filter.js';
+
+import Menu from './menu.js';
+
+import Folders from './folders.js';
+
+import Notes from './notes.js';
+
+/*var Menu = require('./menu.js'),
     Folders = require('./folders.js'),
-    Notes = require('./notes.js');
+    Notes = require('./notes.js');*/
 
-var Main = React.createClass({
+class Main extends Component {
 
-    render: function() {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            showModal : false
+        }
+    }
+
+    getFolderById(id){
+
+        return filter(foldersData, function(item){
+            return item.id == id
+        });
+
+    }
+
+    render() {
+
+        var folder = foldersData[0],
+            folderId = this.props.params.id || 0;
+
+        if(folderId) folder = this.getFolderById(folderId)[0];
+
         return (
             <div>
                 <Menu page="main" />
-                <section className="folders col-md-3"><Folders /></section>
-                <section className="notes col-md-8"><Notes /></section>
+                <section className="folders col-md-3"><Folders activeFolderId={folderId}/></section>
+                <section className="notes col-md-8"><Notes folder={folder} /></section>
+
+
             </div>
         );
     }
 
-});
+};
 
 module.exports = Main;

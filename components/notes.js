@@ -144,7 +144,7 @@ class Notes extends Component {
         };
     }
 
-    getCards(tag){
+    getCardsByTag(tag){
         const { cards } = this.state;
 
         return filter(cards,function(item){
@@ -154,13 +154,13 @@ class Notes extends Component {
 
     render() {
 
-        //console.log('notes',this.props);
+        console.log('notes',this.props.folder);
 
         const { connectDropTarget } = this.props;
 
         var self = this;
 
-        var filteredCards = this.getCards('Root');
+        var filteredCards = this.getCardsByTag(this.props.folder.title);
 
         var items = filteredCards.map(function(item) {
             return <Card
