@@ -12,7 +12,7 @@ export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';*/
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-exports.edit_folder = edit_folder;
+exports.set_folder_edit_mode = set_folder_edit_mode;
 var SET_FOLDER_EDIT_MODE = 'SET_FOLDER_EDIT_MODE';
 
 exports.SET_FOLDER_EDIT_MODE = SET_FOLDER_EDIT_MODE;
@@ -48,7 +48,7 @@ export function setVisibilityFilter(filter) {
     return { type: SET_VISIBILITY_FILTER, filter }
 }*/
 
-function edit_folder(id) {
+function set_folder_edit_mode(id) {
     return { type: SET_FOLDER_EDIT_MODE, folderId: id };
 }
 
@@ -744,6 +744,9 @@ var MenuItem = (function (_Component) {
                     this.open();
                     break;
                 case "edit":
+
+                    // store.dispatch('SET_FOLDER_EDIT_MODE');
+
                     this.setEditMode();
                     break;
                 case "remove":

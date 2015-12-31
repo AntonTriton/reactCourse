@@ -79,6 +79,9 @@ class MenuItem extends Component {
                 this.open();
                 break;
             case "edit":
+
+                // store.dispatch('SET_FOLDER_EDIT_MODE');
+
                 this.setEditMode();
                 break;
             case "remove":
