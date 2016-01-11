@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react';
 
+import store from '../store.js'
+
 import {menuData} from './data.js';
 
 import filter from 'lodash/collection/filter.js';
@@ -71,7 +73,9 @@ class MenuItem extends Component {
 
     }
 
-    handlerClick(){
+    handlerClick(event){
+        event.preventDefault();
+
         var action = this.props.action;
 
         switch (action){
@@ -79,10 +83,9 @@ class MenuItem extends Component {
                 this.open();
                 break;
             case "edit":
+                var t = this.props.set_edit();
 
-                // store.dispatch('SET_FOLDER_EDIT_MODE');
-
-                this.setEditMode();
+                console.log('menu edit click',store.getState());
                 break;
             case "remove":
                 this.remove();
@@ -134,6 +137,8 @@ class MenuItem extends Component {
     render() {
 
         var self = this;
+
+        //console.log('menu item',this.props);
 
         return (
         <li>
@@ -221,15 +226,22 @@ class Menu extends Component {
 
     render() {
 
+        //console.log('menu',this.props);
+
         var menu = this.state.menu,
-            page = this.props.page;
+            page = this.props.page,
+            set_edit=this.props.set_edit;
 
         var currentMenu = filter(menu,function(item){
             return indexOf(item.page,page) != -1
         });
 
         var items = currentMenu.map(function(item) {
-            return <MenuItem key={item.key} title={item.title} cl={item.class} action={item.action} />
+            return <MenuItem key={item.key}
+            title={item.title}
+            cl={item.class}
+            set_edit={set_edit}
+            action={item.action} />
         });
 
         return (
@@ -244,4 +256,4 @@ class Menu extends Component {
 
 };
 
-module.exports = Menu;
+export default Menu;

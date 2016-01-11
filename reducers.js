@@ -1,48 +1,62 @@
 import { combineReducers } from 'redux'
-import { SET_FOLDER_EDIT_MODE, SET_FOLDER_TEXT_MODE } from './actions'
-//const { SHOW_ALL } = VisibilityFilters;
+import map from 'lodash/collection/map.js';
 
-/*function visibilityFilter(state, action) {
-    switch (action.type) {
-        case SET_VISIBILITY_FILTER:
-            return action.filter;
-        default:
-            return state
-    }
-}*/
+import { SET_FOLDER_EDIT_MODE, RESET_FOLDER_EDIT_MODE, SET_FOLDER_ACTIVE, EDITING_FOLDER } from './actions'
 
-function reducer(state, action) {
+import { notesData,foldersData,menuData } from './components/data.js'
+
+const initialState = {
+    activeFolderId: 0,
+    editFolderId: null,
+    notesData: notesData,
+    foldersData: foldersData,
+    menuData: menuData
+};
+
+function reducer(state = initialState, action) {
+
     switch (action.type) {
+
         case SET_FOLDER_EDIT_MODE:
-            return {
-                id: action.folderId,
-                editFolderClass : "visible",
-                textFolderClass : "hidden"
-            };
+            console.log(action.type,state.activeFolderId);
+
+            return Object.assign({}, state, {
+                editFolderId: parseInt(state.activeFolderId)
+            });
+
+        case RESET_FOLDER_EDIT_MODE:
+            console.log(action.type);
+
+            return Object.assign({}, state, {
+                editFolderId: null
+            });
+
+        case EDITING_FOLDER:
+
+            let newFoldersData = map(state.foldersData,function(item){
+                if(item.id == state.editFolderId){
+                    item.title = action.value;
+                }
+
+                return item;
+            });
+
+            console.log(action.type,action.value,state.foldersData,newFoldersData);
+
+            return Object.assign({}, state, {
+                foldersData: newFoldersData
+            });
+
+        case SET_FOLDER_ACTIVE:
+            console.log(action.type,action.activeFolderId,state);
+
+            return Object.assign({}, state, {
+                activeFolderId: action.activeFolderId
+            });
+
         default:
             return state
     }
 }
-
-/*function todos(state = [], action) {
-    switch (action.type) {
-        case ADD_TODO:
-            return [
-                ...state,
-                todo(undefined, action)
-            ];
-        case COMPLETE_TODO:
-            return state.map(t =>
-                    todo(t, action)
-            );
-        default:
-            return state
-    }
-}*/
-
-/*const todoApp = combineReducers({
-    visibilityFilter,
-    todos
-});*/
 
 export default reducer

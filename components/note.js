@@ -12,8 +12,6 @@ import flow from 'lodash/function/flow';
 
 import { Link } from 'react-router';
 
-console.log('ReactDOM',ReactDOM);
-
 /**
  * Implements the drag source contract.
  */
@@ -137,7 +135,7 @@ Card.propTypes = {
     findCard: PropTypes.func.isRequired
 };
 
-module.exports = flow(
+export default flow(
     DropTarget('card', cardTarget, dropCollect),
     DragSource('card', cardSource, dragCollect)
 )(Card);

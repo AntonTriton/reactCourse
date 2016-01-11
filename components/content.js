@@ -61,4 +61,4 @@ class SingleNote extends Component {
     }
 }
 
-module.exports = SingleNote;
+export default SingleNote;

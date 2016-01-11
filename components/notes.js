@@ -22,10 +22,9 @@ import filter from 'lodash/collection/filter.js';
 
 import indexOf from 'lodash/array/indexOf.js';
 
+class SearchNotes extends Component{
 
-var SearchNotes = React.createClass({
-
-    render: function() {
+    render(){
 
         return (
             <Autocomplete
@@ -53,7 +52,7 @@ var SearchNotes = React.createClass({
          */
     }
 
-});
+};
 
 /*var NoteItem = React.createClass({
 
@@ -154,7 +153,7 @@ class Notes extends Component {
 
     render() {
 
-        console.log('notes',this.props.folder);
+        //console.log('notes',this.props.folder);//
 
         const { connectDropTarget } = this.props;
 
@@ -201,7 +200,7 @@ function dropCollect2(connect){
     }
 }
 
-module.exports = flow(
+export default flow(
     DropTarget('card', cardTarget2, dropCollect2),
     DragDropContext(HTML5Backend)
 )(Notes);

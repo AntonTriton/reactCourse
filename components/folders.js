@@ -4,45 +4,28 @@ import React, { Component, PropTypes } from 'react';
 
 import ReactDOM from 'react-dom';
 
-import {foldersData} from './data.js';
+//import {foldersData} from './data.js';
 
 import { Link } from 'react-router';
 
+import store from '../store.js'
 
 class FolderItem extends Component {
 
     constructor(props){
         super(props);
 
-        console.log('constr',this.props);
-
         this.state = {
-            editModeClass: 'hidden',
-            textModeClass: 'visible',
-            value: this.props.title,
             margin: this.props.level*30 + "px",
             id: this.props.id
         }
     }
 
-    setEditMode(){
-        this.setState({
-            editModeClass : "visible",
-            textModeClass : "hidden"
-        })
-    }
-
-    setTextMode(){
-        this.setState({
-            editModeClass : "hidden",
-            textModeClass : "visible"
-        })
-    }
-
     editing(event){
-        this.setState({
+        this.props.editingFolder(event.target.value);
+        /*this.setState({
             value: event.target.value
-        })
+        })*/
     }
 
     showNotes(){
@@ -55,13 +38,22 @@ class FolderItem extends Component {
 
     render() {
 
-        //console.log('folder',this.props);
+        console.log('folder item render',this.props.title);
 
         var cl,
             self = this,
-            isActive = this.props.isActive ? "active" : "";
+            isActive = this.props.isActive ? "active" : "",
+            textModeClass = 'visible',
+            editModeClass = 'hidden',
+            reset_edit= this.props.reset_edit,
+            title = this.props.title;
 
         this.props.status == 'closed' ? cl = 'fa-folder' : cl = "fa-folder-open";
+
+        if(this.props.isEdit){
+            textModeClass = 'hidden';
+            editModeClass = 'visible';
+        }
 
         return (
 
@@ -69,13 +61,13 @@ class FolderItem extends Component {
             <Link to={"/folder/"+self.state.id}>
                 <i className={"fa " + cl}></i>
                 <span className="note-title">
-                    <span className={self.state.textModeClass+" note-title"}>{self.state.value}</span>
+                    <span className={textModeClass+" note-title"}>{title}</span>
 
-                    <input className={self.state.editModeClass}
-                           onBlur={self.setTextMode.bind(this)}
+                    <input className={editModeClass}
+                           onBlur={reset_edit}
                            onChange={self.editing.bind(this)}
                            ref="folderInput"
-                           type="text" value={self.state.value}/>
+                           type="text" value={title}/>
                 </span>
             </Link>
         </li>
@@ -90,27 +82,39 @@ class folders extends Component {
     constructor(){
         super();
 
-        this.state = {
+        /*this.state = {
             folders: foldersData
-        }
+        }*/
     }
 
-    render() {
+    render(){
 
-        var folders = this.state.folders,
-            activeFolderId = this.props.activeFolderId;
+        var folders = store.getState().foldersData,
+            activeFolderId = this.props.activeFolderId,
+            reset_edit = this.props.reset_edit,
+            editingFolder = this.props.editingFolder,
+            editFolderId = store.getState().editFolderId;
+
+        console.log('folders render',folders);
 
         var items = folders.map(function(item) {
 
-            var isActive = false;
+            var isActive = false,
+                isEdit = false;
 
             if(item.id == activeFolderId) isActive = true;
+            if(item.id == editFolderId) isEdit = true;
+
+            //console.log('folders',item.id,activeFolderId,editFolderId);
 
             return <FolderItem key={item.key}
                                isActive={isActive}
+                               isEdit={isEdit}
                                level={item.level}
                                id={item.id}
                                title={item.title}
+                               reset_edit={reset_edit}
+                               editingFolder={editingFolder}
                                status={item.status} />
         });
 
@@ -123,4 +127,4 @@ class folders extends Component {
 
 };
 
-module.exports = folders;
+export default folders;

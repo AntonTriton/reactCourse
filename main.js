@@ -2,23 +2,19 @@
 
 import { Router, Route, Link } from 'react-router'
 
-import { createStore } from 'redux'
+import store from './store.js'
 
 import { Provider } from 'react-redux'
 
 import App from './components/app.js'
 
-import reducer from './reducers.js'
+//import reducer from './reducers.js'
 
 var React = require('react');
 var ReactDOM = require('react-dom');
 
 var Main = require('./components/main.js'),
     Content = require('./components/content.js');
-
-
-let store = createStore(reducer);
-
 
 /*ReactDOM.render(
     menu,
