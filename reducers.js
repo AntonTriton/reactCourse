@@ -1,7 +1,11 @@
 import { combineReducers } from 'redux'
 import map from 'lodash/collection/map.js';
 
-import { SET_FOLDER_EDIT_MODE, RESET_FOLDER_EDIT_MODE, SET_FOLDER_ACTIVE, EDITING_FOLDER } from './actions'
+import filter from 'lodash/collection/filter.js';
+import max from 'lodash/math/max.js';
+
+import { SET_FOLDER_EDIT_MODE, RESET_FOLDER_EDIT_MODE, SET_FOLDER_ACTIVE, EDITING_FOLDER,
+    REMOVE_FOLDER, ADD_FOLDER } from './actions'
 
 import { notesData,foldersData,menuData } from './components/data.js'
 
@@ -37,7 +41,6 @@ function reducer(state = initialState, action) {
                 if(item.id == state.editFolderId){
                     item.title = action.value;
                 }
-
                 return item;
             });
 
@@ -52,6 +55,37 @@ function reducer(state = initialState, action) {
 
             return Object.assign({}, state, {
                 activeFolderId: action.activeFolderId
+            });
+
+        case REMOVE_FOLDER:
+            console.log(action.type,state,action);
+
+            return Object.assign({}, state, {
+                foldersData: filter(state.foldersData, function(item) {
+
+                    return item.id != state.activeFolderId;
+                })
+            });
+
+        case ADD_FOLDER:
+            console.log("!!!!!",action.type,state,action);
+
+            // activeFolderId
+
+            return Object.assign({}, state, {
+                //foldersData: state.foldersData.concat({
+                foldersData: state.foldersData.splice(action.index,0,{
+                    key: 1 + max(state.foldersData, function(item){
+                        return item.key
+                    }),
+                    id: 1 + max(state.foldersData, function(item){
+                        return item.id
+                    }),
+                    title : action.title,
+                    status: 'closed',
+                    isActive: false,
+                    level: action.level
+                })
             });
 
         default:

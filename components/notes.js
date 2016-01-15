@@ -16,7 +16,7 @@ import flow from 'lodash/function/flow';
 
 import Card from './note.js';
 
-import {notesData} from './data.js';
+//import {notesData} from './data.js';
 
 import filter from 'lodash/collection/filter.js';
 
@@ -26,10 +26,12 @@ class SearchNotes extends Component{
 
     render(){
 
+        var self = this;
+
         return (
             <Autocomplete
                 initialValue=""
-                items={notesData}
+                items={self.props.notes}
                 getItemValue={(item) => item.title}
                 shouldItemRender={matchStateToTerm}
                 sortItems={sortStates}
@@ -111,7 +113,7 @@ class Notes extends Component {
         this.findCard = this.findCard.bind(this);
 
         this.state = {
-            cards: notesData
+            cards: this.props.notes
         };
     }
 
@@ -143,23 +145,32 @@ class Notes extends Component {
         };
     }
 
-    getCardsByTag(tag){
+    /*getCardsByTag(tag){
         const { cards } = this.state;
 
         return filter(cards,function(item){
             return indexOf(item.tags, tag) != -1;
         });
+    }*/
+
+    getCardsByFolderId(id){
+
+        const cards = this.props.notes;
+
+        return filter(cards,function(item){
+            return indexOf(item.tagsIDs, id) != -1;
+        });
     }
 
     render() {
 
-        //console.log('notes',this.props.folder);//
+        console.log('notes render',this.props.folder);
 
         const { connectDropTarget } = this.props;
 
         var self = this;
 
-        var filteredCards = this.getCardsByTag(this.props.folder.title);
+        var filteredCards = this.getCardsByFolderId(this.props.folder.id);
 
         var items = filteredCards.map(function(item) {
             return <Card
@@ -174,7 +185,9 @@ class Notes extends Component {
         return connectDropTarget(
             <div>
 
-                <SearchNotes />
+                <SearchNotes
+                    notes={self.props.notes}
+                    />
 
                 <ul>
                     {items}

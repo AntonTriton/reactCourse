@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 
 import {foldersData} from './data.js';
 
-import {set_folder_edit_mode ,reset_folder_edit_mode, set_folder_active,editing_folder} from '../actions.js';
+import {set_folder_edit_mode ,reset_folder_edit_mode, set_folder_active,editing_folder,
+    remove_folder, add_folder} from '../actions.js';
 
 import { connect } from 'react-redux'
 
@@ -58,6 +59,36 @@ class Main extends Component {
 
     }
 
+    removeFolder(){
+        this.dispatch(remove_folder());
+
+        this.setState(store.getState());
+    }
+
+    getFolderIndexById(id){
+
+        for(var i = 0 , len = foldersData.length; i < len; i++){
+            if(foldersData[i].id == id){
+                return i
+            }
+        }
+
+        return -1;
+    }
+
+    addFolder(title){
+
+        var activeFolder= this.getFolderById(store.getState().activeFolderId),
+            level = activeFolder[0].level + 1,
+            index = this.getFolderIndexById(store.getState().activeFolderId);
+
+        console.log('main addFolder 2', activeFolder, activeFolder[0].level, activeFolder[0].level+1);
+
+        this.dispatch(add_folder(title, level, index));
+
+        this.setState(store.getState());
+    }
+
     editingFolder(value){
 
         this.dispatch(editing_folder(value));
@@ -71,13 +102,14 @@ class Main extends Component {
 
     render() {
 
-        var self = this,
-            folder = foldersData[0],
+        var state = store.getState(),
+            self = this,
+            folder = state.foldersData[0],
             folderId = this.props.params.id || 0;
 
         if(folderId) folder = this.getFolderById(folderId)[0];
 
-        console.log('main render', this.dispatch);
+        console.log('main render', folder, folderId);
 
         this.dispatch(set_folder_active(folderId));
 
@@ -85,16 +117,24 @@ class Main extends Component {
             <div>
                 <Menu page="main"
                     set_edit={self.setEditFolder.bind(this)}
+                    addFolder={self.addFolder.bind(this)}
+                    removeFolder={self.removeFolder.bind(this)}
                 />
 
                 <section className="folders col-md-3">
-                    <Folders activeFolderId={folderId}
-                    reset_edit={self.resetEditFolder.bind(this)}
-                    editingFolder={self.editingFolder.bind(this)}/>
+                    <Folders
+                        activeFolderId={folderId}
+                        foldersData={state.foldersData}
+                        editFolderId={state.editFolderId}
+                        reset_edit={self.resetEditFolder.bind(this)}
+                        editingFolder={self.editingFolder.bind(this)}/>
                 </section>
 
                 <section className="notes col-md-8">
-                    <Notes folder={folder} />
+                    <Notes
+                        notes={state.notesData}
+                        folder={folder}
+                        />
                 </section>
             </div>
         );

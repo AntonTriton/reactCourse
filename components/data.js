@@ -6,28 +6,32 @@ export const notesData = [
         key: 0,
         title : "Future",
         content: "Future is now",
-        tags: ["Root"]
+        tags: ["Root"],
+        tagsIDs: [0]
     },
     {
         id:1,
         key: 1,
         title : "Birthdays",
         content: "Future is now and tomorrow",
-        tags: ["Root","Private","Activities"]
+        tags: ["Root","Private","Activities"],
+        tagsIDs: [0,1,2]
     },
     {
         id: 2,
         key: 2,
         title : "ToDo",
         content: "ToDo ToToDo",
-        tags: ["Root","Private"]
+        tags: ["Root","Private"],
+        tagsIDs: [0,1]
     },
     {
         id: 3,
         key: 3,
         title : "Friend",
         content: "Friend",
-        tags: ["Root","Private","Friends"]
+        tags: ["Root","Private","Friends"],
+        tagsIDs: [0,1,4]
     }
 ];
 

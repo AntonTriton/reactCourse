@@ -2,8 +2,6 @@
 
 import React, { Component } from 'react';
 
-import store from '../store.js'
-
 import {menuData} from './data.js';
 
 import filter from 'lodash/collection/filter.js';
@@ -47,6 +45,8 @@ class MenuItem extends Component {
     constructor(props){
         super(props);
 
+        this.newFolderTitle = "";
+
         this.state = {
             editModeClass: 'hidden',
             textModeClass: 'visible',
@@ -59,12 +59,20 @@ class MenuItem extends Component {
         }
     }
 
-    add(){
+    addCommon(){
+
+        console.log('addCommon');
 
         if(this.state.folderChecked){
 
-        }else if(this.state.noteChecked){
+            console.log('addFolder',this.newFolderTitle);
 
+            this.props.addFolder(this.newFolderTitle);
+
+            this.close();
+
+        }else if(this.state.noteChecked){
+            this.addNote()
         }
         //console.log('add',this.state);
     }
@@ -85,10 +93,11 @@ class MenuItem extends Component {
             case "edit":
                 var t = this.props.set_edit();
 
-                console.log('menu edit click',store.getState());
+                console.log('menu edit click');
                 break;
             case "remove":
-                this.remove();
+                console.log('remove 1');
+                this.props.removeFolder();
                 break;
         }
 
@@ -132,6 +141,10 @@ class MenuItem extends Component {
         this.setState({
             title: event.target.value
         })
+    }
+
+    setNewFolderTitle(event){
+        this.newFolderTitle = event.target.value;
     }
 
     render() {
@@ -185,7 +198,9 @@ class MenuItem extends Component {
 
                     <div className={self.state.folderClass + " modal-item"}>
                         <label htmlFor="note_type">
-                            <input type="text" placeholder="Folder's name" className="form-control"/>
+                            <input type="text" placeholder="Folder's name"
+                                   onChange={self.setNewFolderTitle.bind(this)}
+                                   className="form-control"/>
                         </label>
                     </div>
 
@@ -200,7 +215,7 @@ class MenuItem extends Component {
                     </div>
 
                     <div>
-                        <Button bsStyle="primary" onClick={self.add.bind(this)}>Add</Button>
+                        <Button bsStyle="primary" onClick={self.addCommon.bind(this)}>Add</Button>
                         <Button onClick={self.close.bind(this)}>Cancel</Button>
                     </div>
 
@@ -228,9 +243,10 @@ class Menu extends Component {
 
         //console.log('menu',this.props);
 
-        var menu = this.state.menu,
-            page = this.props.page,
-            set_edit=this.props.set_edit;
+        var self = this,
+            menu = self.state.menu,
+            page = self.props.page,
+            set_edit=self.props.set_edit;
 
         var currentMenu = filter(menu,function(item){
             return indexOf(item.page,page) != -1
@@ -241,6 +257,8 @@ class Menu extends Component {
             title={item.title}
             cl={item.class}
             set_edit={set_edit}
+             removeFolder={self.props.removeFolder}
+             addFolder={self.props.addFolder}
             action={item.action} />
         });
 

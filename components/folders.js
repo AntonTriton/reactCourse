@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
 
 import { Link } from 'react-router';
 
-import store from '../store.js'
+//import store from '../store.js'
 
 class FolderItem extends Component {
 
@@ -89,13 +89,13 @@ class folders extends Component {
 
     render(){
 
-        var folders = store.getState().foldersData,
+        var folders = this.props.foldersData,
             activeFolderId = this.props.activeFolderId,
             reset_edit = this.props.reset_edit,
             editingFolder = this.props.editingFolder,
-            editFolderId = store.getState().editFolderId;
+            editFolderId = this.props.editFolderId;
 
-        console.log('folders render',folders);
+        console.log('folders render',this.props);
 
         var items = folders.map(function(item) {
 
