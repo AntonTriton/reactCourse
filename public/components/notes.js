@@ -56,53 +56,6 @@ class SearchNotes extends Component{
 
 };
 
-/*var NoteItem = React.createClass({
-
-    getInitialState: function(){
-        return {
-            editModeClass: 'hidden',
-            textModeClass: 'visible',
-            value: this.props.title
-        }
-    },
-
-    setEditMode: function(){
-        this.setState({
-            editModeClass : "visible",
-            textModeClass : "hidden"
-        })
-    },
-
-    setTextMode: function(){
-        this.setState({
-            editModeClass : "hidden",
-            textModeClass : "visible"
-        })
-    },
-
-    editing: function(event){
-        this.setState({
-            value: event.target.value
-        })
-    },
-
-    render: function() {
-
-        var self = this;
-
-        return (
-            <li>
-                <i className="fa fa-file-text-o"></i>
-                <span className={self.state.textModeClass} onClick={self.setEditMode}>{this.state.value}</span>
-                <input className={self.state.editModeClass}
-                       onBlur={self.setTextMode}
-                       onChange={self.editing}
-                       type="text" value={this.state.value}/>
-            </li>
-        );
-    }
-
-});*/
 
 class Notes extends Component {
 
@@ -157,6 +110,8 @@ class Notes extends Component {
 
         const cards = this.props.notes;
 
+        console.log('getCardsByFolderId',cards);
+
         return filter(cards,function(item){
             return indexOf(item.tagsIDs, id) != -1;
         });
@@ -164,13 +119,14 @@ class Notes extends Component {
 
     render() {
 
-        console.log('notes render',this.props.folder);
 
         const { connectDropTarget } = this.props;
 
         var self = this;
 
         var filteredCards = this.getCardsByFolderId(this.props.folder.id);
+
+        console.log('notes render',this.props.folder,filteredCards);
 
         var items = filteredCards.map(function(item) {
             return <Card

@@ -1,7 +1,7 @@
 {
   "name": "reactTask",
   "description": "react course final task",
-  "main": "main.js",
+  "main": "public/main.js",
   "dependencies": {
     "babelify": "^6.3.0",
     "dom-scroll-into-view": "^1.0.1",
@@ -22,6 +22,6 @@
     "express": "4.13.3"
   },
   "scripts": {
-    "start": "watchify main.js -v -t babelify -o bundle.js"
+    "start": "watchify public/main.js -v -t babelify -o public/bundle.js"
   }
 }

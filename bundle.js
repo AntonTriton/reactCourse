@@ -1,0 +1,1 @@
+console.error("Error: Cannot find module 'C:\\workspace\\projects\\note-manager\\reactCourse\\main.js' from 'C:\\workspace\\projects\\note-manager\\reactCourse'");

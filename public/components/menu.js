@@ -69,11 +69,13 @@ class MenuItem extends Component {
 
             this.props.addFolder(this.newFolderTitle);
 
-            this.close();
-
         }else if(this.state.noteChecked){
-            this.addNote()
+            console.log('addNote',this.newFolderTitle);
+
+            this.props.addNote(this.newNoteTitle, this.newNoteContent);
         }
+
+        this.close();
         //console.log('add',this.state);
     }
 
@@ -91,16 +93,24 @@ class MenuItem extends Component {
                 this.open();
                 break;
             case "edit":
-                var t = this.props.set_edit();
-
+                this.props.set_edit();
                 console.log('menu edit click');
                 break;
             case "remove":
-                console.log('remove 1');
-                this.props.removeFolder();
+                console.log('remove 1',this.props.removeNote);
+
+                if(this.props.page == 'main') {
+                    this.props.removeFolder();
+                }else if(this.props.page == 'note'){
+                    this.props.removeNote();
+                }
+
+                break;
+            case "back":
+                console.log('back',this.props.back);
+                this.props.back();
                 break;
         }
-
     }
 
     close() {
@@ -145,6 +155,14 @@ class MenuItem extends Component {
 
     setNewFolderTitle(event){
         this.newFolderTitle = event.target.value;
+    }
+
+    setNewNoteTitle(event){
+        this.newNoteTitle = event.target.value;
+    }
+
+    setNewNoteContent(event){
+        this.newNoteContent = event.target.value;
     }
 
     render() {
@@ -206,11 +224,15 @@ class MenuItem extends Component {
 
                     <div className={self.state.noteClass + " modal-item"}>
                         <label htmlFor="note_type">
-                            <input type="text" placeholder="Note's title" className="form-control"/>
+                            <input type="text" placeholder="Note's title"
+                            onChange={self.setNewNoteTitle.bind(this)}
+                            className="form-control"/>
                         </label>
 
                         <div>
-                            <textarea className="form-control" name="" id="" cols="30" rows="10" defaultValue="Note's text"></textarea>
+                            <textarea className="form-control" name="" id="" cols="30" rows="10"
+                            onChange={self.setNewNoteContent.bind(this)}
+                            defaultValue="Note's text"></textarea>
                         </div>
                     </div>
 
@@ -241,7 +263,7 @@ class Menu extends Component {
 
     render() {
 
-        //console.log('menu',this.props);
+        console.log('menu!!!',this.props.back);
 
         var self = this,
             menu = self.state.menu,
@@ -258,7 +280,11 @@ class Menu extends Component {
             cl={item.class}
             set_edit={set_edit}
              removeFolder={self.props.removeFolder}
+            removeNote={self.props.removeNote}
              addFolder={self.props.addFolder}
+             addNote={self.props.addNote}
+                page={page}
+            back={self.props.back}
             action={item.action} />
         });
 

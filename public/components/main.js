@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import {foldersData} from './data.js';
 
 import {set_folder_edit_mode ,reset_folder_edit_mode, set_folder_active,editing_folder,
-    remove_folder, add_folder} from '../actions.js';
+    remove_folder, add_folder, add_note} from '../actions.js';
 
 import { connect } from 'react-redux'
 
@@ -89,6 +89,15 @@ class Main extends Component {
         this.setState(store.getState());
     }
 
+    addNote(title, content){
+
+        var tagsIDs = [parseInt(store.getState().activeFolderId)];
+
+        this.dispatch(add_note(title, content, tagsIDs));
+
+        this.setState(store.getState());
+    }
+
     editingFolder(value){
 
         this.dispatch(editing_folder(value));
@@ -109,7 +118,7 @@ class Main extends Component {
 
         if(folderId) folder = this.getFolderById(folderId)[0];
 
-        console.log('main render', folder, folderId);
+        console.log('main render !!!');
 
         this.dispatch(set_folder_active(folderId));
 
@@ -118,6 +127,7 @@ class Main extends Component {
                 <Menu page="main"
                     set_edit={self.setEditFolder.bind(this)}
                     addFolder={self.addFolder.bind(this)}
+                    addNote={self.addNote.bind(this)}
                     removeFolder={self.removeFolder.bind(this)}
                 />
 
