@@ -48,8 +48,8 @@ function remove_folder(id) {
     return { type: REMOVE_FOLDER };
 }
 
-function add_folder(title, level) {
-    return { type: ADD_FOLDER, title: title, level: level };
+function add_folder(title, level, index) {
+    return { type: ADD_FOLDER, title: title, level: level, index: index };
 }
 
 },{}],2:[function(require,module,exports){
@@ -637,15 +637,28 @@ var Main = (function (_Component) {
             this.setState(_storeJs2['default'].getState());
         }
     }, {
+        key: 'getFolderIndexById',
+        value: function getFolderIndexById(id) {
+
+            for (var i = 0, len = _dataJs.foldersData.length; i < len; i++) {
+                if (_dataJs.foldersData[i].id == id) {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+    }, {
         key: 'addFolder',
         value: function addFolder(title) {
 
             var activeFolder = this.getFolderById(_storeJs2['default'].getState().activeFolderId),
-                level = activeFolder[0].level + 1;
+                level = activeFolder[0].level + 1,
+                index = this.getFolderIndexById(_storeJs2['default'].getState().activeFolderId);
 
             console.log('main addFolder 2', activeFolder, activeFolder[0].level, activeFolder[0].level + 1);
 
-            this.dispatch((0, _actionsJs.add_folder)(title, level));
+            this.dispatch((0, _actionsJs.add_folder)(title, level, index));
 
             this.setState(_storeJs2['default'].getState());
         }
@@ -48839,7 +48852,8 @@ function reducer(state, action) {
             // activeFolderId
 
             return Object.assign({}, state, {
-                foldersData: state.foldersData.concat({
+                //foldersData: state.foldersData.concat({
+                foldersData: state.foldersData.splice(action.index, 0, {
                     key: 1 + (0, _lodashMathMaxJs2['default'])(state.foldersData, function (item) {
                         return item.key;
                     }),

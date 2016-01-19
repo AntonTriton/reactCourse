@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import map from 'lodash/collection/map.js';
 
+import map from 'lodash/collection/map.js';
 import filter from 'lodash/collection/filter.js';
 import max from 'lodash/math/max.js';
 

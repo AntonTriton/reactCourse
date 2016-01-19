@@ -16,7 +16,10 @@
     "react-router": "^1.0.2",
     "redux": "^3.0.4",
     "redux-devtools": "^2.1.5",
-    "watchify": "^3.4.0"
+    "watchify": "^3.4.0",
+    "body-parser": "1.13.3",
+    "chalk": "1.1.1",
+    "express": "4.13.3"
   },
   "scripts": {
     "start": "watchify main.js -v -t babelify -o bundle.js"

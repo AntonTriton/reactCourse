@@ -6,7 +6,7 @@ var express = require('express')
 
 router
   .get('/', function (req, res) {
-    res.send(store.notices)
+    res.send(store.notesData)
   })
   .post('/', function (req, res) {
     var notice = _.pick(req.body, [
@@ -19,14 +19,14 @@ router
       , directory = _.find(store.directories, function (dir) {
         return dir.id == notice.directoryId
       })
-      , position = _.filter(store.notices, function (not) {
+      , position = _.filter(store.notesData, function (not) {
         return not.directoryId == notice.directoryId
       }).length
 
     if (directory) {
       _.assign(notice, { id: idGenerator.getNext(), position: position })
 
-      store.notices.push(notice)
+      store.notesData.push(notice)
       res.send(notice)
     } else {
       res.status(500).send('no directory')
@@ -42,32 +42,32 @@ router
           'tags'
         ]
       )
-      , oldEntityIndex = _.findIndex(store.notices, function (not) {
+      , oldEntityIndex = _.findIndex(store.notesData, function (not) {
         return not.id == req.params.id
       })
 
     if (oldEntityIndex !== -1) {
-      store.notices.splice(oldEntityIndex, 1, notice)
+      store.notesData.splice(oldEntityIndex, 1, notice)
       res.send(notice)
     } else {
       res.status(500).send('no entity')
     }
   })
   .delete('/:id', function (req, res) {
-    var entityIndex = _.findIndex(store.notices, function (not) {
+    var entityIndex = _.findIndex(store.notesData, function (not) {
         return not.id == req.params.id
       })
-      , notice = store.notices[entityIndex]
+      , notice = store.notesData[entityIndex]
       , tmpPosition = 0
     
-    _.each(store.notices, function (not) {
+    _.each(store.notesData, function (not) {
       if (not.directoryId == notice.directoryId && not.id != notice.id) {
         not.position = tmpPosition++;
       }
     })
 
     if (entityIndex !== -1) {
-      store.notices.splice(entityIndex, 1)
+      store.notesData.splice(entityIndex, 1)
       res.send(notice)
     } else {
       res.status(500).send('no entity')
