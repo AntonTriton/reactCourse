@@ -48849,6 +48849,8 @@ var _componentsAppJs2 = _interopRequireDefault(_componentsAppJs);
 
 //import reducer from './reducers.js'
 
+console.log('!!!');
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 
@@ -48905,9 +48907,9 @@ var _lodashMathMaxJs = require('lodash/math/max.js');
 
 var _lodashMathMaxJs2 = _interopRequireDefault(_lodashMathMaxJs);
 
-var _actions = require('./actions');
+var _actions = require('../actions');
 
-var _componentsDataJs = require('./components/data.js');
+var _componentsDataJs = require('../components/data.js');
 
 var initialState = {
     activeFolderId: 0,
@@ -49084,7 +49086,7 @@ function reducer(state, action) {
 exports['default'] = reducer;
 module.exports = exports['default'];
 
-},{"./actions":686,"./components/data.js":689,"lodash/collection/filter.js":32,"lodash/collection/map.js":33,"lodash/math/max.js":101,"redux":677}],697:[function(require,module,exports){
+},{"../actions":686,"../components/data.js":689,"lodash/collection/filter.js":32,"lodash/collection/map.js":33,"lodash/math/max.js":101,"redux":677}],697:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -49095,14 +49097,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 var _redux = require('redux');
 
-var _reducersJs = require('./reducers.js');
+var _reducersReducersJs = require('./reducers/reducers.js');
 
-var _reducersJs2 = _interopRequireDefault(_reducersJs);
+var _reducersReducersJs2 = _interopRequireDefault(_reducersReducersJs);
 
-exports['default'] = (0, _redux.createStore)(_reducersJs2['default']);
+exports['default'] = (0, _redux.createStore)(_reducersReducersJs2['default']);
 module.exports = exports['default'];
 
-},{"./reducers.js":696,"redux":677}],698:[function(require,module,exports){
+},{"./reducers/reducers.js":696,"redux":677}],698:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };

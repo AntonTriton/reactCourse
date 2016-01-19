@@ -1,4 +1,4 @@
-/*var idGenerator = require('./id-generator')
+var idGenerator = require('./id-generator')
 
 var store = {
   directories: [{
@@ -6,12 +6,6 @@ var store = {
     name: 'root'
   }],
   notices: []
-}*/
+}
 
-import { createStore } from 'redux'
-
-import reducer from './public/reducers.js'
-
-export default createStore(reducer);
-
-
+module.exports = store

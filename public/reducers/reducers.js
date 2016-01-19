@@ -6,9 +6,9 @@ import max from 'lodash/math/max.js';
 
 import { SET_FOLDER_EDIT_MODE, RESET_FOLDER_EDIT_MODE, SET_FOLDER_ACTIVE, EDITING_FOLDER,SET_NOTE_ACTIVE,
     REMOVE_FOLDER, ADD_FOLDER, ADD_NOTE, SET_NOTE_EDIT_MODE, RESET_NOTE_EDIT_MODE,
-    EDITING_NOTE_TITLE, EDITING_NOTE_CONTENT, REMOVE_NOTE} from './actions'
+    EDITING_NOTE_TITLE, EDITING_NOTE_CONTENT, REMOVE_NOTE} from '../actions'
 
-import { notesData,foldersData,menuData } from './components/data.js'
+import { notesData,foldersData,menuData } from '../components/data.js'
 
 const initialState = {
     activeFolderId: 0,

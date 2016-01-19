@@ -10,6 +10,8 @@ import App from './components/app.js'
 
 //import reducer from './reducers.js'
 
+console.log('!!!');
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 

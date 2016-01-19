@@ -6,7 +6,7 @@ var express = require('express')
 
 router
   .get('/', function (req, res) {
-    res.send(store.foldersData)
+    res.send(store.directories)
   })
   .post('/', function (req, res) {
     var directory = _.pick(req.body, [
@@ -14,13 +14,13 @@ router
           'name'
         ]
       )
-      , parent = _.find(store.foldersData, function (dir) {
+      , parent = _.find(store.directories, function (dir) {
         return dir.id == directory.parentId
       })
 
     if (parent) {
       _.assign(directory, { id: idGenerator.getNext() })
-      store.foldersData.push(directory)
+      store.directories.push(directory)
 
       res.send(directory)
     } else {
@@ -34,12 +34,12 @@ router
           'name'
         ]
       )
-      , oldEntityIndex = _.findIndex(store.foldersData, function (dir) {
+      , oldEntityIndex = _.findIndex(store.directories, function (dir) {
         return dir.id == req.params.id
       })
 
     if (oldEntityIndex !== -1) {
-      store.foldersData.splice(oldEntityIndex, 1, directory)
+      store.directories.splice(oldEntityIndex, 1, directory)
       res.send(directory)
     } else {
       res.status(500).send('no entity')
@@ -53,13 +53,13 @@ router
       return
     }
 
-    var entityIndex = _.findIndex(store.foldersData, function (dir) {
+    var entityIndex = _.findIndex(store.directories, function (dir) {
         return dir.id == directoryId
       })
-      , directory = store.foldersData[entityIndex]
+      , directory = store.directories[entityIndex]
 
     if (entityIndex !== -1) {
-      store.foldersData.splice(entityIndex, 1)
+      store.directories.splice(entityIndex, 1)
       res.send(directory)
     } else {
       res.status(500).send('no entity')
