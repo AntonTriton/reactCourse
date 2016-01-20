@@ -4,8 +4,13 @@
   "main": "public/main.js",
   "dependencies": {
     "babelify": "^6.3.0",
+    "body-parser": "1.13.3",
+    "chalk": "1.1.1",
     "dom-scroll-into-view": "^1.0.1",
+    "es6-promise": "^3.0.2",
+    "express": "4.13.3",
     "history": "^1.13.1",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^3.10.1",
     "react": "^0.14.0-rc1",
     "react-bootstrap": "^0.28.1",
@@ -16,10 +21,9 @@
     "react-router": "^1.0.2",
     "redux": "^3.0.4",
     "redux-devtools": "^2.1.5",
-    "watchify": "^3.4.0",
-    "body-parser": "1.13.3",
-    "chalk": "1.1.1",
-    "express": "4.13.3"
+    "redux-logger": "^2.3.2",
+    "redux-thunk": "^1.0.3",
+    "watchify": "^3.4.0"
   },
   "scripts": {
     "start": "watchify public/main.js -v -t babelify -o public/bundle.js"

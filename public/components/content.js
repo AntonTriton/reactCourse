@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 
 import { Link } from 'react-router';
 
-import {notesData} from './data.js';
+//import {notesData} from './data.js';
 
 import {set_note_edit_mode ,reset_note_edit_mode,set_note_active, editing_note,
     remove_note, editing_note_title, editing_note_content} from '../actions.js';
@@ -26,7 +26,7 @@ class SingleNote extends Component {
     }
 
     findNote(id){
-        return filter(notesData,function(item){
+        return filter(store.getState().fetchingData.notes.items,function(item){
             return item.id == id
         });
     }

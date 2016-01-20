@@ -2,10 +2,10 @@
 
 import React, { Component } from 'react';
 
-import {foldersData} from './data.js';
+//import {foldersData} from './data.js';
 
 import {set_folder_edit_mode ,reset_folder_edit_mode, set_folder_active,editing_folder,
-    remove_folder, add_folder, add_note} from '../actions.js';
+    remove_folder, add_folder, add_note, fetchNotes, fetchFolders} from '../actions.js';
 
 import { connect } from 'react-redux'
 
@@ -37,7 +37,7 @@ class Main extends Component {
 
     getFolderById(id){
 
-        return filter(foldersData, function(item){
+        return filter(store.getState().fetchingData.folders.items, function(item){
             return item.id == id
         });
 
@@ -67,8 +67,8 @@ class Main extends Component {
 
     getFolderIndexById(id){
 
-        for(var i = 0 , len = foldersData.length; i < len; i++){
-            if(foldersData[i].id == id){
+        for(var i = 0 , len = store.getState().fetchingData.folders.items.length; i < len; i++){
+            if(store.getState().fetchingData.folders.items[i].id == id){
                 return i
             }
         }
@@ -110,15 +110,22 @@ class Main extends Component {
     }
 
     render() {
+        console.log('main render !!!');
+        
+        this.dispatch(fetchNotes('GET')).then(function(data){
+            console.log('--',store.getState());
+        });
+
+        this.dispatch(fetchFolders('GET')).then(function(data){
+            console.log('--',store.getState());
+        });
 
         var state = store.getState(),
             self = this,
-            folder = state.foldersData[0],
+            folder = state.fetchingData.folders.items[0],
             folderId = this.props.params.id || 0;
 
         if(folderId) folder = this.getFolderById(folderId)[0];
-
-        console.log('main render !!!');
 
         this.dispatch(set_folder_active(folderId));
 
@@ -134,7 +141,7 @@ class Main extends Component {
                 <section className="folders col-md-3">
                     <Folders
                         activeFolderId={folderId}
-                        foldersData={state.foldersData}
+                        foldersData={state.fetchingData.folders.items}
                         editFolderId={state.editFolderId}
                         reset_edit={self.resetEditFolder.bind(this)}
                         editingFolder={self.editingFolder.bind(this)}/>
@@ -142,7 +149,7 @@ class Main extends Component {
 
                 <section className="notes col-md-8">
                     <Notes
-                        notes={state.notesData}
+                        notes={state.fetchingData.notes.items}
                         folder={folder}
                         />
                 </section>
