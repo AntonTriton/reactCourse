@@ -120,12 +120,12 @@ class SingleNote extends Component {
                     <div className="single-note-row">
                         <label htmlFor="description">Description</label>
 
-                        <div className={textModeClass+" content-block"}>{note.content}</div>
+                        <div className={textModeClass+" content-block"}>{note.description}</div>
 
                         <textarea className={editModeClass+" form-control"}
                         onChange={self.editingNoteContent.bind(this)}
                         ref="noteContentInput"
-                        type="text" value={note.content}></textarea>
+                        type="text" value={note.description}></textarea>
                     </div>
 
                     <div className="single-note-row">

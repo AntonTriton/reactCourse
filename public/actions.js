@@ -3,6 +3,8 @@
  */
 import fetch from 'isomorphic-fetch'
 
+import assign from 'lodash/object/assign.js';
+
 export const SET_FOLDER_EDIT_MODE = 'SET_FOLDER_EDIT_MODE';
 export const RESET_FOLDER_EDIT_MODE = 'RESET_FOLDER_EDIT_MODE';
 export const SET_FOLDER_ACTIVE = 'SET_FOLDER_ACTIVE';
@@ -131,7 +133,7 @@ export function delete_folders_response(data) {
     return { type: DELETE_FOLDERS_RESPONSE, data: data, receivedAt: Date.now()}
 }
 
-export function fetchFolders(method, noteData) {
+export function fetchFolders(method, folderData) {
 
     console.log('actions fetchFolders0');
 
@@ -144,15 +146,23 @@ export function fetchFolders(method, noteData) {
         // First dispatch: the app state is updated to inform
         // that the API call is starting.
 
-        console.log('actions fetchFolders1');
-
-        var note = noteData || [];
+        var folder = [],
+            request_options = {method: method};
+        if(folderData) folder = JSON.stringify(folderData);
 
         switch (method){
             case 'GET' :
                 dispatch(get_folders_request());
                 break;
             case 'POST' :
+                request_options = assign(request_options, {
+                    body: folder,
+                    headers: {
+                        'Accept': 'application/json',
+                        "Content-type": "application/json"
+                    }
+                });
+
                 dispatch(create_folders_request());
                 break;
             case 'PUT' :
@@ -163,11 +173,9 @@ export function fetchFolders(method, noteData) {
                 break;
         }
 
+        console.log('actions fetchFolders1',folder);
 
-        return fetch('/notices',{
-            method: method,
-            body: note
-        })
+        return fetch('/directories', request_options)
             .then(function(response){
                 console.log('actions fetchFolders2');
                 return response.json()
@@ -234,11 +242,36 @@ export function fetchNotes(method, noteData) {
     return function(dispatch){
 
         // First dispatch: the app state is updated to inform
-        // that the API call is starting.
+        // that the API call is starting.//
 
         console.log('actions fetchNotes 1');
 
-        var note = noteData || [];
+        var note = [],
+            request_options = {method: method};
+        if(noteData) note = JSON.stringify(noteData);
+
+        switch (method){
+            case 'GET' :
+                dispatch(get_notes_request());
+                break;
+            case 'POST' :
+                request_options = assign(request_options, {
+                    body: note,
+                    headers: {
+                        'Accept': 'application/json',
+                        "Content-type": "application/json"
+                    }
+                });
+
+                dispatch(create_notes_request());
+                break;
+            case 'PUT' :
+                dispatch(update_notes_request());
+                break;
+            case 'DELETE' :
+                dispatch(delete_notes_request());
+                break;
+        }
 
         switch (method){
             case 'GET' :
@@ -257,8 +290,7 @@ export function fetchNotes(method, noteData) {
 
 
         return fetch('/notices',{
-            method: method,
-            body: note
+            method: method
         })
             .then(function(response){
                 console.log('actions fetchNotes 2');

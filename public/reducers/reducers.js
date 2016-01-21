@@ -94,7 +94,7 @@ function reducer(state = initialState, action) {
                 })
             });
 
-        case ADD_FOLDER:
+        /*case ADD_FOLDER:
             console.log(action.type);
 
             // activeFolderId
@@ -114,9 +114,9 @@ function reducer(state = initialState, action) {
 
             return Object.assign({}, state, {
                 foldersData: state.foldersData
-            });
+            });*/
 
-        case ADD_NOTE:
+        /*case ADD_NOTE:
 
             // activeFolderId
 
@@ -137,7 +137,7 @@ function reducer(state = initialState, action) {
 
             return Object.assign({}, state, {
                 notesData: state.notesData
-            });
+            });*/
 
 
 
@@ -226,6 +226,38 @@ function reducer(state = initialState, action) {
                         isFetching: false,
                         didInvalidate: false,
                         items: action.data
+                    }
+                }
+
+            });
+
+        case CREATE_FOLDERS_REQUEST:
+            console.log(action.type);
+
+            return Object.assign({}, state, {
+                fetchingData:{
+                    notes: state.fetchingData.notes,
+                    folders: {
+                        isFetching: true,
+                        didInvalidate: false,
+                        items: state.fetchingData.folders.items
+                    }
+                }
+            });
+
+        case CREATE_FOLDERS_RESPONSE:
+            console.log(action.type,action.data,action.index,action.index+1);
+
+            state.fetchingData.folders.items.splice(action.data.index+1,0,action.data);
+
+            return Object.assign({}, state, {
+
+                fetchingData:{
+                    notes: state.fetchingData.notes,
+                    folders: {
+                        isFetching: false,
+                        didInvalidate: false,
+                        items: state.fetchingData.folders.items
                     }
                 }
 

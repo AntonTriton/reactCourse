@@ -2,8 +2,6 @@
 
 import React, { Component } from 'react';
 
-//import {foldersData} from './data.js';
-
 import {set_folder_edit_mode ,reset_folder_edit_mode, set_folder_active,editing_folder,
     remove_folder, add_folder, add_note, fetchNotes, fetchFolders} from '../actions.js';
 
@@ -19,9 +17,6 @@ import Notes from './notes.js';
 
 import store from '../store.js'
 
-/*var Menu = require('./menu.js'),
-    Folders = require('./folders.js'),
-    Notes = require('./notes.js');*/
 
 class Main extends Component {
 
@@ -29,6 +24,21 @@ class Main extends Component {
         super(props);
 
         this.dispatch = this.props.dispatch;
+
+        var self = this;
+
+        this.dispatch(fetchNotes('GET')).then(function(data){
+            console.log('---fetchNotes---',store.getState());
+
+            self.setState(store.getState());
+        });
+
+        this.dispatch(fetchFolders('GET')).then(function(data){
+            console.log('---fetchFolders---',store.getState());
+
+            self.setState(store.getState());
+
+        });
 
         this.state = {
             showModal : false
@@ -76,26 +86,43 @@ class Main extends Component {
         return -1;
     }
 
-    addFolder(title){
+    addFolder(name){
 
         var activeFolder= this.getFolderById(store.getState().activeFolderId),
             level = activeFolder[0].level + 1,
-            index = this.getFolderIndexById(store.getState().activeFolderId);
+            index = this.getFolderIndexById(store.getState().activeFolderId),
+            self = this;
 
-        console.log('main addFolder 2', activeFolder, activeFolder[0].level, activeFolder[0].level+1);
+        console.log('main addFolder 22', activeFolder, activeFolder[0].level, activeFolder[0].level+1);
 
-        this.dispatch(add_folder(title, level, index));
+        this.dispatch(fetchFolders('POST',{name : name, level: level, parentId: activeFolder[0].id ,index: index})).then(function(data){
+            console.log('---fetchFolders POST---',store.getState());
 
-        this.setState(store.getState());
+            self.setState(store.getState());
+
+        });
+
+        //this.dispatch(add_folder(title, level, index));
+
+        //this.setState(store.getState());
     }
 
     addNote(title, content){
 
-        var tagsIDs = [parseInt(store.getState().activeFolderId)];
+        var directoryId = parseInt(store.getState().activeFolderId),
+            tagsIDs = [directoryId],
+            self = this;
 
-        this.dispatch(add_note(title, content, tagsIDs));
+        this.dispatch(fetchNotes('POST',{title : title, description: content, directoryId: directoryId , tags: tagsIDs})).then(function(data){
+            console.log('---fetchFolders POST---',store.getState());
 
-        this.setState(store.getState());
+            self.setState(store.getState());
+
+        });
+
+        //this.dispatch(add_note(title, content, tagsIDs));
+
+        //this.setState(store.getState());
     }
 
     editingFolder(value){
@@ -110,51 +137,52 @@ class Main extends Component {
     }
 
     render() {
-        console.log('main render !!!');
-        
-        this.dispatch(fetchNotes('GET')).then(function(data){
-            console.log('--',store.getState());
-        });
-
-        this.dispatch(fetchFolders('GET')).then(function(data){
-            console.log('--',store.getState());
-        });
+        console.log('main render 1 !!!');
 
         var state = store.getState(),
-            self = this,
-            folder = state.fetchingData.folders.items[0],
-            folderId = this.props.params.id || 0;
+            self = this;
 
-        if(folderId) folder = this.getFolderById(folderId)[0];
+        if(!state.fetchingData.notes.isFetching && !state.fetchingData.folders.isFetching) {
 
-        this.dispatch(set_folder_active(folderId));
+            console.log('main render 2 !!!',state);//
 
-        return (
-            <div>
-                <Menu page="main"
-                    set_edit={self.setEditFolder.bind(this)}
-                    addFolder={self.addFolder.bind(this)}
-                    addNote={self.addNote.bind(this)}
-                    removeFolder={self.removeFolder.bind(this)}
-                />
+            var folders = store.getState().fetchingData.folders.items,
+                folder = folders[0],
+                folderId = self.props.params.id || 0;
 
-                <section className="folders col-md-3">
-                    <Folders
-                        activeFolderId={folderId}
-                        foldersData={state.fetchingData.folders.items}
-                        editFolderId={state.editFolderId}
-                        reset_edit={self.resetEditFolder.bind(this)}
-                        editingFolder={self.editingFolder.bind(this)}/>
-                </section>
+            if(folderId) folder = self.getFolderById(folderId)[0];
 
-                <section className="notes col-md-8">
-                    <Notes
-                        notes={state.fetchingData.notes.items}
-                        folder={folder}
+            self.dispatch(set_folder_active(folderId));
+
+            return (
+                <div>
+                    <Menu page="main"
+                          set_edit={self.setEditFolder.bind(this)}
+                          addFolder={self.addFolder.bind(this)}
+                          addNote={self.addNote.bind(this)}
+                          removeFolder={self.removeFolder.bind(this)}
                         />
-                </section>
-            </div>
-        );
+
+                    <section className="folders col-md-3">
+                        <Folders
+                            activeFolderId={folderId}
+                            foldersData={folders}
+                            editFolderId={state.editFolderId}
+                            reset_edit={self.resetEditFolder.bind(this)}
+                            editingFolder={self.editingFolder.bind(this)}/>
+                    </section>
+
+                    <section className="notes col-md-8">
+                        <Notes
+                            notes={state.fetchingData.notes.items}
+                            folder={folder}
+                            />
+                    </section>
+                </div>
+            );
+        }else{
+            return null
+        }
     }
 
 };

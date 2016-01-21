@@ -2,16 +2,21 @@ var express = require('express')
   , _ = require('lodash')
   , router = express.Router()
   , store = require('./../store/store')
-  , idGenerator = require('./../store/id-generator')
+  , idGenerator = require('./../store/id-generator');
+
+idGenerator.set(8);
 
 router
   .get('/', function (req, res) {
     res.send(store.directories)
   })
   .post('/', function (req, res) {
+      console.log('post2',req.body);
     var directory = _.pick(req.body, [
           'parentId',
-          'name'
+          'name',
+          'index',
+          'level'
         ]
       )
       , parent = _.find(store.directories, function (dir) {
@@ -19,8 +24,11 @@ router
       })
 
     if (parent) {
-      _.assign(directory, { id: idGenerator.getNext() })
-      store.directories.push(directory)
+      var id = idGenerator.getNext();
+      _.assign(directory, { id: id , key: id });
+
+      store.directories.splice(directory.index+1,0,directory);
+      //store.directories.push(directory)
 
       res.send(directory)
     } else {

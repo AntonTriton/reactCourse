@@ -38,7 +38,7 @@ class FolderItem extends Component {
 
     render() {
 
-        console.log('folder item render',this.props.title);
+        console.log('folder item render',this.props.name);
 
         var cl,
             self = this,
@@ -46,7 +46,7 @@ class FolderItem extends Component {
             textModeClass = 'visible',
             editModeClass = 'hidden',
             reset_edit= this.props.reset_edit,
-            title = this.props.title;
+            name = this.props.name;
 
         this.props.status == 'closed' ? cl = 'fa-folder' : cl = "fa-folder-open";
 
@@ -61,13 +61,13 @@ class FolderItem extends Component {
             <Link to={"/folder/"+self.state.id}>
                 <i className={"fa " + cl}></i>
                 <span className="note-title">
-                    <span className={textModeClass+" note-title"}>{title}</span>
+                    <span className={textModeClass+" note-title"}>{name}</span>
 
                     <input className={editModeClass}
                            onBlur={reset_edit}
                            onChange={self.editing.bind(this)}
                            ref="folderInput"
-                           type="text" value={title}/>
+                           type="text" value={name}/>
                 </span>
             </Link>
         </li>
@@ -105,14 +105,14 @@ class folders extends Component {
             if(item.id == activeFolderId) isActive = true;
             if(item.id == editFolderId) isEdit = true;
 
-            //console.log('folders',item.id,activeFolderId,editFolderId);
+            console.log('folders iterator',item.id, item.name);
 
             return <FolderItem key={item.key}
                                isActive={isActive}
                                isEdit={isEdit}
                                level={item.level}
                                id={item.id}
-                               title={item.title}
+                               name={item.name}
                                reset_edit={reset_edit}
                                editingFolder={editingFolder}
                                status={item.status} />

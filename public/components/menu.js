@@ -97,12 +97,12 @@ class MenuItem extends Component {
                 console.log('menu edit click');
                 break;
             case "remove":
-                console.log('remove 1',this.props.removeNote);
+                console.log('remove 1');
 
                 if(this.props.page == 'main') {
                     this.props.removeFolder();
                 }else if(this.props.page == 'note'){
-                    this.props.removeNote();
+                    //this.props.removeNote();
                 }
 
                 break;
@@ -263,7 +263,7 @@ class Menu extends Component {
 
     render() {
 
-        console.log('menu!!!',this.props.back);
+        console.log('menu render !!!',this.props);
 
         var self = this,
             menu = self.state.menu,
