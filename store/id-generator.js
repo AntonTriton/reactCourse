@@ -1,10 +1,17 @@
-var id = 0;
+var idD = 0,
+    idN = 0;
 
 module.exports = {
-  set: function(val){
-    id = val;
+  setDir: function(val){
+    idD = val;
   },
-  getNext: function () {
-    return ++id;
+  setNote: function(val){
+    idN = val;
+  },
+  getNextDir: function () {
+    return ++idD;
+  },
+  getNextNote: function () {
+    return ++idN;
   }
 };

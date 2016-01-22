@@ -2,13 +2,16 @@ var express = require('express')
   , _ = require('lodash')
   , router = express.Router()
   , store = require('./../store/store')
-  , idGenerator = require('./../store/id-generator')
+  , idGenerator = require('./../store/id-generator');
+
+idGenerator.setNote(4);
 
 router
   .get('/', function (req, res) {
     res.send(store.notices)
   })
   .post('/', function (req, res) {
+
     var notice = _.pick(req.body, [
           'directoryId',
           'title',
@@ -24,7 +27,9 @@ router
       }).length
 
     if (directory) {
-      _.assign(notice, { id: idGenerator.getNext(), position: position })
+      var id = idGenerator.getNextNote();
+
+      _.assign(notice, { id: id, key: id, position: position })
 
       store.notices.push(notice)
       res.send(notice)
@@ -33,27 +38,40 @@ router
     }
   })
   .put('/:id', function (req, res) {
-    var notice = _.pick(req.body, [
-          'id',
-          'directoryId',
-          'position',
-          'title',
-          'description',
-          'tags'
-        ]
-      )
-      , oldEntityIndex = _.findIndex(store.notices, function (not) {
-        return not.id == req.params.id
-      })
 
-    if (oldEntityIndex !== -1) {
-      store.notices.splice(oldEntityIndex, 1, notice)
-      res.send(notice)
-    } else {
-      res.status(500).send('no entity')
-    }
+      console.log('put',req.params.id);
+
+      if (req.params.id != 'all') {
+
+        var notice = _.pick(req.body, [
+                  'id',
+                  'directoryId',
+                  'position',
+                  'title',
+                  'description',
+                  'tags'
+                ]
+            )
+            , oldEntityIndex = _.findIndex(store.notices, function (not) {
+              return not.id == req.params.id
+            })
+
+        if (oldEntityIndex !== -1) {
+          store.notices.splice(oldEntityIndex, 1, notice)
+          res.send(notice)
+        } else {
+          res.status(500).send('no entity')
+        }
+    }else{
+        console.log('put array');
+          store.notices = req.body;
+          res.send(store.notices)
+      }
   })
   .delete('/:id', function (req, res) {
+
+      console.log('delete');
+
     var entityIndex = _.findIndex(store.notices, function (not) {
         return not.id == req.params.id
       })

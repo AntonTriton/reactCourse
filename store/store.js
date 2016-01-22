@@ -86,6 +86,7 @@ var store = {
       description: "Future is now",
       tags: ["Root"],
       directoryId: 0,
+      position:0,
       tagsIDs: [0]
     },
     {
@@ -95,6 +96,7 @@ var store = {
       description: "Future is now and tomorrow",
       tags: ["Root","Private","Activities"],
       directoryId: 1,
+      position:0,
       tagsIDs: [0,1,2]
     },
     {
@@ -104,6 +106,7 @@ var store = {
       description: "ToDo ToToDo",
       tags: ["Root","Private"],
       directoryId: 2,
+      position:0,
       tagsIDs: [0,1]
     },
     {
@@ -113,7 +116,18 @@ var store = {
       description: "Friend",
       tags: ["Root","Private","Friends"],
       directoryId: 4,
+      position:0,
       tagsIDs: [0,1,4]
+    },
+    {
+      id: 4,
+      key: 4,
+      title : "Past",
+      description: "Past",
+      tags: ["Root","Private","Friends"],
+      directoryId: 0,
+      position:1,
+      tagsIDs: [0]
     }]
 };
 

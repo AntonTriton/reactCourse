@@ -4,7 +4,7 @@ var express = require('express')
   , store = require('./../store/store')
   , idGenerator = require('./../store/id-generator');
 
-idGenerator.set(8);
+idGenerator.setDir(8);
 
 router
   .get('/', function (req, res) {
@@ -24,7 +24,7 @@ router
       })
 
     if (parent) {
-      var id = idGenerator.getNext();
+      var id = idGenerator.getNextDir();
       _.assign(directory, { id: id , key: id });
 
       store.directories.splice(directory.index+1,0,directory);
@@ -36,17 +36,23 @@ router
     }
   })
   .put('/:id', function (req, res) {
+
     var directory = _.pick(req.body, [
           'id',
           'parentId',
-          'name'
+          'name',
+          'index',
+          'level'
         ]
       )
       , oldEntityIndex = _.findIndex(store.directories, function (dir) {
         return dir.id == req.params.id
       })
 
+      console.log('put folder+++',req.params.id, oldEntityIndex);
+
     if (oldEntityIndex !== -1) {
+      console.log('put folder---',oldEntityIndex, directory);
       store.directories.splice(oldEntityIndex, 1, directory)
       res.send(directory)
     } else {
@@ -54,7 +60,8 @@ router
     }
   })
   .delete('/:id', function (req, res) {
-    var directoryId = req.params.id
+
+    var directoryId = req.params.id;
 
     if (directoryId == 1) {
       res.send(500).send('can not remove root directory')
@@ -64,10 +71,19 @@ router
     var entityIndex = _.findIndex(store.directories, function (dir) {
         return dir.id == directoryId
       })
-      , directory = store.directories[entityIndex]
+      , directory = store.directories[entityIndex];
+
+      console.log('delete folder 1',directory);
 
     if (entityIndex !== -1) {
-      store.directories.splice(entityIndex, 1)
+      store.directories.splice(entityIndex, 1);
+
+      _.remove(store.directories,function(item){
+
+          return item.parentId == directory.id
+
+        });
+
       res.send(directory)
     } else {
       res.status(500).send('no entity')

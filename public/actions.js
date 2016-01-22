@@ -49,6 +49,7 @@ export const CREATE_NOTES_FAILURE = 'CREATE_NOTES_FAILURE';
 export const UPDATE_NOTES_REQUEST = 'UPDATE_NOTES_REQUEST';
 export const UPDATE_NOTES_RESPONSE = 'UPDATE_NOTES_RESPONSE';
 export const UPDATE_NOTES_FAILURE = 'UPDATE_NOTES_FAILURE';
+export const UPDATE_SINGLENOTE_RESPONSE = 'UPDATE_SINGLENOTE_RESPONSE';
 
 export const DELETE_NOTES_REQUEST = 'DELETE_NOTES_REQUEST';
 export const DELETE_NOTES_RESPONSE = 'DELETE_NOTES_RESPONSE';
@@ -147,6 +148,7 @@ export function fetchFolders(method, folderData) {
         // that the API call is starting.
 
         var folder = [],
+            params="",
             request_options = {method: method};
         if(folderData) folder = JSON.stringify(folderData);
 
@@ -166,16 +168,30 @@ export function fetchFolders(method, folderData) {
                 dispatch(create_folders_request());
                 break;
             case 'PUT' :
+                console.log('actions fetchFolders PUT');
+
+                params = "/"+folderData.id;
+
+                request_options = assign(request_options, {
+                    body: folder,
+                    headers: {
+                        'Accept': 'application/json',
+                        "Content-type": "application/json"
+                    }
+                });
+
                 dispatch(update_folders_request());
                 break;
             case 'DELETE' :
+                params = "/"+folderData.id;
+
                 dispatch(delete_folders_request());
                 break;
         }
 
         console.log('actions fetchFolders1',folder);
 
-        return fetch('/directories', request_options)
+        return fetch('/directories'+params, request_options)
             .then(function(response){
                 console.log('actions fetchFolders2');
                 return response.json()
@@ -224,6 +240,9 @@ export function update_notes_request() {
 export function update_notes_response(data) {
     return { type: UPDATE_NOTES_RESPONSE, data: data, receivedAt: Date.now()}
 }
+export function update_singlenote_response(data) {
+    return { type: UPDATE_SINGLENOTE_RESPONSE, data: data, receivedAt: Date.now()}
+}
 export function delete_notes_request() {
     return { type: DELETE_NOTES_REQUEST}
 }
@@ -244,10 +263,11 @@ export function fetchNotes(method, noteData) {
         // First dispatch: the app state is updated to inform
         // that the API call is starting.//
 
-        console.log('actions fetchNotes 1');
+        console.log('actions fetchNotes 111',Array.isArray(noteData));
 
         var note = [],
-            request_options = {method: method};
+            request_options = {method: method},
+            params="";
         if(noteData) note = JSON.stringify(noteData);
 
         switch (method){
@@ -255,6 +275,8 @@ export function fetchNotes(method, noteData) {
                 dispatch(get_notes_request());
                 break;
             case 'POST' :
+                console.log('actions fetchNotes 2',note);
+
                 request_options = assign(request_options, {
                     body: note,
                     headers: {
@@ -262,38 +284,48 @@ export function fetchNotes(method, noteData) {
                         "Content-type": "application/json"
                     }
                 });
-
                 dispatch(create_notes_request());
                 break;
             case 'PUT' :
-                dispatch(update_notes_request());
+                console.log('actions fetchNotes PUT11',note,Array.isArray(noteData));
+
+                if(Array.isArray(noteData)) {
+                    params = "/all";
+
+                    request_options = assign(request_options, {
+                        body: note,
+                        headers: {
+                            'Accept': 'application/json',
+                            "Content-type": "application/json"
+                        }
+                    });
+                    dispatch(update_notes_request());
+                }else{
+
+                    params = "/"+noteData.id;
+
+                    request_options = assign(request_options, {
+                        body: note,
+                        headers: {
+                            'Accept': 'application/json',
+                            "Content-type": "application/json"
+                        }
+                    });
+
+                    dispatch(update_notes_request());
+
+                }
                 break;
             case 'DELETE' :
+                params = "/"+noteData.id;
+
                 dispatch(delete_notes_request());
                 break;
         }
 
-        switch (method){
-            case 'GET' :
-                dispatch(get_notes_request());
-                break;
-            case 'POST' :
-                dispatch(create_notes_request());
-                break;
-            case 'PUT' :
-                dispatch(update_notes_request());
-                break;
-            case 'DELETE' :
-                dispatch(delete_notes_request());
-                break;
-        }
-
-
-        return fetch('/notices',{
-            method: method
-        })
+        return fetch('/notices'+params,request_options)
             .then(function(response){
-                console.log('actions fetchNotes 2');
+                console.log('actions fetchNotes 22',response);
                 return response.json()
             })
             .then(function(data) {
@@ -310,7 +342,11 @@ export function fetchNotes(method, noteData) {
                         dispatch(create_notes_response(data));
                         break;
                     case 'PUT' :
-                        dispatch(update_notes_response(data));
+                        if(params == '/all') {
+                            dispatch(update_notes_response(data));
+                        }else{
+                            dispatch(update_singlenote_response(data));
+                        }
                         break;
                     case 'DELETE' :
                         dispatch(delete_notes_response(data));

@@ -47,7 +47,10 @@ class Main extends Component {
 
     getFolderById(id){
 
+        console.log('getFolderById',store.getState().fetchingData.folders.items);
+
         return filter(store.getState().fetchingData.folders.items, function(item){
+
             return item.id == id
         });
 
@@ -65,14 +68,33 @@ class Main extends Component {
 
         this.dispatch(reset_folder_edit_mode());
 
+        var self = this;
+
+        this.dispatch(fetchFolders('PUT', self.folder)).then(function(data){
+            console.log('---fetchFolders PUT---',store.getState());
+
+            self.setState(store.getState());
+
+        });
+
         this.setState(store.getState());
 
     }
 
     removeFolder(){
-        this.dispatch(remove_folder());
+        //this.dispatch(remove_folder());
 
-        this.setState(store.getState());
+        var self = this;
+
+        this.dispatch(fetchFolders('DELETE', self.folder)).then(function(data){
+            console.log('---fetchFolders DELETE---',store.getState());
+
+            self.forcedFolderId = true;
+
+            self.setState(store.getState());
+
+        });
+
     }
 
     getFolderIndexById(id){
@@ -114,7 +136,7 @@ class Main extends Component {
             self = this;
 
         this.dispatch(fetchNotes('POST',{title : title, description: content, directoryId: directoryId , tags: tagsIDs})).then(function(data){
-            console.log('---fetchFolders POST---',store.getState());
+            console.log('---fetchNotes POST---',store.getState());
 
             self.setState(store.getState());
 
@@ -136,23 +158,42 @@ class Main extends Component {
 
     }
 
+    updatePosition(notes){
+        var directoryId = parseInt(store.getState().activeFolderId),
+            tagsIDs = [directoryId],
+            self = this;
+
+        this.dispatch(fetchNotes('PUT', notes)).then(function(data){
+            console.log('---fetchNotes POST---',store.getState());
+
+            self.setState(store.getState());
+
+        });
+    }
+
     render() {
-        console.log('main render 1 !!!');
+        console.log('main render 1 !!!',this.forcedFolderId);
 
         var state = store.getState(),
             self = this;
 
         if(!state.fetchingData.notes.isFetching && !state.fetchingData.folders.isFetching) {
 
-            console.log('main render 2 !!!',state);//
+            var folders = store.getState().fetchingData.folders.items, folderId, folder;
 
-            var folders = store.getState().fetchingData.folders.items,
-                folder = folders[0],
                 folderId = self.props.params.id || 0;
+                if( !self.getFolderById(folderId)[0] ){
+                    folderId = 0;
+                    self.forcedFolderId = false;
+                }
+                folder = self.folder = self.getFolderById(folderId)[0];
 
-            if(folderId) folder = self.getFolderById(folderId)[0];
+            //if(folderId)
+
 
             self.dispatch(set_folder_active(folderId));
+
+            console.log('main render 2 !!',folderId, folder);//
 
             return (
                 <div>
@@ -175,6 +216,7 @@ class Main extends Component {
                     <section className="notes col-md-8">
                         <Notes
                             notes={state.fetchingData.notes.items}
+                            updatePosition={self.updatePosition.bind(this)}
                             folder={folder}
                             />
                     </section>

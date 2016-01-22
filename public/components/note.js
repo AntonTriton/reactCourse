@@ -90,11 +90,13 @@ class Card extends Component {
     render() {
         var self = this;
 
-        const { title, isDragging, connectDragSource, connectDropTarget } = this.props;
+        const { title, isDragging, connectDragSource, connectDropTarget, id } = this.props;
+
+        console.log('note render',id);
 
         return connectDragSource(connectDropTarget(
             <li>
-                <Link to={"/note/"+self.state.id}>
+                <Link to={"/note/"+id}>
                     <i className="fa fa-file-text-o"></i>
                 </Link>
 

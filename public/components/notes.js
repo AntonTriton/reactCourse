@@ -22,6 +22,8 @@ import filter from 'lodash/collection/filter.js';
 
 import indexOf from 'lodash/array/indexOf.js';
 
+import forEach from 'lodash/collection/forEach.js';
+
 class SearchNotes extends Component{
 
     render(){
@@ -76,6 +78,8 @@ class Notes extends Component {
         console.log('moveCard',this.state);
 
         this.setState(update(this.state, {
+        //this.setState(update(this.props, {
+            //notes: {
             cards: {
                 $splice: [
                     [index, 1],
@@ -83,6 +87,16 @@ class Notes extends Component {
                 ]
             }
         }));
+
+        var counter = 0;
+        forEach(this.state.cards,function(item){
+            item.position = counter;
+            counter++;
+        });
+
+        //console.log('moveCard---',this.state.cards);
+
+        this.props.updatePosition(this.state.cards);
 
     }
 
@@ -108,12 +122,14 @@ class Notes extends Component {
 
     getCardsByFolderId(id){
 
-        const cards = this.props.notes;
+        //const cards = this.props.notes;
+        const cards = this.state.cards;
 
         console.log('getCardsByFolderId',cards);
 
         return filter(cards,function(item){
-            return indexOf(item.tagsIDs, id) != -1;
+            //return indexOf(item.tagsIDs, id) != -1;
+            return item.directoryId == id ;
         });
     }
 
@@ -124,11 +140,12 @@ class Notes extends Component {
 
         var self = this;
 
+        console.log('notes render',this.props.notes);
+
         var filteredCards = this.getCardsByFolderId(this.props.folder.id);
 
-        console.log('notes render',this.props.folder,filteredCards);
-
         var items = filteredCards.map(function(item) {
+
             return <Card
                 key={item.key}
                 id={item.id}
