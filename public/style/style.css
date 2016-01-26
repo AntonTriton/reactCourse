@@ -89,6 +89,10 @@ nav .fa {
   clear: left;
   margin-bottom: 10px;
 }
+.single-note .single-note-row input,
+.single-note .single-note-row textarea {
+  width: 645px;
+}
 .single-note label {
   float: left;
   width: 150px;

@@ -16,13 +16,13 @@ import flow from 'lodash/function/flow';
 
 import Card from './note.js';
 
-//import {notesData} from './data.js';
-
 import filter from 'lodash/collection/filter.js';
 
 import indexOf from 'lodash/array/indexOf.js';
 
 import forEach from 'lodash/collection/forEach.js';
+
+
 
 class SearchNotes extends Component{
 
@@ -75,11 +75,7 @@ class Notes extends Component {
     moveCard(id, atIndex) {
         const { card, index } = this.findCard(id);
 
-        console.log('moveCard',this.state);
-
         this.setState(update(this.state, {
-        //this.setState(update(this.props, {
-            //notes: {
             cards: {
                 $splice: [
                     [index, 1],
@@ -94,8 +90,6 @@ class Notes extends Component {
             counter++;
         });
 
-        //console.log('moveCard---',this.state.cards);
-
         this.props.updatePosition(this.state.cards);
 
     }
@@ -104,43 +98,27 @@ class Notes extends Component {
         const { cards } = this.state;
         const card = cards.filter(c => c.id === id)[0];
 
-        console.log('findCard',this.state);
-
         return {
             card,
             index: cards.indexOf(card)
         };
     }
 
-    /*getCardsByTag(tag){
-        const { cards } = this.state;
-
-        return filter(cards,function(item){
-            return indexOf(item.tags, tag) != -1;
-        });
-    }*/
 
     getCardsByFolderId(id){
 
-        //const cards = this.props.notes;
         const cards = this.state.cards;
 
-        console.log('getCardsByFolderId',cards);
-
         return filter(cards,function(item){
-            //return indexOf(item.tagsIDs, id) != -1;
             return item.directoryId == id ;
         });
     }
 
     render() {
 
-
         const { connectDropTarget } = this.props;
 
         var self = this;
-
-        console.log('notes render',this.props.notes);
 
         var filteredCards = this.getCardsByFolderId(this.props.folder.id);
 

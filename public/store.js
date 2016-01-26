@@ -3,7 +3,7 @@ import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 
-import reducer from './reducers/reducers.js'
+import reducer from './reducers/index.js'
 
 const loggerMiddleware = createLogger();
 
@@ -13,5 +13,3 @@ const createStoreWithMiddleware = applyMiddleware(
 )(createStore)
 
 export default createStoreWithMiddleware(reducer)
-
-//export default createStore(reducer);

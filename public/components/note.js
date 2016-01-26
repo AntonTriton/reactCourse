@@ -92,8 +92,6 @@ class Card extends Component {
 
         const { title, isDragging, connectDragSource, connectDropTarget, id } = this.props;
 
-        console.log('note render',id);
-
         return connectDragSource(connectDropTarget(
             <li>
                 <Link to={"/note/"+id}>

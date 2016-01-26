@@ -61,22 +61,16 @@ class MenuItem extends Component {
 
     addCommon(){
 
-        console.log('addCommon');
-
         if(this.state.folderChecked){
-
-            console.log('addFolder',this.newFolderTitle);
 
             this.props.addFolder(this.newFolderTitle);
 
         }else if(this.state.noteChecked){
-            console.log('addNote',this.newFolderTitle);
 
             this.props.addNote(this.newNoteTitle, this.newNoteContent);
         }
 
         this.close();
-        //console.log('add',this.state);
     }
 
     remove(){
@@ -94,10 +88,8 @@ class MenuItem extends Component {
                 break;
             case "edit":
                 this.props.set_edit();
-                console.log('menu edit click');
                 break;
             case "remove":
-                console.log('remove 11');
 
                 if(this.props.page == 'main') {
                     this.props.removeFolder();
@@ -107,7 +99,6 @@ class MenuItem extends Component {
 
                 break;
             case "back":
-                console.log('back',this.props.back);
                 this.props.back();
                 break;
         }
@@ -168,8 +159,6 @@ class MenuItem extends Component {
     render() {
 
         var self = this;
-
-        //console.log('menu item',this.props);
 
         return (
         <li>
@@ -262,8 +251,6 @@ class Menu extends Component {
     }
 
     render() {
-
-        console.log('menu render !!!',this.props);
 
         var self = this,
             menu = self.state.menu,

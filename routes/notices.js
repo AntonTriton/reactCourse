@@ -32,14 +32,16 @@ router
       _.assign(notice, { id: id, key: id, position: position })
 
       store.notices.push(notice)
+
       res.send(notice)
+
     } else {
+
       res.status(500).send('no directory')
+
     }
   })
   .put('/:id', function (req, res) {
-
-      console.log('put',req.params.id);
 
       if (req.params.id != 'all') {
 
@@ -63,14 +65,12 @@ router
           res.status(500).send('no entity')
         }
     }else{
-        console.log('put array');
           store.notices = req.body;
           res.send(store.notices)
       }
   })
   .delete('/:id', function (req, res) {
 
-      console.log('delete');
 
     var entityIndex = _.findIndex(store.notices, function (not) {
         return not.id == req.params.id

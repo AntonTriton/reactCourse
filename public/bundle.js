@@ -47826,7 +47826,6 @@ exports.update_folders_request = update_folders_request;
 exports.update_folders_response = update_folders_response;
 exports.delete_folders_request = delete_folders_request;
 exports.delete_folders_response = delete_folders_response;
-exports.fetchFolders = fetchFolders;
 exports.get_notes_request = get_notes_request;
 exports.get_notes_response = get_notes_response;
 exports.create_notes_request = create_notes_request;
@@ -47836,7 +47835,6 @@ exports.update_notes_response = update_notes_response;
 exports.update_singlenote_response = update_singlenote_response;
 exports.delete_notes_request = delete_notes_request;
 exports.delete_notes_response = delete_notes_response;
-exports.fetchNotes = fetchNotes;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -47848,6 +47846,7 @@ var _lodashObjectAssignJs = require('lodash/object/assign.js');
 
 var _lodashObjectAssignJs2 = _interopRequireDefault(_lodashObjectAssignJs);
 
+/* Folders actions */
 var SET_FOLDER_EDIT_MODE = 'SET_FOLDER_EDIT_MODE';
 exports.SET_FOLDER_EDIT_MODE = SET_FOLDER_EDIT_MODE;
 var RESET_FOLDER_EDIT_MODE = 'RESET_FOLDER_EDIT_MODE';
@@ -47855,14 +47854,9 @@ exports.RESET_FOLDER_EDIT_MODE = RESET_FOLDER_EDIT_MODE;
 var SET_FOLDER_ACTIVE = 'SET_FOLDER_ACTIVE';
 exports.SET_FOLDER_ACTIVE = SET_FOLDER_ACTIVE;
 var EDITING_FOLDER = 'EDITING_FOLDER';
-exports.EDITING_FOLDER = EDITING_FOLDER;
-var REMOVE_FOLDER = 'REMOVE_FOLDER';
-exports.REMOVE_FOLDER = REMOVE_FOLDER;
-var ADD_FOLDER = 'ADD_FOLDER';
-exports.ADD_FOLDER = ADD_FOLDER;
-var ADD_NOTE = 'ADD_NOTE';
 
-exports.ADD_NOTE = ADD_NOTE;
+exports.EDITING_FOLDER = EDITING_FOLDER;
+/* Notes actions */
 var SET_NOTE_EDIT_MODE = 'SET_NOTE_EDIT_MODE';
 exports.SET_NOTE_EDIT_MODE = SET_NOTE_EDIT_MODE;
 var RESET_NOTE_EDIT_MODE = 'RESET_NOTE_EDIT_MODE';
@@ -47872,68 +47866,53 @@ exports.SET_NOTE_ACTIVE = SET_NOTE_ACTIVE;
 var EDITING_NOTE_TITLE = 'EDITING_NOTE_TITLE';
 exports.EDITING_NOTE_TITLE = EDITING_NOTE_TITLE;
 var EDITING_NOTE_CONTENT = 'EDITING_NOTE_CONTENT';
-exports.EDITING_NOTE_CONTENT = EDITING_NOTE_CONTENT;
-var REMOVE_NOTE = 'REMOVE_NOTE';
 
-exports.REMOVE_NOTE = REMOVE_NOTE;
+exports.EDITING_NOTE_CONTENT = EDITING_NOTE_CONTENT;
+/* fetching folders actions */
 var GET_FOLDERS_REQUEST = 'GET_FOLDERS_REQUEST';
 exports.GET_FOLDERS_REQUEST = GET_FOLDERS_REQUEST;
 var GET_FOLDERS_RESPONSE = 'GET_FOLDERS_RESPONSE';
-exports.GET_FOLDERS_RESPONSE = GET_FOLDERS_RESPONSE;
-var GET_FOLDERS_FAILURE = 'GET_FOLDERS_FAILURE';
 
-exports.GET_FOLDERS_FAILURE = GET_FOLDERS_FAILURE;
+exports.GET_FOLDERS_RESPONSE = GET_FOLDERS_RESPONSE;
 var CREATE_FOLDERS_REQUEST = 'CREATE_FOLDERS_REQUEST';
 exports.CREATE_FOLDERS_REQUEST = CREATE_FOLDERS_REQUEST;
 var CREATE_FOLDERS_RESPONSE = 'CREATE_FOLDERS_RESPONSE';
-exports.CREATE_FOLDERS_RESPONSE = CREATE_FOLDERS_RESPONSE;
-var CREATE_FOLDERS_FAILURE = 'CREATE_FOLDERS_FAILURE';
 
-exports.CREATE_FOLDERS_FAILURE = CREATE_FOLDERS_FAILURE;
+exports.CREATE_FOLDERS_RESPONSE = CREATE_FOLDERS_RESPONSE;
 var UPDATE_FOLDERS_REQUEST = 'UPDATE_FOLDERS_REQUEST';
 exports.UPDATE_FOLDERS_REQUEST = UPDATE_FOLDERS_REQUEST;
 var UPDATE_FOLDERS_RESPONSE = 'UPDATE_FOLDERS_RESPONSE';
-exports.UPDATE_FOLDERS_RESPONSE = UPDATE_FOLDERS_RESPONSE;
-var UPDATE_FOLDERS_FAILURE = 'UPDATE_FOLDERS_FAILURE';
 
-exports.UPDATE_FOLDERS_FAILURE = UPDATE_FOLDERS_FAILURE;
+exports.UPDATE_FOLDERS_RESPONSE = UPDATE_FOLDERS_RESPONSE;
 var DELETE_FOLDERS_REQUEST = 'DELETE_FOLDERS_REQUEST';
 exports.DELETE_FOLDERS_REQUEST = DELETE_FOLDERS_REQUEST;
 var DELETE_FOLDERS_RESPONSE = 'DELETE_FOLDERS_RESPONSE';
-exports.DELETE_FOLDERS_RESPONSE = DELETE_FOLDERS_RESPONSE;
-var DELETE_FOLDERS_FAILURE = 'DELETE_FOLDERS_FAILURE';
 
-exports.DELETE_FOLDERS_FAILURE = DELETE_FOLDERS_FAILURE;
+exports.DELETE_FOLDERS_RESPONSE = DELETE_FOLDERS_RESPONSE;
+/* fetching notes actions */
 var GET_NOTES_REQUEST = 'GET_NOTES_REQUEST';
 exports.GET_NOTES_REQUEST = GET_NOTES_REQUEST;
 var GET_NOTES_RESPONSE = 'GET_NOTES_RESPONSE';
-exports.GET_NOTES_RESPONSE = GET_NOTES_RESPONSE;
-var GET_NOTES_FAILURE = 'GET_NOTES_FAILURE';
 
-exports.GET_NOTES_FAILURE = GET_NOTES_FAILURE;
+exports.GET_NOTES_RESPONSE = GET_NOTES_RESPONSE;
 var CREATE_NOTES_REQUEST = 'CREATE_NOTES_REQUEST';
 exports.CREATE_NOTES_REQUEST = CREATE_NOTES_REQUEST;
 var CREATE_NOTES_RESPONSE = 'CREATE_NOTES_RESPONSE';
-exports.CREATE_NOTES_RESPONSE = CREATE_NOTES_RESPONSE;
-var CREATE_NOTES_FAILURE = 'CREATE_NOTES_FAILURE';
 
-exports.CREATE_NOTES_FAILURE = CREATE_NOTES_FAILURE;
+exports.CREATE_NOTES_RESPONSE = CREATE_NOTES_RESPONSE;
 var UPDATE_NOTES_REQUEST = 'UPDATE_NOTES_REQUEST';
 exports.UPDATE_NOTES_REQUEST = UPDATE_NOTES_REQUEST;
 var UPDATE_NOTES_RESPONSE = 'UPDATE_NOTES_RESPONSE';
+
 exports.UPDATE_NOTES_RESPONSE = UPDATE_NOTES_RESPONSE;
-var UPDATE_NOTES_FAILURE = 'UPDATE_NOTES_FAILURE';
-exports.UPDATE_NOTES_FAILURE = UPDATE_NOTES_FAILURE;
 var UPDATE_SINGLENOTE_RESPONSE = 'UPDATE_SINGLENOTE_RESPONSE';
 
 exports.UPDATE_SINGLENOTE_RESPONSE = UPDATE_SINGLENOTE_RESPONSE;
 var DELETE_NOTES_REQUEST = 'DELETE_NOTES_REQUEST';
 exports.DELETE_NOTES_REQUEST = DELETE_NOTES_REQUEST;
 var DELETE_NOTES_RESPONSE = 'DELETE_NOTES_RESPONSE';
-exports.DELETE_NOTES_RESPONSE = DELETE_NOTES_RESPONSE;
-var DELETE_NOTES_FAILURE = 'DELETE_NOTES_FAILURE';
 
-exports.DELETE_NOTES_FAILURE = DELETE_NOTES_FAILURE;
+exports.DELETE_NOTES_RESPONSE = DELETE_NOTES_RESPONSE;
 
 function set_folder_edit_mode() {
     return { type: SET_FOLDER_EDIT_MODE };
@@ -48019,90 +47998,6 @@ function delete_folders_response(data) {
     return { type: DELETE_FOLDERS_RESPONSE, data: data, receivedAt: Date.now() };
 }
 
-function fetchFolders(method, folderData) {
-
-    console.log('actions fetchFolders0');
-
-    // Thunk middleware knows how to handle functions.
-    // It passes the dispatch method as an argument to the function,
-    // thus making it able to dispatch actions itself.
-
-    return function (dispatch) {
-
-        // First dispatch: the app state is updated to inform
-        // that the API call is starting.
-
-        var folder = [],
-            params = "",
-            request_options = { method: method };
-        if (folderData) folder = JSON.stringify(folderData);
-
-        switch (method) {
-            case 'GET':
-                dispatch(get_folders_request());
-                break;
-            case 'POST':
-                request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
-                    body: folder,
-                    headers: {
-                        'Accept': 'application/json',
-                        "Content-type": "application/json"
-                    }
-                });
-
-                dispatch(create_folders_request());
-                break;
-            case 'PUT':
-                console.log('actions fetchFolders PUT');
-
-                params = "/" + folderData.id;
-
-                request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
-                    body: folder,
-                    headers: {
-                        'Accept': 'application/json',
-                        "Content-type": "application/json"
-                    }
-                });
-
-                dispatch(update_folders_request());
-                break;
-            case 'DELETE':
-                params = "/" + folderData.id;
-
-                dispatch(delete_folders_request());
-                break;
-        }
-
-        console.log('actions fetchFolders1', folder);
-
-        return (0, _isomorphicFetch2['default'])('/directories' + params, request_options).then(function (response) {
-            console.log('actions fetchFolders2');
-            return response.json();
-        }).then(function (data) {
-
-            console.log('actions fetchFolders3', data);
-            // We can dispatch many times!
-            // Here, we update the app state with the results of the API call.
-
-            switch (method) {
-                case 'GET':
-                    dispatch(get_folders_response(data));
-                    break;
-                case 'POST':
-                    dispatch(create_folders_response(data));
-                    break;
-                case 'PUT':
-                    dispatch(update_folders_response(data));
-                    break;
-                case 'DELETE':
-                    dispatch(delete_folders_response(data));
-                    break;
-            }
-        });
-    };
-}
-
 function get_notes_request() {
     return { type: GET_NOTES_REQUEST };
 }
@@ -48139,61 +48034,185 @@ function delete_notes_response(data) {
     return { type: DELETE_NOTES_RESPONSE, data: data, receivedAt: Date.now() };
 }
 
-function fetchNotes(method, noteData) {
+},{"isomorphic-fetch":29,"lodash/object/assign.js":112}],700:[function(require,module,exports){
+'use strict';
 
-    console.log('actions fetchNotes 0');
+Object.defineProperty(exports, '__esModule', {
+                value: true
+});
+exports.fetchFolders = fetchFolders;
+
+var _actionsJs = require('./actions.js');
+
+function fetchFolders(method, folderData) {
+
+                // Thunk middleware knows how to handle functions.
+                // It passes the dispatch method as an argument to the function,
+
+                return function (dispatch) {
+
+                                // First dispatch: the app state is updated to inform
+                                // that the API call is starting.
+
+                                var folder = [],
+                                    params = "",
+                                    request_options = { method: method };
+
+                                if (folderData) folder = JSON.stringify(folderData);
+
+                                switch (method) {
+
+                                                case 'GET':
+
+                                                                dispatch((0, _actionsJs.get_folders_request)());
+
+                                                                break;
+
+                                                case 'POST':
+
+                                                                request_options = assign(request_options, {
+                                                                                body: folder,
+                                                                                headers: {
+                                                                                                'Accept': 'application/json',
+                                                                                                "Content-type": "application/json"
+                                                                                }
+                                                                });
+
+                                                                dispatch((0, _actionsJs.create_folders_request)());
+
+                                                                break;
+
+                                                case 'PUT':
+
+                                                                params = "/" + folderData.id;
+
+                                                                request_options = assign(request_options, {
+                                                                                body: folder,
+                                                                                headers: {
+                                                                                                'Accept': 'application/json',
+                                                                                                "Content-type": "application/json"
+                                                                                }
+                                                                });
+
+                                                                dispatch((0, _actionsJs.update_folders_request)());
+
+                                                                break;
+
+                                                case 'DELETE':
+
+                                                                params = "/" + folderData.id;
+
+                                                                dispatch((0, _actionsJs.delete_folders_request)());
+
+                                                                break;
+                                }
+
+                                return fetch('/directories' + params, request_options).then(function (response) {
+
+                                                return response.json();
+                                }).then(function (data) {
+
+                                                // We can dispatch many times!
+                                                // Here, we update the app state with the results of the API call.
+
+                                                switch (method) {
+
+                                                                case 'GET':
+
+                                                                                dispatch((0, _actionsJs.get_folders_response)(data));
+
+                                                                                break;
+
+                                                                case 'POST':
+
+                                                                                dispatch((0, _actionsJs.create_folders_response)(data));
+
+                                                                                break;
+
+                                                                case 'PUT':
+
+                                                                                dispatch((0, _actionsJs.update_folders_response)(data));
+
+                                                                                break;
+
+                                                                case 'DELETE':
+
+                                                                                dispatch((0, _actionsJs.delete_folders_response)(data));
+
+                                                                                break;
+                                                }
+                                });
+                };
+}
+
+// thus making it able to dispatch actions itself.
+
+},{"./actions.js":699}],701:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+exports.fetchNotes = fetchNotes;
+
+var _actionsJs = require('./actions.js');
+
+function fetchNotes(method, noteData) {
 
     // Thunk middleware knows how to handle functions.
     // It passes the dispatch method as an argument to the function,
-    // thus making it able to dispatch actions itself.
 
     return function (dispatch) {
 
         // First dispatch: the app state is updated to inform
         // that the API call is starting.//
 
-        console.log('actions fetchNotes 111', Array.isArray(noteData));
-
         var note = [],
             request_options = { method: method },
             params = "";
+
         if (noteData) note = JSON.stringify(noteData);
 
         switch (method) {
-            case 'GET':
-                dispatch(get_notes_request());
-                break;
-            case 'POST':
-                console.log('actions fetchNotes 2', note);
 
-                request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
+            case 'GET':
+
+                dispatch((0, _actionsJs.get_notes_request)());
+
+                break;
+
+            case 'POST':
+
+                request_options = assign(request_options, {
                     body: note,
                     headers: {
                         'Accept': 'application/json',
                         "Content-type": "application/json"
                     }
                 });
-                dispatch(create_notes_request());
+
+                dispatch((0, _actionsJs.create_notes_request)());
+
                 break;
+
             case 'PUT':
-                console.log('actions fetchNotes PUT11', note, Array.isArray(noteData));
 
                 if (Array.isArray(noteData)) {
                     params = "/all";
 
-                    request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
+                    request_options = assign(request_options, {
                         body: note,
                         headers: {
                             'Accept': 'application/json',
                             "Content-type": "application/json"
                         }
                     });
-                    dispatch(update_notes_request());
-                } else {
 
+                    dispatch((0, _actionsJs.update_notes_request)());
+                } else {
                     params = "/" + noteData.id;
 
-                    request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
+                    request_options = assign(request_options, {
                         body: note,
                         headers: {
                             'Accept': 'application/json',
@@ -48201,48 +48220,63 @@ function fetchNotes(method, noteData) {
                         }
                     });
 
-                    dispatch(update_notes_request());
+                    dispatch((0, _actionsJs.update_notes_request)());
                 }
                 break;
             case 'DELETE':
+
                 params = "/" + noteData.id;
 
-                dispatch(delete_notes_request());
+                dispatch((0, _actionsJs.delete_notes_request)());
+
                 break;
         }
 
-        return (0, _isomorphicFetch2['default'])('/notices' + params, request_options).then(function (response) {
-            console.log('actions fetchNotes 22', response);
+        return fetch('/notices' + params, request_options).then(function (response) {
+
             return response.json();
         }).then(function (data) {
 
-            console.log('actions fetchNotes 3', data);
             // We can dispatch many times!
             // Here, we update the app state with the results of the API call.
 
             switch (method) {
+
                 case 'GET':
-                    dispatch(get_notes_response(data));
+
+                    dispatch((0, _actionsJs.get_notes_response)(data));
+
                     break;
+
                 case 'POST':
-                    dispatch(create_notes_response(data));
+
+                    dispatch((0, _actionsJs.create_notes_response)(data));
+
                     break;
+
                 case 'PUT':
+
                     if (params == '/all') {
-                        dispatch(update_notes_response(data));
+                        dispatch((0, _actionsJs.update_notes_response)(data));
                     } else {
-                        dispatch(update_singlenote_response(data));
+                        dispatch((0, _actionsJs.update_singlenote_response)(data));
                     }
+
                     break;
+
                 case 'DELETE':
-                    dispatch(delete_notes_response(data));
+
+                    dispatch((0, _actionsJs.delete_notes_response)(data));
+
                     break;
             }
         });
     };
 }
 
-},{"isomorphic-fetch":29,"lodash/object/assign.js":112}],700:[function(require,module,exports){
+// thus making it able to dispatch actions itself.
+
+},{"./actions.js":699}],702:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -48265,8 +48299,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = require('react-redux');
 
-var _actions = require('../actions');
-
 var App = (function (_Component) {
     _inherits(App, _Component);
 
@@ -48279,11 +48311,6 @@ var App = (function (_Component) {
     _createClass(App, [{
         key: 'render',
         value: function render() {
-
-            console.log('app render', this.props.children);
-
-            // Injected by connect() call:
-            //const { dispatch } = this.props;
 
             return _react2['default'].createElement(
                 'div',
@@ -48301,7 +48328,7 @@ var App = (function (_Component) {
 exports['default'] = App;
 module.exports = exports['default'];
 
-},{"../actions":699,"react":686,"react-redux":497}],701:[function(require,module,exports){
+},{"react":686,"react-redux":497}],703:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -48324,9 +48351,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = require('react-router');
 
-//import {notesData} from './data.js';
+var _actionsActionsJs = require('../actions/actions.js');
 
-var _actionsJs = require('../actions.js');
+var _actionsFetchNotesJs = require('../actions/fetchNotes.js');
 
 var _reactRedux = require('react-redux');
 
@@ -48338,7 +48365,9 @@ var _storeJs = require('../store.js');
 
 var _storeJs2 = _interopRequireDefault(_storeJs);
 
-var Menu = require('./menu.js');
+var _menuJs = require('./menu.js');
+
+var _menuJs2 = _interopRequireDefault(_menuJs);
 
 var SingleNote = (function (_Component) {
     _inherits(SingleNote, _Component);
@@ -48352,8 +48381,7 @@ var SingleNote = (function (_Component) {
 
         var self = this;
 
-        this.dispatch((0, _actionsJs.fetchNotes)('GET')).then(function (data) {
-            console.log('---fetchNotes---', _storeJs2['default'].getState());
+        this.dispatch((0, _actionsFetchNotesJs.fetchNotes)('GET')).then(function (data) {
 
             self.setState(_storeJs2['default'].getState());
         });
@@ -48363,9 +48391,7 @@ var SingleNote = (function (_Component) {
         key: 'findNote',
         value: function findNote(id) {
 
-            console.log('findNote', _storeJs2['default'].getState().fetchingData.notes.items);
-
-            return (0, _lodashCollectionFilterJs2['default'])(_storeJs2['default'].getState().fetchingData.notes.items, function (item) {
+            return (0, _lodashCollectionFilterJs2['default'])(_storeJs2['default'].getState().notes.items, function (item) {
                 return item.id == id;
             });
         }
@@ -48377,13 +48403,12 @@ var SingleNote = (function (_Component) {
 
             if (this.props.params.id != _storeJs2['default'].getState().editNoteId) {
 
-                this.dispatch((0, _actionsJs.set_note_edit_mode)());
+                this.dispatch((0, _actionsActionsJs.set_note_edit_mode)());
             } else {
 
-                this.dispatch((0, _actionsJs.reset_note_edit_mode)());
+                this.dispatch((0, _actionsActionsJs.reset_note_edit_mode)());
 
-                this.dispatch((0, _actionsJs.fetchNotes)('PUT', self.note)).then(function (data) {
-                    console.log('---fetchNotes PUT single---', _storeJs2['default'].getState());
+                this.dispatch((0, _actionsFetchNotesJs.fetchNotes)('PUT', self.note)).then(function (data) {
 
                     self.setState(_storeJs2['default'].getState());
                 });
@@ -48395,14 +48420,9 @@ var SingleNote = (function (_Component) {
         key: 'removeNote',
         value: function removeNote() {
 
-            //this.dispatch(remove_note());
-
-            console.log('remove note');
-
             var self = this;
 
-            this.dispatch((0, _actionsJs.fetchNotes)('DELETE', self.note)).then(function (data) {
-                console.log('---fetchNotes DELETE---', _storeJs2['default'].getState());
+            this.dispatch((0, _actionsFetchNotesJs.fetchNotes)('DELETE', self.note)).then(function (data) {
 
                 self.setState(_storeJs2['default'].getState());
             });
@@ -48421,18 +48441,15 @@ var SingleNote = (function (_Component) {
     }, {
         key: 'editingNoteTitle',
         value: function editingNoteTitle(event) {
-            console.log('editingNoteTitle 1', event.target.value);
 
-            this.dispatch((0, _actionsJs.editing_note_title)(event.target.value));
-
-            console.log('editingNoteTitle 2', _storeJs2['default'].getState());
+            this.dispatch((0, _actionsActionsJs.editing_note_title)(event.target.value));
 
             this.setState(_storeJs2['default'].getState());
         }
     }, {
         key: 'editingNoteContent',
         value: function editingNoteContent(event) {
-            this.dispatch((0, _actionsJs.editing_note_content)(event.target.value));
+            this.dispatch((0, _actionsActionsJs.editing_note_content)(event.target.value));
 
             this.setState(_storeJs2['default'].getState());
         }
@@ -48442,15 +48459,13 @@ var SingleNote = (function (_Component) {
 
             var state = _storeJs2['default'].getState();
 
-            if (!state.fetchingData.notes.isFetching) {
+            if (!state.notes.isFetching) {
 
                 var self = this,
                     note = self.note = self.findNote(this.props.params.id)[0],
                     tagsCounter = 0,
                     textModeClass = 'visible',
                     editModeClass = 'hidden';
-
-                console.log('content !!!', note, this.props.params.id);
 
                 if (this.props.params.id == _storeJs2['default'].getState().editNoteId) {
                     textModeClass = 'hidden';
@@ -48466,12 +48481,12 @@ var SingleNote = (function (_Component) {
                     );
                 });
 
-                this.dispatch((0, _actionsJs.set_note_active)(this.props.params.id));
+                this.dispatch((0, _actionsActionsJs.set_note_active)(this.props.params.id));
 
                 return _react2['default'].createElement(
                     'section',
                     { className: 'single-note' },
-                    _react2['default'].createElement(Menu, { page: 'note',
+                    _react2['default'].createElement(_menuJs2['default'], { page: 'note',
                         set_edit: self.setEditNote.bind(this),
                         removeNote: self.removeNote.bind(this),
                         back: self.back.bind(this)
@@ -48543,7 +48558,7 @@ var SingleNote = (function (_Component) {
 exports['default'] = (0, _reactRedux.connect)()(SingleNote);
 module.exports = exports['default'];
 
-},{"../actions.js":699,"../store.js":710,"./menu.js":705,"lodash/collection/filter.js":34,"react":686,"react-redux":497,"react-router":523}],702:[function(require,module,exports){
+},{"../actions/actions.js":699,"../actions/fetchNotes.js":701,"../store.js":718,"./menu.js":707,"lodash/collection/filter.js":34,"react":686,"react-redux":497,"react-router":523}],704:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -48673,7 +48688,7 @@ var menuData = [{
 }];
 exports.menuData = menuData;
 
-},{}],703:[function(require,module,exports){
+},{}],705:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -48737,8 +48752,6 @@ var FolderItem = (function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-
-            console.log('folder item render', this.props.name);
 
             var cl,
                 self = this,
@@ -48809,8 +48822,6 @@ var folders = (function (_Component2) {
                 editingFolder = this.props.editingFolder,
                 editFolderId = this.props.editFolderId;
 
-            console.log('folders render', this.props);
-
             var items = folders.map(function (item) {
 
                 var isActive = false,
@@ -48818,8 +48829,6 @@ var folders = (function (_Component2) {
 
                 if (item.id == activeFolderId) isActive = true;
                 if (item.id == editFolderId) isEdit = true;
-
-                console.log('folders iterator', item.id, item.name);
 
                 return _react2['default'].createElement(FolderItem, { key: item.key,
                     isActive: isActive,
@@ -48848,7 +48857,7 @@ var folders = (function (_Component2) {
 exports['default'] = folders;
 module.exports = exports['default'];
 
-},{"react":686,"react-dom":494,"react-router":523}],704:[function(require,module,exports){
+},{"react":686,"react-dom":494,"react-router":523}],706:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -48869,7 +48878,11 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _actionsJs = require('../actions.js');
+var _actionsActionsJs = require('../actions/actions.js');
+
+var _actionsFetchFoldersJs = require('../actions/fetchFolders.js');
+
+var _actionsFetchNotesJs = require('../actions/fetchNotes.js');
 
 var _reactRedux = require('react-redux');
 
@@ -48905,14 +48918,12 @@ var Main = (function (_Component) {
 
         var self = this;
 
-        this.dispatch((0, _actionsJs.fetchNotes)('GET')).then(function (data) {
-            console.log('---fetchNotes---', _storeJs2['default'].getState());
+        this.dispatch((0, _actionsFetchNotesJs.fetchNotes)('GET')).then(function (data) {
 
             self.setState(_storeJs2['default'].getState());
         });
 
-        this.dispatch((0, _actionsJs.fetchFolders)('GET')).then(function (data) {
-            console.log('---fetchFolders---', _storeJs2['default'].getState());
+        this.dispatch((0, _actionsFetchFoldersJs.fetchFolders)('GET')).then(function (data) {
 
             self.setState(_storeJs2['default'].getState());
         });
@@ -48926,9 +48937,7 @@ var Main = (function (_Component) {
         key: 'getFolderById',
         value: function getFolderById(id) {
 
-            console.log('getFolderById', _storeJs2['default'].getState().fetchingData.folders.items);
-
-            return (0, _lodashCollectionFilterJs2['default'])(_storeJs2['default'].getState().fetchingData.folders.items, function (item) {
+            return (0, _lodashCollectionFilterJs2['default'])(_storeJs2['default'].getState().folders.items, function (item) {
 
                 return item.id == id;
             });
@@ -48937,7 +48946,7 @@ var Main = (function (_Component) {
         key: 'setEditFolder',
         value: function setEditFolder() {
 
-            this.dispatch((0, _actionsJs.set_folder_edit_mode)());
+            this.dispatch((0, _actionsActionsJs.set_folder_edit_mode)());
 
             this.setState(_storeJs2['default'].getState());
         }
@@ -48945,12 +48954,11 @@ var Main = (function (_Component) {
         key: 'resetEditFolder',
         value: function resetEditFolder() {
 
-            this.dispatch((0, _actionsJs.reset_folder_edit_mode)());
+            this.dispatch((0, _actionsActionsJs.reset_folder_edit_mode)());
 
             var self = this;
 
-            this.dispatch((0, _actionsJs.fetchFolders)('PUT', self.folder)).then(function (data) {
-                console.log('---fetchFolders PUT---', _storeJs2['default'].getState());
+            this.dispatch((0, _actionsFetchFoldersJs.fetchFolders)('PUT', self.folder)).then(function (data) {
 
                 self.setState(_storeJs2['default'].getState());
             });
@@ -48964,8 +48972,7 @@ var Main = (function (_Component) {
 
             var self = this;
 
-            this.dispatch((0, _actionsJs.fetchFolders)('DELETE', self.folder)).then(function (data) {
-                console.log('---fetchFolders DELETE---', _storeJs2['default'].getState());
+            this.dispatch((0, _actionsFetchFoldersJs.fetchFolders)('DELETE', self.folder)).then(function (data) {
 
                 self.forcedFolderId = true;
 
@@ -48976,8 +48983,8 @@ var Main = (function (_Component) {
         key: 'getFolderIndexById',
         value: function getFolderIndexById(id) {
 
-            for (var i = 0, len = _storeJs2['default'].getState().fetchingData.folders.items.length; i < len; i++) {
-                if (_storeJs2['default'].getState().fetchingData.folders.items[i].id == id) {
+            for (var i = 0, len = _storeJs2['default'].getState().folders.items.length; i < len; i++) {
+                if (_storeJs2['default'].getState().folders.items[i].id == id) {
                     return i;
                 }
             }
@@ -48993,17 +49000,10 @@ var Main = (function (_Component) {
                 index = this.getFolderIndexById(_storeJs2['default'].getState().activeFolderId),
                 self = this;
 
-            console.log('main addFolder 22', activeFolder, activeFolder[0].level, activeFolder[0].level + 1);
-
-            this.dispatch((0, _actionsJs.fetchFolders)('POST', { name: name, level: level, parentId: activeFolder[0].id, index: index })).then(function (data) {
-                console.log('---fetchFolders POST---', _storeJs2['default'].getState());
+            this.dispatch((0, _actionsFetchFoldersJs.fetchFolders)('POST', { name: name, level: level, parentId: activeFolder[0].id, index: index })).then(function (data) {
 
                 self.setState(_storeJs2['default'].getState());
             });
-
-            //this.dispatch(add_folder(title, level, index));
-
-            //this.setState(store.getState());
         }
     }, {
         key: 'addNote',
@@ -49013,23 +49013,16 @@ var Main = (function (_Component) {
                 tagsIDs = [directoryId],
                 self = this;
 
-            this.dispatch((0, _actionsJs.fetchNotes)('POST', { title: title, description: content, directoryId: directoryId, tags: tagsIDs })).then(function (data) {
-                console.log('---fetchNotes POST---', _storeJs2['default'].getState());
+            this.dispatch((0, _actionsFetchNotesJs.fetchNotes)('POST', { title: title, description: content, directoryId: directoryId, tags: tagsIDs })).then(function (data) {
 
                 self.setState(_storeJs2['default'].getState());
             });
-
-            //this.dispatch(add_note(title, content, tagsIDs));
-
-            //this.setState(store.getState());
         }
     }, {
         key: 'editingFolder',
         value: function editingFolder(value) {
 
-            this.dispatch((0, _actionsJs.editing_folder)(value));
-
-            console.log('editingFolder', _storeJs2['default'].getState());
+            this.dispatch((0, _actionsActionsJs.editing_folder)(value));
 
             this.setState(_storeJs2['default'].getState());
         }
@@ -49040,23 +49033,20 @@ var Main = (function (_Component) {
                 tagsIDs = [directoryId],
                 self = this;
 
-            this.dispatch((0, _actionsJs.fetchNotes)('PUT', notes)).then(function (data) {
-                console.log('---fetchNotes POST---', _storeJs2['default'].getState());
-
+            this.dispatch((0, _actionsFetchNotesJs.fetchNotes)('PUT', notes)).then(function (data) {
                 self.setState(_storeJs2['default'].getState());
             });
         }
     }, {
         key: 'render',
         value: function render() {
-            console.log('main render 1 !!!', this.forcedFolderId);
 
             var state = _storeJs2['default'].getState(),
                 self = this;
 
-            if (!state.fetchingData.notes.isFetching && !state.fetchingData.folders.isFetching) {
+            if (!state.notes.isFetching && !state.folders.isFetching) {
 
-                var folders = _storeJs2['default'].getState().fetchingData.folders.items,
+                var folders = _storeJs2['default'].getState().folders.items,
                     folderId,
                     folder;
 
@@ -49067,11 +49057,7 @@ var Main = (function (_Component) {
                 }
                 folder = self.folder = self.getFolderById(folderId)[0];
 
-                //if(folderId)
-
-                self.dispatch((0, _actionsJs.set_folder_active)(folderId));
-
-                console.log('main render 2 !!', folderId, folder); //
+                self.dispatch((0, _actionsActionsJs.set_folder_active)(folderId));
 
                 return _react2['default'].createElement(
                     'div',
@@ -49096,7 +49082,7 @@ var Main = (function (_Component) {
                         'section',
                         { className: 'notes col-md-8' },
                         _react2['default'].createElement(_notesJs2['default'], {
-                            notes: state.fetchingData.notes.items,
+                            notes: state.notes.items,
                             updatePosition: self.updatePosition.bind(this),
                             folder: folder
                         })
@@ -49113,12 +49099,10 @@ var Main = (function (_Component) {
 
 ;
 
-//module.exports = Main;
-
 exports['default'] = (0, _reactRedux.connect)()(Main);
 module.exports = exports['default'];
 
-},{"../actions.js":699,"../store.js":710,"./folders.js":703,"./menu.js":705,"./notes.js":707,"lodash/collection/filter.js":34,"react":686,"react-redux":497}],705:[function(require,module,exports){
+},{"../actions/actions.js":699,"../actions/fetchFolders.js":700,"../actions/fetchNotes.js":701,"../store.js":718,"./folders.js":705,"./menu.js":707,"./notes.js":709,"lodash/collection/filter.js":34,"react":686,"react-redux":497}],707:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -49210,21 +49194,15 @@ var MenuItem = (function (_Component) {
         key: 'addCommon',
         value: function addCommon() {
 
-            console.log('addCommon');
-
             if (this.state.folderChecked) {
-
-                console.log('addFolder', this.newFolderTitle);
 
                 this.props.addFolder(this.newFolderTitle);
             } else if (this.state.noteChecked) {
-                console.log('addNote', this.newFolderTitle);
 
                 this.props.addNote(this.newNoteTitle, this.newNoteContent);
             }
 
             this.close();
-            //console.log('add',this.state);
         }
     }, {
         key: 'remove',
@@ -49242,10 +49220,8 @@ var MenuItem = (function (_Component) {
                     break;
                 case "edit":
                     this.props.set_edit();
-                    console.log('menu edit click');
                     break;
                 case "remove":
-                    console.log('remove 11');
 
                     if (this.props.page == 'main') {
                         this.props.removeFolder();
@@ -49255,7 +49231,6 @@ var MenuItem = (function (_Component) {
 
                     break;
                 case "back":
-                    console.log('back', this.props.back);
                     this.props.back();
                     break;
             }
@@ -49328,8 +49303,6 @@ var MenuItem = (function (_Component) {
         value: function render() {
 
             var self = this;
-
-            //console.log('menu item',this.props);
 
             return _react2['default'].createElement(
                 'li',
@@ -49471,8 +49444,6 @@ var Menu = (function (_Component2) {
         key: 'render',
         value: function render() {
 
-            console.log('menu render !!!', this.props);
-
             var self = this,
                 menu = self.state.menu,
                 page = self.props.page,
@@ -49516,7 +49487,7 @@ var Menu = (function (_Component2) {
 exports['default'] = Menu;
 module.exports = exports['default'];
 
-},{"./data.js":702,"lodash/array/indexOf.js":31,"lodash/collection/filter.js":34,"react":686,"react-bootstrap":191,"react-dom":494}],706:[function(require,module,exports){
+},{"./data.js":704,"lodash/array/indexOf.js":31,"lodash/collection/filter.js":34,"react":686,"react-bootstrap":191,"react-dom":494}],708:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -49655,8 +49626,6 @@ var Card = (function (_Component) {
             var connectDropTarget = _props.connectDropTarget;
             var id = _props.id;
 
-            console.log('note render', id);
-
             return connectDragSource(connectDropTarget(_react2['default'].createElement(
                 'li',
                 null,
@@ -49711,7 +49680,7 @@ Card.propTypes = {
 exports['default'] = (0, _lodashFunctionFlow2['default'])((0, _reactDnd.DropTarget)('card', cardTarget, dropCollect), (0, _reactDnd.DragSource)('card', cardSource, dragCollect))(Card);
 module.exports = exports['default'];
 
-},{"lodash/function/flow":37,"react":686,"react-dnd":432,"react-dom":494,"react-router":523,"react/lib/update":657}],707:[function(require,module,exports){
+},{"lodash/function/flow":37,"react":686,"react-dnd":432,"react-dom":494,"react-router":523,"react/lib/update":657}],709:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -49751,8 +49720,6 @@ var _lodashFunctionFlow2 = _interopRequireDefault(_lodashFunctionFlow);
 var _noteJs = require('./note.js');
 
 var _noteJs2 = _interopRequireDefault(_noteJs);
-
-//import {notesData} from './data.js';
 
 var _lodashCollectionFilterJs = require('lodash/collection/filter.js');
 
@@ -49842,11 +49809,7 @@ var Notes = (function (_Component2) {
             var card = _findCard.card;
             var index = _findCard.index;
 
-            console.log('moveCard', this.state);
-
             this.setState((0, _reactLibUpdate2['default'])(this.state, {
-                //this.setState(update(this.props, {
-                //notes: {
                 cards: {
                     $splice: [[index, 1], [atIndex, 0, card]]
                 }
@@ -49857,8 +49820,6 @@ var Notes = (function (_Component2) {
                 item.position = counter;
                 counter++;
             });
-
-            //console.log('moveCard---',this.state.cards);
 
             this.props.updatePosition(this.state.cards);
         }
@@ -49871,32 +49832,18 @@ var Notes = (function (_Component2) {
                 return c.id === id;
             })[0];
 
-            console.log('findCard', this.state);
-
             return {
                 card: card,
                 index: cards.indexOf(card)
             };
         }
-
-        /*getCardsByTag(tag){
-            const { cards } = this.state;
-              return filter(cards,function(item){
-                return indexOf(item.tags, tag) != -1;
-            });
-        }*/
-
     }, {
         key: 'getCardsByFolderId',
         value: function getCardsByFolderId(id) {
 
-            //const cards = this.props.notes;
             var cards = this.state.cards;
 
-            console.log('getCardsByFolderId', cards);
-
             return (0, _lodashCollectionFilterJs2['default'])(cards, function (item) {
-                //return indexOf(item.tagsIDs, id) != -1;
                 return item.directoryId == id;
             });
         }
@@ -49906,8 +49853,6 @@ var Notes = (function (_Component2) {
             var connectDropTarget = this.props.connectDropTarget;
 
             var self = this;
-
-            console.log('notes render', this.props.notes);
 
             var filteredCards = this.getCardsByFolderId(this.props.folder.id);
 
@@ -49957,10 +49902,18 @@ function dropCollect2(connect) {
 exports['default'] = (0, _lodashFunctionFlow2['default'])((0, _reactDnd.DropTarget)('card', cardTarget2, dropCollect2), (0, _reactDnd.DragDropContext)(_reactDndHtml5Backend2['default']))(Notes);
 module.exports = exports['default'];
 
-},{"../vendor/Autocomplete.js":711,"../vendor/utils":712,"./note.js":706,"lodash/array/indexOf.js":31,"lodash/collection/filter.js":34,"lodash/collection/forEach.js":35,"lodash/function/flow":37,"react":686,"react-dnd":432,"react-dnd-html5-backend":372,"react/lib/update":657}],708:[function(require,module,exports){
+},{"../vendor/Autocomplete.js":719,"../vendor/utils":720,"./note.js":708,"lodash/array/indexOf.js":31,"lodash/collection/filter.js":34,"lodash/collection/forEach.js":35,"lodash/function/flow":37,"react":686,"react-dnd":432,"react-dnd-html5-backend":372,"react/lib/update":657}],710:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouter = require('react-router');
 
@@ -49974,44 +49927,159 @@ var _componentsAppJs = require('./components/app.js');
 
 var _componentsAppJs2 = _interopRequireDefault(_componentsAppJs);
 
-//import reducer from './reducers.js'
+var _componentsMainJs = require('./components/main.js');
 
-console.log('!!!');
+var _componentsMainJs2 = _interopRequireDefault(_componentsMainJs);
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+var _componentsContentJs = require('./components/content.js');
 
-var Main = require('./components/main.js'),
-    Content = require('./components/content.js');
-
-/*ReactDOM.render(
-    menu,
-    document.querySelector('.left-menu')
-);
-
-ReactDOM.render(
-    folders,
-    document.querySelector('.folders')
-);
-
-ReactDOM.render(
-    notes,
-    document.querySelector('.notes')
-);*/
+var _componentsContentJs2 = _interopRequireDefault(_componentsContentJs);
 
 var routeConfig = [{ path: '/',
     component: _componentsAppJs2['default'],
-    indexRoute: { component: Main },
-    childRoutes: [{ path: 'note/:id', component: Content }, { path: 'folder/:id', component: Main }]
+    indexRoute: { component: _componentsMainJs2['default'] },
+    childRoutes: [{ path: 'note/:id', component: _componentsContentJs2['default'] }, { path: 'folder/:id', component: _componentsMainJs2['default'] }]
 }];
 
-ReactDOM.render(React.createElement(
+_reactDom2['default'].render(_react2['default'].createElement(
     _reactRedux.Provider,
     { store: _storeJs2['default'] },
-    React.createElement(_reactRouter.Router, { routes: routeConfig })
+    _react2['default'].createElement(_reactRouter.Router, { routes: routeConfig })
 ), document.querySelector('.app'));
 
-},{"./components/app.js":700,"./components/content.js":701,"./components/main.js":704,"./store.js":710,"react":686,"react-dom":494,"react-redux":497,"react-router":523}],709:[function(require,module,exports){
+},{"./components/app.js":702,"./components/content.js":703,"./components/main.js":706,"./store.js":718,"react":686,"react-dom":494,"react-redux":497,"react-router":523}],711:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _actionsActionsJs = require('../actions/actions.js');
+
+function activeFolderIdReducer(state, action) {
+    if (state === undefined) state = 0;
+
+    console.log(action.type, action);
+
+    switch (action.type) {
+
+        case _actionsActionsJs.SET_FOLDER_ACTIVE:
+
+            return Object.assign({}, state, {
+                activeFolderId: action.activeFolderId
+            });
+
+        default:
+            return state;
+    }
+}
+
+exports['default'] = activeFolderIdReducer;
+module.exports = exports['default'];
+
+},{"../actions/actions.js":699}],712:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _actionsActionsJs = require('../actions/actions.js');
+
+function activeNoteIdReducer(state, action) {
+    if (state === undefined) state = 0;
+
+    console.log(action.type, action);
+
+    switch (action.type) {
+
+        case _actionsActionsJs.SET_NOTE_ACTIVE:
+
+            return Object.assign({}, state, {
+                activeNoteId: action.activeNoteId
+            });
+
+        default:
+            return state;
+    }
+}
+
+exports['default'] = activeNoteIdReducer;
+module.exports = exports['default'];
+
+},{"../actions/actions.js":699}],713:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _actionsActionsJs = require('../actions/actions.js');
+
+function editFolderIdReducer(state, action) {
+    if (state === undefined) state = null;
+
+    console.log(action.type, action);
+
+    switch (action.type) {
+
+        case _actionsActionsJs.SET_FOLDER_EDIT_MODE:
+
+            return Object.assign({}, state, {
+                editFolderId: parseInt(state.activeFolderId)
+            });
+
+        case _actionsActionsJs.RESET_FOLDER_EDIT_MODE:
+
+            return Object.assign({}, state, {
+                editFolderId: null
+            });
+
+        default:
+            return state;
+    }
+}
+
+exports['default'] = editFolderIdReducer;
+module.exports = exports['default'];
+
+},{"../actions/actions.js":699}],714:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _actionsActionsJs = require('../actions/actions.js');
+
+function editNoteIdReducer(state, action) {
+    if (state === undefined) state = null;
+
+    console.log(action.type, action);
+
+    switch (action.type) {
+
+        case _actionsActionsJs.SET_NOTE_EDIT_MODE:
+
+            return Object.assign({}, state, {
+                editNoteId: parseInt(state.activeNoteId)
+            });
+
+        case _actionsActionsJs.RESET_NOTE_EDIT_MODE:
+
+            return Object.assign({}, state, {
+                editNoteId: null
+            });
+
+        default:
+            return state;
+    }
+}
+
+exports['default'] = editNoteIdReducer;
+module.exports = exports['default'];
+
+},{"../actions/actions.js":699}],715:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -50019,8 +50087,6 @@ Object.defineProperty(exports, '__esModule', {
 });
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _redux = require('redux');
 
 var _lodashCollectionMapJs = require('lodash/collection/map.js');
 
@@ -50038,164 +50104,197 @@ var _lodashMathMaxJs = require('lodash/math/max.js');
 
 var _lodashMathMaxJs2 = _interopRequireDefault(_lodashMathMaxJs);
 
-//
+var _actionsActionsJs = require('../actions/actions.js');
 
-var _actions = require('../actions');
+function foldersReducer(state, action) {
+    if (state === undefined) state = {};
 
-var _componentsDataJs = require('../components/data.js');
-
-/*const initialState = {
-    activeFolderId: 0,
-    editFolderId: null,
-    activeNoteId: 0,
-    editNoteId: null,
-    notesData: notesData,
-    foldersData: foldersData,
-    menuData: menuData
-};*/
-
-var initialState = {
-    activeFolderId: 0,
-    editFolderId: null,
-    activeNoteId: 0,
-    editNoteId: null,
-    fetchingData: {
-        notes: {
-            isFetching: false,
-            didInvalidate: false,
-            items: []
-        },
-        folders: {
-            isFetching: false,
-            didInvalidate: false,
-            items: []
-        }
-    },
-    menuData: _componentsDataJs.menuData
-};
-
-function reducer(state, action) {
-    if (state === undefined) state = initialState;
+    console.log(action.type, action);
 
     switch (action.type) {
 
-        case _actions.SET_FOLDER_EDIT_MODE:
-            console.log(action.type, state.activeFolderId);
+        case _actionsActionsJs.EDITING_FOLDER:
 
-            return Object.assign({}, state, {
-                editFolderId: parseInt(state.activeFolderId)
-            });
-
-        case _actions.RESET_FOLDER_EDIT_MODE:
-            console.log(action.type);
-
-            return Object.assign({}, state, {
-                editFolderId: null
-            });
-
-        case _actions.EDITING_FOLDER:
-
-            var newFoldersData = (0, _lodashCollectionMapJs2['default'])(state.fetchingData.folders.items, function (item) {
+            var newFoldersData = (0, _lodashCollectionMapJs2['default'])(state.items, function (item) {
                 if (item.id == state.editFolderId) {
                     item.name = action.value;
                 }
                 return item;
             });
 
-            console.log(action.type, action.value, state.foldersData, newFoldersData);
+            return Object.assign({}, state, {
+
+                /*folders: {
+                    isFetching: false,
+                    didInvalidate: false,*/
+                items: newFoldersData
+                //}
+
+            });
+
+        case _actionsActionsJs.GET_FOLDERS_REQUEST:
+
+            return Object.assign({}, state, {
+                //folders: {
+                isFetching: true //,
+                //didInvalidate: false
+                // }
+            });
+
+        case _actionsActionsJs.GET_FOLDERS_RESPONSE:
 
             return Object.assign({}, state, {
 
-                fetchingData: {
-                    notes: state.fetchingData.notes,
-                    folders: {
-                        isFetching: false,
-                        didInvalidate: false,
-                        items: newFoldersData
-                    }
-                }
+                //folders: {
+                isFetching: false,
+                //  didInvalidate: false,
+                items: action.data
+                //}
 
             });
 
-        /*return Object.assign({}, state, {
-            foldersData: newFoldersData
-        });*/
-
-        case _actions.SET_FOLDER_ACTIVE:
-            console.log(action.type, action.activeFolderId, state);
+        case _actionsActionsJs.CREATE_FOLDERS_REQUEST:
 
             return Object.assign({}, state, {
-                activeFolderId: action.activeFolderId
+                //folders: {
+                isFetching: true //,
+                //  didInvalidate: false,
+                //items: state.items
+                //}
             });
 
-        /*return Object.assign({}, state, {
-            foldersData: filter(state.foldersData, function(item) {
-                  return item.id != state.activeFolderId;
-            })
-        });*/
+        case _actionsActionsJs.CREATE_FOLDERS_RESPONSE:
 
-        /*case ADD_FOLDER:
-            console.log(action.type);
-              // activeFolderId
-              state.foldersData.splice(action.index+1,0,{
-                key: 1 + max(state.foldersData, function(item){
-                    return item.key
-                }).key,
-                id: 1 + max(state.foldersData, function(item){
-                    return item.id
-                }).id,
-                title : action.title,
-                status: 'closed',
-                isActive: false,
-                level: action.level
-            });
-              return Object.assign({}, state, {
-                foldersData: state.foldersData
-            });*/
-
-        /*case ADD_NOTE:
-              // activeFolderId
-              state.notesData.push({
-                key: 1 + max(state.notesData, function(item){
-                    return item.key
-                }).key,
-                id: 1 + max(state.notesData, function(item){
-                    return item.id
-                }).id,
-                title : action.title,
-                content: action.content,
-                tags: [],
-                tagsIDs: action.tags
-            });
-              console.log(action.type,state.notesData);
-              return Object.assign({}, state, {
-                notesData: state.notesData
-            });*/
-
-        case _actions.SET_NOTE_EDIT_MODE:
-            console.log(action.type, state.activeNoteId);
+            state.items.splice(action.data.index + 1, 0, action.data);
 
             return Object.assign({}, state, {
-                editNoteId: parseInt(state.activeNoteId)
+
+                //folders: {
+                isFetching: false,
+                //  didInvalidate: false,
+                items: state.items
+                //}
+
             });
 
-        case _actions.RESET_NOTE_EDIT_MODE:
-            console.log(action.type);
+        case _actionsActionsJs.DELETE_FOLDERS_REQUEST:
 
             return Object.assign({}, state, {
-                editNoteId: null
+                //folders: {
+                isFetching: true //,
+                //  didInvalidate: false
+                //}
             });
 
-        case _actions.SET_NOTE_ACTIVE:
-            console.log(action.type, action.activeNoteId, state);
+        case _actionsActionsJs.DELETE_FOLDERS_RESPONSE:
 
             return Object.assign({}, state, {
-                activeNoteId: action.activeNoteId
+
+                //folders: {
+                isFetching: false,
+                //  didInvalidate: false,
+                items: action.data
+                //}
+
             });
 
-        case _actions.EDITING_NOTE_TITLE:
+        default:
+            return state;
+    }
+}
 
-            var newNotesData = (0, _lodashCollectionMapJs2['default'])(state.fetchingData.notes.items, function (item) {
+exports['default'] = foldersReducer;
+module.exports = exports['default'];
+
+},{"../actions/actions.js":699,"lodash/collection/filter.js":34,"lodash/collection/forEach.js":35,"lodash/collection/map.js":36,"lodash/math/max.js":111}],716:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var _redux = require('redux');
+
+var _foldersReducer = require("./foldersReducer");
+
+var _foldersReducer2 = _interopRequireDefault(_foldersReducer);
+
+var _notesReducer = require("./notesReducer");
+
+var _notesReducer2 = _interopRequireDefault(_notesReducer);
+
+var _editFolderIdReducer = require("./editFolderIdReducer");
+
+var _editFolderIdReducer2 = _interopRequireDefault(_editFolderIdReducer);
+
+var _activeFolderIdReducer = require("./activeFolderIdReducer");
+
+var _activeFolderIdReducer2 = _interopRequireDefault(_activeFolderIdReducer);
+
+var _editNoteIdReducer = require("./editNoteIdReducer");
+
+var _editNoteIdReducer2 = _interopRequireDefault(_editNoteIdReducer);
+
+var _activeNoteIdReducer = require("./activeNoteIdReducer");
+
+var _activeNoteIdReducer2 = _interopRequireDefault(_activeNoteIdReducer);
+
+/*const reducer = combineReducers({
+    foldersReducer,
+    notesReducer
+});*/
+
+var reducer = (0, _redux.combineReducers)({
+    editFolderId: _editFolderIdReducer2["default"],
+    activeFolderId: _activeFolderIdReducer2["default"],
+    editNoteId: _editNoteIdReducer2["default"],
+    activeNoteId: _activeNoteIdReducer2["default"],
+    folders: _foldersReducer2["default"],
+    notes: _notesReducer2["default"]
+});
+
+exports["default"] = reducer;
+module.exports = exports["default"];
+
+},{"./activeFolderIdReducer":711,"./activeNoteIdReducer":712,"./editFolderIdReducer":713,"./editNoteIdReducer":714,"./foldersReducer":715,"./notesReducer":717,"redux":690}],717:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _lodashCollectionMapJs = require('lodash/collection/map.js');
+
+var _lodashCollectionMapJs2 = _interopRequireDefault(_lodashCollectionMapJs);
+
+var _lodashCollectionFilterJs = require('lodash/collection/filter.js');
+
+var _lodashCollectionFilterJs2 = _interopRequireDefault(_lodashCollectionFilterJs);
+
+var _lodashCollectionForEachJs = require('lodash/collection/forEach.js');
+
+var _lodashCollectionForEachJs2 = _interopRequireDefault(_lodashCollectionForEachJs);
+
+var _lodashMathMaxJs = require('lodash/math/max.js');
+
+var _lodashMathMaxJs2 = _interopRequireDefault(_lodashMathMaxJs);
+
+var _actionsActionsJs = require('../actions/actions.js');
+
+function notesReducer(state, action) {
+    if (state === undefined) state = {};
+
+    console.log(action.type, action);
+
+    switch (action.type) {
+
+        case _actionsActionsJs.EDITING_NOTE_TITLE:
+
+            var newNotesData = (0, _lodashCollectionMapJs2['default'])(state.items, function (item) {
                 if (item.id == state.editNoteId) {
                     item.title = action.value;
                 }
@@ -50204,188 +50303,70 @@ function reducer(state, action) {
 
             return Object.assign({}, state, {
 
-                fetchingData: {
-                    folders: state.fetchingData.folders,
-                    notes: {
-                        isFetching: false,
-                        didInvalidate: false,
-                        items: newNotesData
-                    }
-                }
+                /*notes: {
+                    isFetching: false,
+                    didInvalidate: false,*/
+                items: newNotesData
+                //}
 
             });
 
-        case _actions.EDITING_NOTE_CONTENT:
+        case _actionsActionsJs.EDITING_NOTE_CONTENT:
 
-            var newNotesData = (0, _lodashCollectionMapJs2['default'])(state.fetchingData.notes.items, function (item) {
+            var newNotesData = (0, _lodashCollectionMapJs2['default'])(state.items, function (item) {
                 if (item.id == state.editNoteId) {
                     item.description = action.value;
                 }
                 return item;
             });
 
-            console.log(action.type, action.value);
-
-            /*return Object.assign({}, state, {
-                notesData: newNotesData
-            });*/
-
             return Object.assign({}, state, {
 
-                fetchingData: {
-                    folders: state.fetchingData.folders,
-                    notes: {
-                        isFetching: false,
-                        didInvalidate: false,
-                        items: newNotesData
-                    }
-                }
+                /*notes: {
+                    isFetching: false,
+                    didInvalidate: false,*/
+                items: newNotesData
+                //}
 
             });
 
-        case _actions.GET_FOLDERS_REQUEST:
-            console.log(action.type);
+        case _actionsActionsJs.GET_NOTES_REQUEST:
+
+            console.log('state', state);
 
             return Object.assign({}, state, {
-                fetchingData: {
-                    notes: state.fetchingData.notes,
-                    folders: {
-                        isFetching: true,
-                        didInvalidate: false
-                    }
-                }
+                //notes: {
+                isFetching: true,
+                //didInvalidate: false,
+                items: state.items
+                //}
             });
 
-        case _actions.GET_FOLDERS_RESPONSE:
-            console.log(action.type);
+        case _actionsActionsJs.GET_NOTES_RESPONSE:
 
             return Object.assign({}, state, {
 
-                fetchingData: {
-                    notes: state.fetchingData.notes,
-                    folders: {
-                        isFetching: false,
-                        didInvalidate: false,
-                        items: action.data
-                    }
-                }
+                //notes: {
+                isFetching: false,
+                //didInvalidate: false,
+                items: action.data
+                //}
 
             });
 
-        case _actions.CREATE_FOLDERS_REQUEST:
-            console.log(action.type);
+        case _actionsActionsJs.CREATE_NOTES_REQUEST:
 
             return Object.assign({}, state, {
-                fetchingData: {
-                    notes: state.fetchingData.notes,
-                    folders: {
-                        isFetching: true,
-                        didInvalidate: false,
-                        items: state.fetchingData.folders.items
-                    }
-                }
+                //notes: {
+                isFetching: true,
+                //didInvalidate: false,
+                items: state.items
+                //}
             });
 
-        case _actions.CREATE_FOLDERS_RESPONSE:
-            console.log(action.type, action.data, action.index, action.index + 1);
+        case _actionsActionsJs.CREATE_NOTES_RESPONSE:
 
-            state.fetchingData.folders.items.splice(action.data.index + 1, 0, action.data);
-
-            return Object.assign({}, state, {
-
-                fetchingData: {
-                    notes: state.fetchingData.notes,
-                    folders: {
-                        isFetching: false,
-                        didInvalidate: false,
-                        items: state.fetchingData.folders.items
-                    }
-                }
-
-            });
-
-        case _actions.DELETE_FOLDERS_REQUEST:
-            console.log(action.type);
-
-            return Object.assign({}, state, {
-                fetchingData: {
-                    notes: state.fetchingData.notes,
-                    folders: {
-                        isFetching: true,
-                        didInvalidate: false,
-                        items: state.fetchingData.folders.items
-                    }
-                }
-            });
-
-        case _actions.DELETE_FOLDERS_RESPONSE:
-            console.log(action.type, state.fetchingData.folders.items);
-
-            return Object.assign({}, state, {
-
-                fetchingData: {
-                    notes: state.fetchingData.notes,
-                    folders: {
-                        isFetching: false,
-                        didInvalidate: false,
-                        items: (0, _lodashCollectionFilterJs2['default'])(state.fetchingData.folders.items, function (item) {
-
-                            return item.id != state.activeFolderId && item.parentId != state.activeFolderId;
-                        })
-                    }
-                }
-
-            });
-
-        case _actions.GET_NOTES_REQUEST:
-            console.log(action.type);
-
-            return Object.assign({}, state, {
-                fetchingData: {
-                    notes: {
-                        isFetching: true,
-                        didInvalidate: false
-                    },
-                    folders: state.fetchingData.folders
-                }
-            });
-
-        case _actions.GET_NOTES_RESPONSE:
-            console.log(action.type, "23");
-
-            return Object.assign({}, state, {
-
-                fetchingData: {
-                    notes: {
-                        isFetching: false,
-                        didInvalidate: false,
-                        items: action.data
-                    },
-                    folders: state.fetchingData.folders
-                }
-
-            });
-
-        case _actions.CREATE_NOTES_REQUEST:
-            console.log(action.type, state.fetchingData.notes.items);
-
-            return Object.assign({}, state, {
-                fetchingData: {
-                    notes: {
-                        isFetching: true,
-                        didInvalidate: false,
-                        items: state.fetchingData.notes.items
-                    },
-                    folders: state.fetchingData.folders
-                }
-            });
-
-        case _actions.CREATE_NOTES_RESPONSE:
-            console.log(action.type);
-
-            // activeFolderId
-
-            var items = state.fetchingData.notes.items;
+            var items = state.items;
 
             items.push({
                 key: 1 + (0, _lodashMathMaxJs2['default'])(items, function (item) {
@@ -50403,49 +50384,39 @@ function reducer(state, action) {
 
             return Object.assign({}, state, {
 
-                fetchingData: {
-                    notes: {
-                        isFetching: false,
-                        didInvalidate: false,
-                        items: items
-                    },
-                    folders: state.fetchingData.folders
-                }
+                //notes: {
+                isFetching: true,
+                //didInvalidate: false,
+                items: items
+                //}
 
             });
 
-        case _actions.UPDATE_NOTES_REQUEST:
-            console.log(action.type);
+        case _actionsActionsJs.UPDATE_NOTES_REQUEST:
 
             return Object.assign({}, state, {
-                fetchingData: {
-                    notes: {
-                        isFetching: true,
-                        didInvalidate: false,
-                        items: state.fetchingData.notes.items
-                    },
-                    folders: state.fetchingData.folders
-                }
+                //notes: {
+                isFetching: true /*,
+                                 didInvalidate: false,
+                                 items: state.items
+                                 }*/
             });
 
-        case _actions.UPDATE_NOTES_RESPONSE:
+        case _actionsActionsJs.UPDATE_NOTES_RESPONSE:
 
             return Object.assign({}, state, {
 
-                fetchingData: {
-                    notes: {
-                        isFetching: false,
-                        didInvalidate: false,
-                        items: action.data
-                    },
-                    folders: state.fetchingData.folders
-                }
+                //notes: {
+                isFetching: false,
+                //didInvalidate: false,
+                items: action.data
+                //}
 
             });
 
-        case _actions.UPDATE_SINGLENOTE_RESPONSE:
+        case _actionsActionsJs.UPDATE_SINGLENOTE_RESPONSE:
 
-            items = state.fetchingData.notes.items;
+            items = state.items;
 
             (0, _lodashCollectionForEachJs2['default'])(items, function (item) {
                 if (item.id == action.data.id) {
@@ -50455,76 +50426,47 @@ function reducer(state, action) {
 
             return Object.assign({}, state, {
 
-                fetchingData: {
-                    notes: {
-                        isFetching: false,
-                        didInvalidate: false,
-                        items: items
-                    },
-                    folders: state.fetchingData.folders
-                }
+                //notes: {
+                isFetching: false,
+                //  didInvalidate: false,
+                items: items
+                //}
 
             });
 
-        case _actions.DELETE_NOTES_REQUEST:
-            console.log(action.type);
+        case _actionsActionsJs.DELETE_NOTES_REQUEST:
 
             return Object.assign({}, state, {
-                fetchingData: {
-                    notes: {
-                        isFetching: true,
-                        didInvalidate: false
-                    }
-                }
+                //notes: {
+                isFetching: true /*,
+                                 didInvalidate: false
+                                 }*/
             });
 
-        case _actions.DELETE_NOTES_RESPONSE:
-            //case REMOVE_NOTE:
-            console.log(action.type);
+        case _actionsActionsJs.DELETE_NOTES_RESPONSE:
 
-            /*return Object.assign({}, state, {
-                notesData: filter(state.notesData, function(item) {
-                      return item.id != state.activeNoteId;
+            return Object.assign({}, state, {
+
+                //notes: {
+                isFetching: false,
+                //didInvalidate: false,
+                items: (0, _lodashCollectionFilterJs2['default'])(state.items, function (item) {
+
+                    return item.id != state.activeNoteId;
                 })
-            });*/
-
-            return Object.assign({}, state, {
-
-                fetchingData: {
-                    notes: {
-                        isFetching: false,
-                        didInvalidate: false,
-                        items: (0, _lodashCollectionFilterJs2['default'])(state.fetchingData.notes.items, function (item) {
-
-                            return item.id != state.activeNoteId;
-                        })
-                    },
-                    folders: state.fetchingData.folders
-                }
+                //}
 
             });
-
-        /*case DELETE_NOTES_RESPONSE:
-            console.log(action.type);
-              return Object.assign({}, state, {
-                  fetchingData:{
-                    notes: {
-                        isFetching: false,
-                        didInvalidate: false,
-                        items: action.data
-                    }
-                }
-              });*/
 
         default:
             return state;
     }
 }
 
-exports['default'] = reducer;
+exports['default'] = notesReducer;
 module.exports = exports['default'];
 
-},{"../actions":699,"../components/data.js":702,"lodash/collection/filter.js":34,"lodash/collection/forEach.js":35,"lodash/collection/map.js":36,"lodash/math/max.js":111,"redux":690}],710:[function(require,module,exports){
+},{"../actions/actions.js":699,"lodash/collection/filter.js":34,"lodash/collection/forEach.js":35,"lodash/collection/map.js":36,"lodash/math/max.js":111}],718:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -50543,9 +50485,9 @@ var _reduxLogger = require('redux-logger');
 
 var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-var _reducersReducersJs = require('./reducers/reducers.js');
+var _reducersIndexJs = require('./reducers/index.js');
 
-var _reducersReducersJs2 = _interopRequireDefault(_reducersReducersJs);
+var _reducersIndexJs2 = _interopRequireDefault(_reducersIndexJs);
 
 var loggerMiddleware = (0, _reduxLogger2['default'])();
 
@@ -50553,12 +50495,10 @@ var createStoreWithMiddleware = (0, _redux.applyMiddleware)(_reduxThunk2['defaul
 loggerMiddleware // neat middleware that logs actions
 )(_redux.createStore);
 
-exports['default'] = createStoreWithMiddleware(_reducersReducersJs2['default']);
-
-//export default createStore(reducer);
+exports['default'] = createStoreWithMiddleware(_reducersIndexJs2['default']);
 module.exports = exports['default'];
 
-},{"./reducers/reducers.js":709,"redux":690,"redux-logger":687,"redux-thunk":688}],711:[function(require,module,exports){
+},{"./reducers/index.js":716,"redux":690,"redux-logger":687,"redux-thunk":688}],719:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -50896,7 +50836,7 @@ var Autocomplete = React.createClass({
 
 module.exports = Autocomplete;
 
-},{"dom-scroll-into-view":1,"react":686,"react-dom":494}],712:[function(require,module,exports){
+},{"dom-scroll-into-view":1,"react":686,"react-dom":494}],720:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -50949,4 +50889,4 @@ function getStates() {
   return [{ abbr: "AL", name: "Alabama" }, { abbr: "AK", name: "Alaska" }, { abbr: "AZ", name: "Arizona" }, { abbr: "AR", name: "Arkansas" }, { abbr: "CA", name: "California" }, { abbr: "CO", name: "Colorado" }, { abbr: "CT", name: "Connecticut" }, { abbr: "DE", name: "Delaware" }, { abbr: "FL", name: "Florida" }, { abbr: "GA", name: "Georgia" }, { abbr: "HI", name: "Hawaii" }, { abbr: "ID", name: "Idaho" }, { abbr: "IL", name: "Illinois" }, { abbr: "IN", name: "Indiana" }, { abbr: "IA", name: "Iowa" }, { abbr: "KS", name: "Kansas" }, { abbr: "KY", name: "Kentucky" }, { abbr: "LA", name: "Louisiana" }, { abbr: "ME", name: "Maine" }, { abbr: "MD", name: "Maryland" }, { abbr: "MA", name: "Massachusetts" }, { abbr: "MI", name: "Michigan" }, { abbr: "MN", name: "Minnesota" }, { abbr: "MS", name: "Mississippi" }, { abbr: "MO", name: "Missouri" }, { abbr: "MT", name: "Montana" }, { abbr: "NE", name: "Nebraska" }, { abbr: "NV", name: "Nevada" }, { abbr: "NH", name: "New Hampshire" }, { abbr: "NJ", name: "New Jersey" }, { abbr: "NM", name: "New Mexico" }, { abbr: "NY", name: "New York" }, { abbr: "NC", name: "North Carolina" }, { abbr: "ND", name: "North Dakota" }, { abbr: "OH", name: "Ohio" }, { abbr: "OK", name: "Oklahoma" }, { abbr: "OR", name: "Oregon" }, { abbr: "PA", name: "Pennsylvania" }, { abbr: "RI", name: "Rhode Island" }, { abbr: "SC", name: "South Carolina" }, { abbr: "SD", name: "South Dakota" }, { abbr: "TN", name: "Tennessee" }, { abbr: "TX", name: "Texas" }, { abbr: "UT", name: "Utah" }, { abbr: "VT", name: "Vermont" }, { abbr: "VA", name: "Virginia" }, { abbr: "WA", name: "Washington" }, { abbr: "WV", name: "West Virginia" }, { abbr: "WI", name: "Wisconsin" }, { abbr: "WY", name: "Wyoming" }];
 }
 
-},{}]},{},[708]);
+},{}]},{},[710]);

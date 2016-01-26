@@ -4,10 +4,10 @@ import React, { Component, PropTypes } from 'react';
 
 import { Link } from 'react-router';
 
-//import {notesData} from './data.js';
-
 import {set_note_edit_mode ,reset_note_edit_mode,set_note_active, editing_note,
-    remove_note, editing_note_title, editing_note_content, fetchNotes} from '../actions.js';
+    remove_note, editing_note_title, editing_note_content} from '../actions/actions.js';
+
+import {fetchNotes} from '../actions/fetchNotes.js';
 
 import { connect } from 'react-redux'
 
@@ -15,7 +15,9 @@ import filter from 'lodash/collection/filter.js';
 
 import store from '../store.js'
 
-var Menu = require('./menu.js');
+import Menu from './menu.js';
+
+
 
 class SingleNote extends Component {
 
@@ -27,7 +29,6 @@ class SingleNote extends Component {
         var self = this;
 
         this.dispatch(fetchNotes('GET')).then(function(data){
-            console.log('---fetchNotes---',store.getState());
 
             self.setState(store.getState());
         });
@@ -35,9 +36,7 @@ class SingleNote extends Component {
 
     findNote(id){
 
-        console.log('findNote',store.getState().fetchingData.notes.items);
-
-        return filter(store.getState().fetchingData.notes.items,function(item){
+        return filter(store.getState().notes.items,function(item){
             return item.id == id
         });
     }
@@ -55,7 +54,6 @@ class SingleNote extends Component {
             this.dispatch(reset_note_edit_mode());
 
             this.dispatch(fetchNotes('PUT', self.note)).then(function(data){
-                console.log('---fetchNotes PUT single---',store.getState());
 
                 self.setState(store.getState());
 
@@ -68,14 +66,9 @@ class SingleNote extends Component {
 
     removeNote(){
 
-        //this.dispatch(remove_note());
-
-        console.log('remove note');
-
         var self = this;
 
         this.dispatch(fetchNotes('DELETE', self.note)).then(function(data){
-            console.log('---fetchNotes DELETE---',store.getState());
 
             self.setState(store.getState());
 
@@ -94,11 +87,8 @@ class SingleNote extends Component {
     }
 
     editingNoteTitle(event){
-        console.log('editingNoteTitle 1',event.target.value);
 
         this.dispatch(editing_note_title(event.target.value));
-
-        console.log('editingNoteTitle 2',store.getState());
 
         this.setState(store.getState());
     }
@@ -113,15 +103,13 @@ class SingleNote extends Component {
 
         var state = store.getState();
 
-        if (!state.fetchingData.notes.isFetching) {
+        if (!state.notes.isFetching) {
 
             var self = this,
                 note = self.note = self.findNote(this.props.params.id)[0],
                 tagsCounter = 0,
                 textModeClass = 'visible',
                 editModeClass = 'hidden';
-
-            console.log('content !!!', note, this.props.params.id);
 
             if (this.props.params.id == store.getState().editNoteId) {
                 textModeClass = 'hidden';

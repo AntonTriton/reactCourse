@@ -38,8 +38,6 @@ class FolderItem extends Component {
 
     render() {
 
-        console.log('folder item render',this.props.name);
-
         var cl,
             self = this,
             isActive = this.props.isActive ? "active" : "",
@@ -95,8 +93,6 @@ class folders extends Component {
             editingFolder = this.props.editingFolder,
             editFolderId = this.props.editFolderId;
 
-        console.log('folders render',this.props);
-
         var items = folders.map(function(item) {
 
             var isActive = false,
@@ -104,8 +100,6 @@ class folders extends Component {
 
             if(item.id == activeFolderId) isActive = true;
             if(item.id == editFolderId) isEdit = true;
-
-            console.log('folders iterator',item.id, item.name);
 
             return <FolderItem key={item.key}
                                isActive={isActive}
