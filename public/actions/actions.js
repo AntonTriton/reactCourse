@@ -1,9 +1,6 @@
 /*
  * action types
  */
-import fetch from 'isomorphic-fetch'
-
-import assign from 'lodash/object/assign.js';
 
 /* Folders actions */
 export const SET_FOLDER_EDIT_MODE = 'SET_FOLDER_EDIT_MODE';
@@ -17,6 +14,11 @@ export const RESET_NOTE_EDIT_MODE = 'RESET_NOTE_EDIT_MODE';
 export const SET_NOTE_ACTIVE = 'SET_NOTE_ACTIVE';
 export const EDITING_NOTE_TITLE = 'EDITING_NOTE_TITLE';
 export const EDITING_NOTE_CONTENT = 'EDITING_NOTE_CONTENT';
+export const DELETE_TAG = 'DELETE_TAG';
+export const ADD_TAG = 'ADD_TAG';
+
+export const SHOW_CONFIRM_MODAL = 'SHOW_CONFIRM_MODAL';
+export const HIDE_CONFIRM_MODAL = 'HIDE_CONFIRM_MODAL';
 
 /* fetching folders actions */
 export const GET_FOLDERS_REQUEST = 'GET_FOLDERS_REQUEST';
@@ -47,8 +49,8 @@ export const DELETE_NOTES_REQUEST = 'DELETE_NOTES_REQUEST';
 export const DELETE_NOTES_RESPONSE = 'DELETE_NOTES_RESPONSE';
 
 
-export function set_folder_edit_mode() {
-    return { type: SET_FOLDER_EDIT_MODE}
+export function set_folder_edit_mode(activeFolderId) {
+    return { type: SET_FOLDER_EDIT_MODE, activeFolderId: activeFolderId}
 }
 
 export function reset_folder_edit_mode() {
@@ -59,25 +61,13 @@ export function set_folder_active(id) {
     return { type: SET_FOLDER_ACTIVE, activeFolderId : id}
 }
 
-export function editing_folder(value) {
-    return { type: EDITING_FOLDER, value : value}
-}
-
-export function remove_folder(id) {
-    return { type: REMOVE_FOLDER}
-}
-
-export function add_folder(title, level, index) {
-    return { type: ADD_FOLDER, title: title, level: level, index: index}
-}
-
-export function add_note(title, content ,tags) {
-    return { type: ADD_NOTE, content: content, tags: tags, title: title}
+export function editing_folder(value, editFolderId) {
+    return { type: EDITING_FOLDER, value : value, editFolderId: editFolderId}
 }
 
 
-export function set_note_edit_mode() {
-    return { type: SET_NOTE_EDIT_MODE}
+export function set_note_edit_mode(activeNoteId) {
+    return { type: SET_NOTE_EDIT_MODE, activeNoteId: activeNoteId}
 }
 
 export function reset_note_edit_mode() {
@@ -88,15 +78,24 @@ export function set_note_active(id) {
     return { type: SET_NOTE_ACTIVE, activeNoteId : id}
 }
 
-export function editing_note_title(value) {
-    return { type: EDITING_NOTE_TITLE, value : value}
+export function editing_note_title(value, editNoteId) {
+    return { type: EDITING_NOTE_TITLE, value : value, editNoteId: editNoteId}
 }
-export function editing_note_content(value) {
-    return { type: EDITING_NOTE_CONTENT, value : value}
+export function editing_note_content(value, editNoteId) {
+    return { type: EDITING_NOTE_CONTENT, value : value, editNoteId: editNoteId}
+}
+export function delete_tag(tagIndex, editFolderId) {
+    return { type: DELETE_TAG, tagIndex : tagIndex, editFolderId: editFolderId}
+}
+export function add_tag(tagName,editFolderId) {
+    return { type: ADD_TAG, tagName:tagName,editFolderId: editFolderId}
 }
 
-export function remove_note() {
-    return { type: REMOVE_NOTE}
+export function show_confirm_modal() {
+    return { type: SHOW_CONFIRM_MODAL}
+}
+export function hide_confirm_modal() {
+    return { type: HIDE_CONFIRM_MODAL}
 }
 
 export function get_folders_request() {

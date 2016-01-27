@@ -48,8 +48,6 @@ class MenuItem extends Component {
         this.newFolderTitle = "";
 
         this.state = {
-            editModeClass: 'hidden',
-            textModeClass: 'visible',
             title: this.props.title,
             showCreateModal : false,
             folderChecked: false,
@@ -73,21 +71,24 @@ class MenuItem extends Component {
         this.close();
     }
 
-    remove(){
-
-    }
-
     handlerClick(event){
         event.preventDefault();
 
-        var action = this.props.action;
+        var self= this,
+            action = this.props.action;
 
         switch (action){
             case "add":
                 this.open();
                 break;
             case "edit":
+
                 this.props.set_edit();
+
+                if(this.props.page == 'note') {
+                    self.is_note_edit_mode ? self.is_note_edit_mode = false : self.is_note_edit_mode = true;
+                }
+
                 break;
             case "remove":
 
@@ -120,24 +121,6 @@ class MenuItem extends Component {
         this.setState({ folderChecked: false, noteChecked: true, noteClass: '', folderClass: 'hidden' });
     }
 
-    setEditMode(){
-        this.setState({
-            editModeClass : "visible",
-            textModeClass : "hidden"
-        })
-    }
-
-    setTextMode(){
-        this.setState({
-            editModeClass : "hidden",
-            textModeClass : "visible"
-        })
-    }
-
-    componentDidUpdate(){
-        ReactDOM.findDOMNode(this.refs.folderInput).focus();
-    }
-
     editing(event){
         this.setState({
             title: event.target.value
@@ -158,19 +141,21 @@ class MenuItem extends Component {
 
     render() {
 
-        var self = this;
+        var self = this,
+            title = this.state.title;
+
+        if(title == "Edit" && self.is_note_edit_mode){
+
+            title = "Save";
+
+        }
 
         return (
         <li>
             <a href="#" onClick={self.handlerClick.bind(this)}>
                 <i className={this.props.cl}></i>
-                <span className={self.state.textModeClass}>{this.state.title}</span>
+                <span>{title}</span>
 
-                <input className={self.state.editModeClass}
-                       onBlur={self.setTextMode.bind(this)}
-                       onChange={self.editing.bind(this)}
-                       ref="folderInput"
-                       type="text" value={self.state.title}/>
             </a>
 
             <Modal
@@ -255,7 +240,8 @@ class Menu extends Component {
         var self = this,
             menu = self.state.menu,
             page = self.props.page,
-            set_edit=self.props.set_edit;
+            is_note_edit_mode = self.props.editModeClass == 'visible',
+            set_edit = self.props.set_edit;
 
         var currentMenu = filter(menu,function(item){
             return indexOf(item.page,page) != -1

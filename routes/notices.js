@@ -47,6 +47,7 @@ router
 
         var notice = _.pick(req.body, [
                   'id',
+                  'key',
                   'directoryId',
                   'position',
                   'title',

@@ -93,6 +93,17 @@ nav .fa {
 .single-note .single-note-row textarea {
   width: 645px;
 }
+.single-note .single-note-row .fa-plus {
+  cursor: pointer;
+  color: #008;
+  margin-left: 10px;
+}
+.single-note .single-note-row .add-tag {
+  width: 150px;
+}
+.single-note .single-note-row .add-tag-block {
+  margin-left: 150px;
+}
 .single-note label {
   float: left;
   width: 150px;
@@ -101,6 +112,16 @@ nav .fa {
   border: 2px solid #000;
   margin-left: 150px;
   padding: 5px;
+}
+.single-note .tag-item {
+  display: inline-block;
+  margin: 0 10px 5px 0;
+}
+.single-note .tag-item .fa-close {
+  color: #f00;
+  position: relative;
+  top: -5px;
+  cursor: pointer;
 }
 .notes_search {
   float: right;

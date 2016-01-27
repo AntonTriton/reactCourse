@@ -16,7 +16,7 @@ function foldersReducer(state = {}, action) {
         case EDITING_FOLDER:
 
             let newFoldersData = map(state.items,function(item){
-                if(item.id == state.editFolderId){
+                if(item.id == action.editFolderId){
                     item.name = action.value;
                 }
                 return item;
@@ -24,44 +24,29 @@ function foldersReducer(state = {}, action) {
 
             return Object.assign({}, state, {
 
-                /*folders: {
-                    isFetching: false,
-                    didInvalidate: false,*/
-                    items: newFoldersData
-                //}
+                items: newFoldersData
 
             });
-
 
         case GET_FOLDERS_REQUEST:
 
             return Object.assign({}, state, {
-                //folders: {
-                    isFetching: true//,
-                    //didInvalidate: false
-                // }
+                isFetching: true
             });
 
         case GET_FOLDERS_RESPONSE:
 
             return Object.assign({}, state, {
 
-                //folders: {
-                    isFetching: false,
-                //  didInvalidate: false,
-                    items: action.data
-                //}
+                isFetching: false,
+                items: action.data
 
             });
 
         case CREATE_FOLDERS_REQUEST:
 
             return Object.assign({}, state, {
-                //folders: {
-                    isFetching: true//,
-                //  didInvalidate: false,
-                //items: state.items
-                //}
+                isFetching: true
             });
 
         case CREATE_FOLDERS_RESPONSE:
@@ -70,32 +55,23 @@ function foldersReducer(state = {}, action) {
 
             return Object.assign({}, state, {
 
-                //folders: {
-                    isFetching: false,
-                //  didInvalidate: false,
-                    items: state.items
-                //}
+                isFetching: false,
+                items: state.items
 
             });
 
         case DELETE_FOLDERS_REQUEST:
 
             return Object.assign({}, state, {
-                //folders: {
-                    isFetching: true//,
-                //  didInvalidate: false
-                //}
+                isFetching: true
             });
 
         case DELETE_FOLDERS_RESPONSE:
 
             return Object.assign({}, state, {
 
-                //folders: {
-                    isFetching: false,
-                //  didInvalidate: false,
-                    items: action.data
-                //}
+                isFetching: false,
+                items: action.data
 
             });
 

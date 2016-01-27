@@ -71,6 +71,9 @@ class Card extends Component {
     }
 
     setTextMode(){
+
+        this.props.updateNoteTitle(this.props.id, this.state.value);
+
         this.setState({
             editModeClass : "hidden",
             textModeClass : "visible"

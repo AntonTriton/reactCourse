@@ -9,15 +9,11 @@ function editNoteIdReducer(state = null, action) {
 
         case SET_NOTE_EDIT_MODE:
 
-            return Object.assign({}, state, {
-                editNoteId: parseInt(state.activeNoteId)
-            });
+            return action.activeNoteId;
 
         case RESET_NOTE_EDIT_MODE:
 
-            return Object.assign({}, state, {
-                editNoteId: null
-            });
+            return null;
 
         default:
             return state

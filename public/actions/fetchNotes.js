@@ -2,6 +2,10 @@
 import {get_notes_request, create_notes_request, update_notes_request, delete_notes_request,
     get_notes_response, create_notes_response, update_notes_response, update_singlenote_response, delete_notes_response } from './actions.js';
 
+import fetch from 'isomorphic-fetch'
+
+import assign from 'lodash/object/assign.js';
+
 export function fetchNotes(method, noteData) {
 
     // Thunk middleware knows how to handle functions.
@@ -74,6 +78,8 @@ export function fetchNotes(method, noteData) {
             case 'DELETE' :
 
                 params = "/"+noteData.id;
+
+                console.log('fetch Notes 1');
 
                 dispatch(delete_notes_request());
 

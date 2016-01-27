@@ -6,6 +6,7 @@ const initialState = {
     editFolderId: null,
     activeNoteId: 0,
     editNoteId: null,
+    showConfirmModal: false,
     notes: {
         isFetching: false,
         didInvalidate: false,

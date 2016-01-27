@@ -10,11 +10,7 @@ import store from './store.js'
 
 import { Provider } from 'react-redux'
 
-import App from './components/app.js'
-import Main from './components/main.js'
-import Content from './components/content.js'
-
-import { routeConfig } from 'routeConfig.js'
+import routeConfig from './routeConfig.js'
 
 ReactDOM.render(
     <Provider store={store}>

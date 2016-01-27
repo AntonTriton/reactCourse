@@ -9,9 +9,7 @@ function activeFolderIdReducer(state = 0, action) {
 
         case SET_FOLDER_ACTIVE:
 
-            return Object.assign({}, state, {
-                activeFolderId: action.activeFolderId
-            });
+            return action.activeFolderId;
 
         default:
             return state

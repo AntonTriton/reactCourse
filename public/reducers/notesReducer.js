@@ -7,7 +7,7 @@ import max from 'lodash/math/max.js';
 import {EDITING_NOTE_TITLE, EDITING_NOTE_CONTENT,
     GET_NOTES_REQUEST, GET_NOTES_RESPONSE, CREATE_NOTES_REQUEST, CREATE_NOTES_RESPONSE,
     UPDATE_NOTES_REQUEST, UPDATE_NOTES_RESPONSE, DELETE_NOTES_REQUEST, DELETE_NOTES_RESPONSE,
-    UPDATE_SINGLENOTE_RESPONSE} from '../actions/actions.js'
+    UPDATE_SINGLENOTE_RESPONSE, DELETE_TAG, ADD_TAG} from '../actions/actions.js'
 
 function notesReducer(state = {}, action) {
 
@@ -18,7 +18,7 @@ function notesReducer(state = {}, action) {
         case EDITING_NOTE_TITLE:
 
             var newNotesData = map(state.items, function (item) {
-                if (item.id == state.editNoteId) {
+                if (item.id == action.editNoteId) {
                     item.title = action.value;
                 }
                 return item;
@@ -26,18 +26,14 @@ function notesReducer(state = {}, action) {
 
             return Object.assign({}, state, {
 
-                /*notes: {
-                    isFetching: false,
-                    didInvalidate: false,*/
-                    items: newNotesData
-                //}
+                items: newNotesData
 
             });
 
         case EDITING_NOTE_CONTENT:
 
-            var newNotesData = map(state.items, function (item) {
-                if (item.id == state.editNoteId) {
+            newNotesData = map(state.items, function (item) {
+                if (item.id == action.editNoteId) {
                     item.description = action.value;
                 }
                 return item;
@@ -45,46 +41,31 @@ function notesReducer(state = {}, action) {
 
             return Object.assign({}, state, {
 
-                /*notes: {
-                    isFetching: false,
-                    didInvalidate: false,*/
-                    items: newNotesData
-                //}
+                items: newNotesData
 
             });
 
         case GET_NOTES_REQUEST:
 
-            console.log('state',state);
-
             return Object.assign({}, state, {
-                //notes: {
-                    isFetching: true,
-                    //didInvalidate: false,
-                    items: state.items
-                //}
+                isFetching: true,
+                items: state.items
             });
 
         case GET_NOTES_RESPONSE:
 
             return Object.assign({}, state, {
 
-                //notes: {
-                    isFetching: false,
-                    //didInvalidate: false,
-                    items: action.data
-                //}
+                isFetching: false,
+                items: action.data
 
             });
 
         case CREATE_NOTES_REQUEST:
 
             return Object.assign({}, state, {
-                //notes: {
-                    isFetching: true,
-                    //didInvalidate: false,
-                    items: state.items
-                //}
+                isFetching: true,
+                items: state.items
             });
 
         case CREATE_NOTES_RESPONSE:
@@ -107,33 +88,23 @@ function notesReducer(state = {}, action) {
 
             return Object.assign({}, state, {
 
-                //notes: {
-                    isFetching: true,
-                    //didInvalidate: false,
-                    items: items
-                //}
+                isFetching: true,
+                items: items
 
             });
 
         case UPDATE_NOTES_REQUEST:
 
             return Object.assign({}, state, {
-                //notes: {
-                    isFetching: true/*,
-                    didInvalidate: false,
-                    items: state.items
-                }*/
+                    isFetching: true
             });
 
         case UPDATE_NOTES_RESPONSE:
 
             return Object.assign({}, state, {
 
-                //notes: {
-                    isFetching: false,
-                    //didInvalidate: false,
-                    items: action.data
-                //}
+                isFetching: false,
+                items: action.data
 
             });
 
@@ -149,36 +120,66 @@ function notesReducer(state = {}, action) {
 
             return Object.assign({}, state, {
 
-                //notes: {
-                    isFetching: false,
-                  //  didInvalidate: false,
-                    items: items
-                //}
+                isFetching: false,
+                items: items
 
             });
 
         case DELETE_NOTES_REQUEST:
 
             return Object.assign({}, state, {
-                //notes: {
-                    isFetching: true/*,
-                    didInvalidate: false
-                }*/
+                isFetching: true
             });
 
 
         case DELETE_NOTES_RESPONSE:
 
+            console.log('===',action.data,filter(state.items, function (item) {
+
+                return item.id != action.data.id;
+            }));
+
             return Object.assign({}, state, {
 
-                //notes: {
-                    isFetching: false,
-                    //didInvalidate: false,
-                    items: filter(state.items, function (item) {
+                isFetching: false,
+                items: filter(state.items, function (item) {
 
-                        return item.id != state.activeNoteId;
-                    })
-                //}
+                    return item.id != action.data.id;
+                })
+
+            });
+
+        case DELETE_TAG:
+
+            forEach(state.items, function (item) {
+
+                if(item.id != action.activeNoteId){
+                    item.tags.splice(action.tagIndex-1,1);
+                }
+
+            });
+
+            return Object.assign({}, state, {
+
+                isFetching: false,
+                items: state.items
+
+            });
+
+        case ADD_TAG:
+
+            forEach(state.items, function (item) {
+
+                if(item.id != action.activeNoteId){
+                    item.tags.push(action.tagName);
+                }
+
+            });
+
+            return Object.assign({}, state, {
+
+                isFetching: false,
+                items: state.items
 
             });
 

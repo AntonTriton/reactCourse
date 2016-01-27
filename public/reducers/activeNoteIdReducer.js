@@ -9,9 +9,7 @@ function activeNoteIdReducer(state = 0, action) {
 
         case SET_NOTE_ACTIVE:
 
-            return Object.assign({}, state, {
-                activeNoteId: action.activeNoteId
-            });
+            return action.activeNoteId;
 
         default:
             return state

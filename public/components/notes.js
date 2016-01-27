@@ -23,7 +23,6 @@ import indexOf from 'lodash/array/indexOf.js';
 import forEach from 'lodash/collection/forEach.js';
 
 
-
 class SearchNotes extends Component{
 
     render(){
@@ -130,6 +129,7 @@ class Notes extends Component {
                 title={item.title}
                 moveCard={self.moveCard}
                 findCard={self.findCard}
+                updateNoteTitle={self.props.updateNoteTitle}
                 />
         });
 

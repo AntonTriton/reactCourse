@@ -9,15 +9,11 @@ function editFolderIdReducer(state = null, action) {
 
         case SET_FOLDER_EDIT_MODE:
 
-            return Object.assign({}, state, {
-                editFolderId: parseInt(state.activeFolderId)
-            });
+            return parseInt(action.activeFolderId);
 
         case RESET_FOLDER_EDIT_MODE:
 
-            return Object.assign({}, state, {
-                editFolderId: null
-            });
+            return null;
 
         default:
             return state

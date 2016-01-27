@@ -6,6 +6,7 @@ import editFolderId from "./editFolderIdReducer"
 import activeFolderId from "./activeFolderIdReducer"
 import editNoteId from "./editNoteIdReducer"
 import activeNoteId from "./activeNoteIdReducer"
+import showConfirmModal from "./showConfirmModalReducer.js"
 
 /*const reducer = combineReducers({
     foldersReducer,
@@ -17,6 +18,7 @@ const reducer = combineReducers({
     activeFolderId,
     editNoteId,
     activeNoteId,
+    showConfirmModal,
     folders,
     notes
 });
