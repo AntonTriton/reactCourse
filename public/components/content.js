@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 
 import {set_note_edit_mode ,reset_note_edit_mode,set_note_active, editing_note,
     remove_note, editing_note_title, editing_note_content, delete_tag, add_tag,
-    show_confirm_modal, hide_confirm_modal} from '../actions/actions.js';
+    show_confirm_modal, hide_confirm_modal} from '../actions/index.js';
 
 import {fetchNotes} from '../actions/fetchNotes.js';
 
@@ -18,35 +18,11 @@ import store from '../store.js'
 
 import Menu from './menu.js';
 
+import ConfirmModal from './ConfirmModal.js';
+
 import {Modal, Button} from 'react-bootstrap';
 
-const modalStyle = {
-    position: 'fixed',
-    zIndex: 1040,
-    top: 0, bottom: 0, left: 0, right: 0
-};
-
-const backdropStyle = {
-    ...modalStyle,
-    zIndex: 'auto',
-    backgroundColor: '#000',
-    opacity: 0.5
-};
-
-const dialogStyle = function() {
-
-    return {
-        position: 'absolute',
-        width: 400,
-        top: '100px',
-        left: '50%',
-        marginLeft: '-200px',
-        border: '1px solid #e5e5e5',
-        backgroundColor: 'white',
-        boxShadow: '0 5px 15px rgba(0,0,0,.5)',
-        padding: 20
-    };
-};
+import {modalStyle,backdropStyle,dialogStyle} from '../initialData/constants.js';
 
 
 class SingleNote extends Component {
@@ -243,26 +219,12 @@ class SingleNote extends Component {
                             </div>
                         </div>
 
-                        <Modal
-                            aria-labelledby='modal-label'
-                            style={modalStyle}
-                            backdropStyle={backdropStyle}
-                            show={show_confirm_modal}
-                            onHide={self.close.bind(this)}
-                            >
-
-                            <div style={dialogStyle()}>
-
-                                <h4 id='modal-label'>Do you really want to delete this note ?</h4>
-
-                                <div>
-                                    <Button bsStyle="primary" onClick={self.removeNote.bind(this)}>Confirm</Button>
-                                    <Button onClick={self.close.bind(this)}>Cancel</Button>
-                                </div>
-
-                                <div></div>
-                            </div>
-                        </Modal>
+                        <ConfirmModal
+                            onClose={self.close.bind(this)}
+                            onSuccess={self.removeNote.bind(this)}
+                            is_show={show_confirm_modal}
+                            message={"Do you really want to delete this note ?"}
+                            />
 
                     </section>
                 );

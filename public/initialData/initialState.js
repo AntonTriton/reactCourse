@@ -1,12 +1,11 @@
 
-import { menuData } from '../components/data.js'
-
 const initialState = {
     activeFolderId: 0,
     editFolderId: null,
     activeNoteId: 0,
     editNoteId: null,
     showConfirmModal: false,
+    showAddModal: false,
     notes: {
         isFetching: false,
         didInvalidate: false,
@@ -16,8 +15,7 @@ const initialState = {
         isFetching: false,
         didInvalidate: false,
         items:[]
-    },
-    menuData: menuData
+    }
 };
 
 export default initialState;

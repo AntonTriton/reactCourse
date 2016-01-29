@@ -1,10 +1,6 @@
 'use strict';
 
-var Autocomplete = require('../vendor/Autocomplete.js');
-
 import React, { Component, PropTypes } from 'react';
-
-import { getStates, matchStateToTerm, sortStates, styles } from '../vendor/utils';
 
 import { DragSource, DropTarget, DragDropContext } from 'react-dnd';
 
@@ -14,48 +10,13 @@ import HTML5Backend from 'react-dnd-html5-backend';
 
 import flow from 'lodash/function/flow';
 
-import Card from './note.js';
+import Note from './note.js';
+
+import SearchNotes from './search.js';
 
 import filter from 'lodash/collection/filter.js';
-
 import indexOf from 'lodash/array/indexOf.js';
-
 import forEach from 'lodash/collection/forEach.js';
-
-
-class SearchNotes extends Component{
-
-    render(){
-
-        var self = this;
-
-        return (
-            <Autocomplete
-                initialValue=""
-                items={self.props.notes}
-                getItemValue={(item) => item.title}
-                shouldItemRender={matchStateToTerm}
-                sortItems={sortStates}
-                renderItem={(item, isHighlighted) => (
-                <div
-                  style={isHighlighted ? styles.highlightedItem : styles.item}
-                  key={item.key}
-                >{item.title}</div>
-              )}
-                />
-
-        );
-
-        /*
-        * <div className="notes_search">
-         <input type="text" placeholder="search"/>
-         <i className="icon fa fa-search"></i>
-         <a href="#" className="advanced-link">Advanced</a>
-         </div>
-         */
-    }
-
-};
 
 
 class Notes extends Component {
@@ -63,52 +24,52 @@ class Notes extends Component {
     constructor(props){
         super(props);
 
-        this.moveCard = this.moveCard.bind(this);
-        this.findCard = this.findCard.bind(this);
+        this.moveNote = this.moveNote.bind(this);
+        this.findNote = this.findNote.bind(this);
 
         this.state = {
-            cards: this.props.notes
+            notes: this.props.notes
         };
     }
 
-    moveCard(id, atIndex) {
-        const { card, index } = this.findCard(id);
+    moveNote(id, atIndex) {
+        const { note, index } = this.findNote(id);
 
         this.setState(update(this.state, {
-            cards: {
+            notes: {
                 $splice: [
                     [index, 1],
-                    [atIndex, 0, card]
+                    [atIndex, 0, note]
                 ]
             }
         }));
 
         var counter = 0;
-        forEach(this.state.cards,function(item){
+        forEach(this.state.notes,function(item){
             item.position = counter;
             counter++;
         });
 
-        this.props.updatePosition(this.state.cards);
+        this.props.updatePosition(this.state.notes);
 
     }
 
-    findCard(id) {
-        const { cards } = this.state;
-        const card = cards.filter(c => c.id === id)[0];
+    findNote(id) {
+        const { notes } = this.state;
+        const note = notes.filter(c => c.id === id)[0];
 
         return {
-            card,
-            index: cards.indexOf(card)
+            note,
+            index: notes.indexOf(note)
         };
     }
 
 
-    getCardsByFolderId(id){
+    getNotesByFolderId(id){
 
-        const cards = this.state.cards;
+        const notes = this.state.notes;
 
-        return filter(cards,function(item){
+        return filter(notes,function(item){
             return item.directoryId == id ;
         });
     }
@@ -119,16 +80,16 @@ class Notes extends Component {
 
         var self = this;
 
-        var filteredCards = this.getCardsByFolderId(this.props.folder.id);
+        var filteredNotes = this.getNotesByFolderId(this.props.folder.id);
 
-        var items = filteredCards.map(function(item) {
+        var items = filteredNotes.map(function(item) {
 
-            return <Card
+            return <Note
                 key={item.key}
                 id={item.id}
                 title={item.title}
-                moveCard={self.moveCard}
-                findCard={self.findCard}
+                moveNote={self.moveNote}
+                findNote={self.findNote}
                 updateNoteTitle={self.props.updateNoteTitle}
                 />
         });
@@ -153,7 +114,7 @@ Notes.propTypes = {
     connectDropTarget: PropTypes.func.isRequired
 };
 
-const cardTarget2 = {
+const noteTarget2 = {
     drop() {
     }
 };
@@ -165,7 +126,7 @@ function dropCollect2(connect){
 }
 
 export default flow(
-    DropTarget('card', cardTarget2, dropCollect2),
+    DropTarget('note', noteTarget2, dropCollect2),
     DragDropContext(HTML5Backend)
 )(Notes);
 

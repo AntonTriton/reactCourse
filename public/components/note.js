@@ -15,11 +15,11 @@ import { Link } from 'react-router';
 /**
  * Implements the drag source contract.
  */
-const cardSource = {
+const noteSource = {
     beginDrag(props) {
         return {
             id: props.id,
-            originalIndex: props.findCard(props.id).index
+            originalIndex: props.findNote(props.id).index
         };
     },
 
@@ -28,12 +28,12 @@ const cardSource = {
         const didDrop = monitor.didDrop();
 
         if (!didDrop) {
-            props.moveCard(droppedId, originalIndex);
+            props.moveNote(droppedId, originalIndex);
         }
     }
 };
 
-const cardTarget = {
+const noteTarget = {
     canDrop() {
         return false;
     },
@@ -43,13 +43,13 @@ const cardTarget = {
         const { id: overId } = props;
 
         if (draggedId !== overId) {
-            const { index: overIndex } = props.findCard(overId);
-            props.moveCard(draggedId, overIndex);
+            const { index: overIndex } = props.findNote(overId);
+            props.moveNote(draggedId, overIndex);
         }
     }
 };
 
-class Card extends Component {
+class Note extends Component {
 
     constructor(props) {
         super(props);
@@ -129,16 +129,16 @@ function dragCollect(connect,monitor){
     }
 }
 
-Card.propTypes = {
+Note.propTypes = {
     connectDragSource: PropTypes.func.isRequired,
     connectDropTarget: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
-    moveCard: PropTypes.func.isRequired,
-    findCard: PropTypes.func.isRequired
+    moveNote: PropTypes.func.isRequired,
+    findNote: PropTypes.func.isRequired
 };
 
 export default flow(
-    DropTarget('card', cardTarget, dropCollect),
-    DragSource('card', cardSource, dragCollect)
-)(Card);
+    DropTarget('note', noteTarget, dropCollect),
+    DragSource('note', noteSource, dragCollect)
+)(Note);

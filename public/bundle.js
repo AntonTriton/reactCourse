@@ -47805,6 +47805,270 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 },{}],703:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+                value: true
+});
+exports.fetchFolders = fetchFolders;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _indexJs = require('./index.js');
+
+var _isomorphicFetch = require('isomorphic-fetch');
+
+var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
+
+var _lodashObjectAssignJs = require('lodash/object/assign.js');
+
+var _lodashObjectAssignJs2 = _interopRequireDefault(_lodashObjectAssignJs);
+
+function fetchFolders(method, folderData) {
+
+                // Thunk middleware knows how to handle functions.
+                // It passes the dispatch method as an argument to the function,
+
+                return function (dispatch) {
+
+                                // First dispatch: the app state is updated to inform
+                                // that the API call is starting.
+
+                                var folder = [],
+                                    params = "",
+                                    request_options = { method: method };
+
+                                if (folderData) folder = JSON.stringify(folderData);
+
+                                switch (method) {
+
+                                                case 'GET':
+
+                                                                dispatch((0, _indexJs.get_folders_request)());
+
+                                                                break;
+
+                                                case 'POST':
+
+                                                                request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
+                                                                                body: folder,
+                                                                                headers: {
+                                                                                                'Accept': 'application/json',
+                                                                                                "Content-type": "application/json"
+                                                                                }
+                                                                });
+
+                                                                dispatch((0, _indexJs.create_folders_request)());
+
+                                                                break;
+
+                                                case 'PUT':
+
+                                                                params = "/" + folderData.id;
+
+                                                                request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
+                                                                                body: folder,
+                                                                                headers: {
+                                                                                                'Accept': 'application/json',
+                                                                                                "Content-type": "application/json"
+                                                                                }
+                                                                });
+
+                                                                dispatch((0, _indexJs.update_folders_request)());
+
+                                                                break;
+
+                                                case 'DELETE':
+
+                                                                params = "/" + folderData.id;
+
+                                                                dispatch((0, _indexJs.delete_folders_request)());
+
+                                                                break;
+                                }
+
+                                return (0, _isomorphicFetch2['default'])('/directories' + params, request_options).then(function (response) {
+
+                                                return response.json();
+                                }).then(function (data) {
+
+                                                // We can dispatch many times!
+                                                // Here, we update the app state with the results of the API call.
+
+                                                switch (method) {
+
+                                                                case 'GET':
+
+                                                                                dispatch((0, _indexJs.get_folders_response)(data));
+
+                                                                                break;
+
+                                                                case 'POST':
+
+                                                                                dispatch((0, _indexJs.create_folders_response)(data));
+
+                                                                                break;
+
+                                                                case 'PUT':
+
+                                                                                dispatch((0, _indexJs.update_folders_response)(data));
+
+                                                                                break;
+
+                                                                case 'DELETE':
+
+                                                                                dispatch((0, _indexJs.delete_folders_response)(data));
+
+                                                                                break;
+                                                }
+                                });
+                };
+}
+
+// thus making it able to dispatch actions itself.
+
+},{"./index.js":705,"isomorphic-fetch":29,"lodash/object/assign.js":116}],704:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+exports.fetchNotes = fetchNotes;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _indexJs = require('./index.js');
+
+var _isomorphicFetch = require('isomorphic-fetch');
+
+var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
+
+var _lodashObjectAssignJs = require('lodash/object/assign.js');
+
+var _lodashObjectAssignJs2 = _interopRequireDefault(_lodashObjectAssignJs);
+
+function fetchNotes(method, noteData) {
+
+    // Thunk middleware knows how to handle functions.
+    // It passes the dispatch method as an argument to the function,
+
+    return function (dispatch) {
+
+        // First dispatch: the app state is updated to inform
+        // that the API call is starting.//
+
+        var note = [],
+            request_options = { method: method },
+            params = "";
+
+        if (noteData) note = JSON.stringify(noteData);
+
+        switch (method) {
+
+            case 'GET':
+
+                dispatch((0, _indexJs.get_notes_request)());
+
+                break;
+
+            case 'POST':
+
+                request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
+                    body: note,
+                    headers: {
+                        'Accept': 'application/json',
+                        "Content-type": "application/json"
+                    }
+                });
+
+                dispatch((0, _indexJs.create_notes_request)());
+
+                break;
+
+            case 'PUT':
+
+                if (Array.isArray(noteData)) {
+                    params = "/all";
+
+                    request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
+                        body: note,
+                        headers: {
+                            'Accept': 'application/json',
+                            "Content-type": "application/json"
+                        }
+                    });
+
+                    dispatch((0, _indexJs.update_notes_request)());
+                } else {
+                    params = "/" + noteData.id;
+
+                    request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
+                        body: note,
+                        headers: {
+                            'Accept': 'application/json',
+                            "Content-type": "application/json"
+                        }
+                    });
+
+                    dispatch((0, _indexJs.update_notes_request)());
+                }
+                break;
+            case 'DELETE':
+
+                params = "/" + noteData.id;
+
+                console.log('fetch Notes 1');
+
+                dispatch((0, _indexJs.delete_notes_request)());
+
+                break;
+        }
+
+        return (0, _isomorphicFetch2['default'])('/notices' + params, request_options).then(function (response) {
+
+            return response.json();
+        }).then(function (data) {
+
+            // We can dispatch many times!
+            // Here, we update the app state with the results of the API call.
+
+            switch (method) {
+
+                case 'GET':
+
+                    dispatch((0, _indexJs.get_notes_response)(data));
+
+                    break;
+
+                case 'POST':
+
+                    dispatch((0, _indexJs.create_notes_response)(data));
+
+                    break;
+
+                case 'PUT':
+
+                    if (params == '/all') {
+                        dispatch((0, _indexJs.update_notes_response)(data));
+                    } else {
+                        dispatch((0, _indexJs.update_singlenote_response)(data));
+                    }
+
+                    break;
+
+                case 'DELETE':
+
+                    dispatch((0, _indexJs.delete_notes_response)(data));
+
+                    break;
+            }
+        });
+    };
+}
+
+// thus making it able to dispatch actions itself.
+
+},{"./index.js":705,"isomorphic-fetch":29,"lodash/object/assign.js":116}],705:[function(require,module,exports){
 /*
  * action types
  */
@@ -47828,6 +48092,8 @@ exports.delete_tag = delete_tag;
 exports.add_tag = add_tag;
 exports.show_confirm_modal = show_confirm_modal;
 exports.hide_confirm_modal = hide_confirm_modal;
+exports.show_add_modal = show_add_modal;
+exports.hide_add_modal = hide_add_modal;
 exports.get_folders_request = get_folders_request;
 exports.get_folders_response = get_folders_response;
 exports.create_folders_request = create_folders_request;
@@ -47875,6 +48141,11 @@ exports.SHOW_CONFIRM_MODAL = SHOW_CONFIRM_MODAL;
 var HIDE_CONFIRM_MODAL = 'HIDE_CONFIRM_MODAL';
 
 exports.HIDE_CONFIRM_MODAL = HIDE_CONFIRM_MODAL;
+var SHOW_ADD_MODAL = 'SHOW_ADD_MODAL';
+exports.SHOW_ADD_MODAL = SHOW_ADD_MODAL;
+var HIDE_ADD_MODAL = 'HIDE_ADD_MODAL';
+
+exports.HIDE_ADD_MODAL = HIDE_ADD_MODAL;
 /* fetching folders actions */
 var GET_FOLDERS_REQUEST = 'GET_FOLDERS_REQUEST';
 exports.GET_FOLDERS_REQUEST = GET_FOLDERS_REQUEST;
@@ -47973,6 +48244,14 @@ function hide_confirm_modal() {
     return { type: HIDE_CONFIRM_MODAL };
 }
 
+function show_add_modal() {
+    return { type: SHOW_ADD_MODAL };
+}
+
+function hide_add_modal() {
+    return { type: HIDE_ADD_MODAL };
+}
+
 function get_folders_request() {
     return { type: GET_FOLDERS_REQUEST };
 }
@@ -48041,271 +48320,282 @@ function delete_notes_response(data) {
     return { type: DELETE_NOTES_RESPONSE, data: data, receivedAt: Date.now() };
 }
 
-},{}],704:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-                value: true
-});
-exports.fetchFolders = fetchFolders;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _actionsJs = require('./actions.js');
-
-var _isomorphicFetch = require('isomorphic-fetch');
-
-var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
-
-var _lodashObjectAssignJs = require('lodash/object/assign.js');
-
-var _lodashObjectAssignJs2 = _interopRequireDefault(_lodashObjectAssignJs);
-
-function fetchFolders(method, folderData) {
-
-                // Thunk middleware knows how to handle functions.
-                // It passes the dispatch method as an argument to the function,
-
-                return function (dispatch) {
-
-                                // First dispatch: the app state is updated to inform
-                                // that the API call is starting.
-
-                                var folder = [],
-                                    params = "",
-                                    request_options = { method: method };
-
-                                if (folderData) folder = JSON.stringify(folderData);
-
-                                switch (method) {
-
-                                                case 'GET':
-
-                                                                dispatch((0, _actionsJs.get_folders_request)());
-
-                                                                break;
-
-                                                case 'POST':
-
-                                                                request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
-                                                                                body: folder,
-                                                                                headers: {
-                                                                                                'Accept': 'application/json',
-                                                                                                "Content-type": "application/json"
-                                                                                }
-                                                                });
-
-                                                                dispatch((0, _actionsJs.create_folders_request)());
-
-                                                                break;
-
-                                                case 'PUT':
-
-                                                                params = "/" + folderData.id;
-
-                                                                request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
-                                                                                body: folder,
-                                                                                headers: {
-                                                                                                'Accept': 'application/json',
-                                                                                                "Content-type": "application/json"
-                                                                                }
-                                                                });
-
-                                                                dispatch((0, _actionsJs.update_folders_request)());
-
-                                                                break;
-
-                                                case 'DELETE':
-
-                                                                params = "/" + folderData.id;
-
-                                                                dispatch((0, _actionsJs.delete_folders_request)());
-
-                                                                break;
-                                }
-
-                                return (0, _isomorphicFetch2['default'])('/directories' + params, request_options).then(function (response) {
-
-                                                return response.json();
-                                }).then(function (data) {
-
-                                                // We can dispatch many times!
-                                                // Here, we update the app state with the results of the API call.
-
-                                                switch (method) {
-
-                                                                case 'GET':
-
-                                                                                dispatch((0, _actionsJs.get_folders_response)(data));
-
-                                                                                break;
-
-                                                                case 'POST':
-
-                                                                                dispatch((0, _actionsJs.create_folders_response)(data));
-
-                                                                                break;
-
-                                                                case 'PUT':
-
-                                                                                dispatch((0, _actionsJs.update_folders_response)(data));
-
-                                                                                break;
-
-                                                                case 'DELETE':
-
-                                                                                dispatch((0, _actionsJs.delete_folders_response)(data));
-
-                                                                                break;
-                                                }
-                                });
-                };
-}
-
-// thus making it able to dispatch actions itself.
-
-},{"./actions.js":703,"isomorphic-fetch":29,"lodash/object/assign.js":116}],705:[function(require,module,exports){
+},{}],706:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-exports.fetchNotes = fetchNotes;
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _actionsJs = require('./actions.js');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _isomorphicFetch = require('isomorphic-fetch');
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
+var _react = require('react');
 
-var _lodashObjectAssignJs = require('lodash/object/assign.js');
+var _react2 = _interopRequireDefault(_react);
 
-var _lodashObjectAssignJs2 = _interopRequireDefault(_lodashObjectAssignJs);
+var _reactBootstrap = require('react-bootstrap');
 
-function fetchNotes(method, noteData) {
+var _initialDataConstantsJs = require('../initialData/constants.js');
 
-    // Thunk middleware knows how to handle functions.
-    // It passes the dispatch method as an argument to the function,
+var AddModal = (function (_Component) {
+    _inherits(AddModal, _Component);
 
-    return function (dispatch) {
+    function AddModal(props) {
+        _classCallCheck(this, AddModal);
 
-        // First dispatch: the app state is updated to inform
-        // that the API call is starting.//
+        _get(Object.getPrototypeOf(AddModal.prototype), 'constructor', this).call(this, props);
 
-        var note = [],
-            request_options = { method: method },
-            params = "";
+        this.newFolderTitle = "";
 
-        if (noteData) note = JSON.stringify(noteData);
+        this.state = {
+            title: this.props.title,
+            folderChecked: false,
+            noteChecked: false,
+            folderClass: "hidden",
+            noteClass: "hidden"
+        };
+    }
 
-        switch (method) {
-
-            case 'GET':
-
-                dispatch((0, _actionsJs.get_notes_request)());
-
-                break;
-
-            case 'POST':
-
-                request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
-                    body: note,
-                    headers: {
-                        'Accept': 'application/json',
-                        "Content-type": "application/json"
-                    }
-                });
-
-                dispatch((0, _actionsJs.create_notes_request)());
-
-                break;
-
-            case 'PUT':
-
-                if (Array.isArray(noteData)) {
-                    params = "/all";
-
-                    request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
-                        body: note,
-                        headers: {
-                            'Accept': 'application/json',
-                            "Content-type": "application/json"
-                        }
-                    });
-
-                    dispatch((0, _actionsJs.update_notes_request)());
-                } else {
-                    params = "/" + noteData.id;
-
-                    request_options = (0, _lodashObjectAssignJs2['default'])(request_options, {
-                        body: note,
-                        headers: {
-                            'Accept': 'application/json',
-                            "Content-type": "application/json"
-                        }
-                    });
-
-                    dispatch((0, _actionsJs.update_notes_request)());
-                }
-                break;
-            case 'DELETE':
-
-                params = "/" + noteData.id;
-
-                console.log('fetch Notes 1');
-
-                dispatch((0, _actionsJs.delete_notes_request)());
-
-                break;
+    _createClass(AddModal, [{
+        key: 'setFolderType',
+        value: function setFolderType() {
+            this.setState({ folderChecked: true, noteChecked: false, folderClass: '', noteClass: 'hidden' });
         }
+    }, {
+        key: 'setNoteType',
+        value: function setNoteType() {
+            this.setState({ folderChecked: false, noteChecked: true, noteClass: '', folderClass: 'hidden' });
+        }
+    }, {
+        key: 'setNewFolderTitle',
+        value: function setNewFolderTitle(event) {
+            this.newFolderTitle = event.target.value;
+        }
+    }, {
+        key: 'setNewNoteTitle',
+        value: function setNewNoteTitle(event) {
+            this.newNoteTitle = event.target.value;
+        }
+    }, {
+        key: 'setNewNoteContent',
+        value: function setNewNoteContent(event) {
+            this.newNoteContent = event.target.value;
+        }
+    }, {
+        key: 'addCommon',
+        value: function addCommon() {
 
-        return (0, _isomorphicFetch2['default'])('/notices' + params, request_options).then(function (response) {
+            if (this.state.folderChecked) {
 
-            return response.json();
-        }).then(function (data) {
+                this.props.addFolder(this.newFolderTitle);
+            } else if (this.state.noteChecked) {
 
-            // We can dispatch many times!
-            // Here, we update the app state with the results of the API call.
-
-            switch (method) {
-
-                case 'GET':
-
-                    dispatch((0, _actionsJs.get_notes_response)(data));
-
-                    break;
-
-                case 'POST':
-
-                    dispatch((0, _actionsJs.create_notes_response)(data));
-
-                    break;
-
-                case 'PUT':
-
-                    if (params == '/all') {
-                        dispatch((0, _actionsJs.update_notes_response)(data));
-                    } else {
-                        dispatch((0, _actionsJs.update_singlenote_response)(data));
-                    }
-
-                    break;
-
-                case 'DELETE':
-
-                    dispatch((0, _actionsJs.delete_notes_response)(data));
-
-                    break;
+                this.props.addNote(this.newNoteTitle, this.newNoteContent);
             }
-        });
-    };
-}
 
-// thus making it able to dispatch actions itself.
+            this.props.onClose();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
 
-},{"./actions.js":703,"isomorphic-fetch":29,"lodash/object/assign.js":116}],706:[function(require,module,exports){
+            var self = this;
+
+            return _react2['default'].createElement(
+                _reactBootstrap.Modal,
+                {
+                    'aria-labelledby': 'modal-label',
+                    style: _initialDataConstantsJs.modalStyle,
+                    backdropStyle: _initialDataConstantsJs.backdropStyle,
+                    show: self.props.is_show,
+                    onHide: self.props.onClose
+                },
+                _react2['default'].createElement(
+                    'div',
+                    { style: (0, _initialDataConstantsJs.dialogStyle)() },
+                    _react2['default'].createElement(
+                        'h4',
+                        { id: 'modal-label' },
+                        self.props.message
+                    ),
+                    _react2['default'].createElement(
+                        'div',
+                        { className: 'modal-item' },
+                        _react2['default'].createElement(
+                            'label',
+                            { htmlFor: 'folder_type' },
+                            _react2['default'].createElement('input', { name: 'create_type',
+                                checked: self.state.folderChecked,
+                                onChange: self.setFolderType.bind(self), id: 'folder_type', type: 'radio' }),
+                            _react2['default'].createElement(
+                                'span',
+                                null,
+                                'Folder'
+                            )
+                        )
+                    ),
+                    _react2['default'].createElement(
+                        'div',
+                        { className: 'modal-item' },
+                        _react2['default'].createElement(
+                            'label',
+                            { htmlFor: 'note_type' },
+                            _react2['default'].createElement('input', { name: 'create_type',
+                                checked: self.state.noteChecked,
+                                onChange: self.setNoteType.bind(self), id: 'note_type', type: 'radio' }),
+                            _react2['default'].createElement(
+                                'span',
+                                null,
+                                'Note'
+                            )
+                        )
+                    ),
+                    _react2['default'].createElement(
+                        'div',
+                        { className: self.state.folderClass + " modal-item" },
+                        _react2['default'].createElement(
+                            'label',
+                            { htmlFor: 'note_type' },
+                            _react2['default'].createElement('input', { type: 'text', placeholder: 'Folder\'s name',
+                                onChange: self.setNewFolderTitle.bind(self),
+                                className: 'form-control' })
+                        )
+                    ),
+                    _react2['default'].createElement(
+                        'div',
+                        { className: self.state.noteClass + " modal-item" },
+                        _react2['default'].createElement(
+                            'label',
+                            { htmlFor: 'note_type' },
+                            _react2['default'].createElement('input', { type: 'text', placeholder: 'Note\'s title',
+                                onChange: self.setNewNoteTitle.bind(self),
+                                className: 'form-control' })
+                        ),
+                        _react2['default'].createElement(
+                            'div',
+                            null,
+                            _react2['default'].createElement('textarea', { className: 'form-control', name: '', id: '', cols: '30', rows: '10',
+                                onChange: self.setNewNoteContent.bind(self),
+                                defaultValue: 'Note\'s text' })
+                        )
+                    ),
+                    _react2['default'].createElement(
+                        'div',
+                        null,
+                        _react2['default'].createElement(
+                            _reactBootstrap.Button,
+                            { bsStyle: 'primary', onClick: self.addCommon.bind(self) },
+                            'Add'
+                        ),
+                        _react2['default'].createElement(
+                            _reactBootstrap.Button,
+                            { onClick: self.props.onClose },
+                            'Cancel'
+                        )
+                    ),
+                    _react2['default'].createElement('div', null)
+                )
+            );
+        }
+    }]);
+
+    return AddModal;
+})(_react.Component);
+
+exports['default'] = AddModal;
+module.exports = exports['default'];
+
+},{"../initialData/constants.js":716,"react":690,"react-bootstrap":195}],707:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = require('react-bootstrap');
+
+var _initialDataConstantsJs = require('../initialData/constants.js');
+
+var ConfirmModal = (function (_Component) {
+    _inherits(ConfirmModal, _Component);
+
+    function ConfirmModal(props) {
+        _classCallCheck(this, ConfirmModal);
+
+        _get(Object.getPrototypeOf(ConfirmModal.prototype), 'constructor', this).call(this, props);
+    }
+
+    _createClass(ConfirmModal, [{
+        key: 'render',
+        value: function render() {
+
+            var self = this;
+
+            return _react2['default'].createElement(
+                _reactBootstrap.Modal,
+                {
+                    'aria-labelledby': 'modal-label',
+                    style: _initialDataConstantsJs.modalStyle,
+                    backdropStyle: _initialDataConstantsJs.backdropStyle,
+                    show: self.props.is_show,
+                    onHide: self.props.onClose
+                },
+                _react2['default'].createElement(
+                    'div',
+                    { style: (0, _initialDataConstantsJs.dialogStyle)() },
+                    _react2['default'].createElement(
+                        'h4',
+                        { id: 'modal-label' },
+                        self.props.message
+                    ),
+                    _react2['default'].createElement(
+                        'div',
+                        null,
+                        _react2['default'].createElement(
+                            _reactBootstrap.Button,
+                            { bsStyle: 'primary', onClick: self.props.onSuccess },
+                            'Confirm'
+                        ),
+                        _react2['default'].createElement(
+                            _reactBootstrap.Button,
+                            { onClick: self.props.onClose },
+                            'Cancel'
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ConfirmModal;
+})(_react.Component);
+
+exports['default'] = ConfirmModal;
+module.exports = exports['default'];
+
+},{"../initialData/constants.js":716,"react":690,"react-bootstrap":195}],708:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -48357,7 +48647,7 @@ var App = (function (_Component) {
 exports['default'] = App;
 module.exports = exports['default'];
 
-},{"react":690,"react-redux":501}],707:[function(require,module,exports){
+},{"react":690,"react-redux":501}],709:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -48367,8 +48657,6 @@ Object.defineProperty(exports, '__esModule', {
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -48382,7 +48670,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = require('react-router');
 
-var _actionsActionsJs = require('../actions/actions.js');
+var _actionsIndexJs = require('../actions/index.js');
 
 var _actionsFetchNotesJs = require('../actions/fetchNotes.js');
 
@@ -48400,34 +48688,13 @@ var _menuJs = require('./menu.js');
 
 var _menuJs2 = _interopRequireDefault(_menuJs);
 
+var _ConfirmModalJs = require('./ConfirmModal.js');
+
+var _ConfirmModalJs2 = _interopRequireDefault(_ConfirmModalJs);
+
 var _reactBootstrap = require('react-bootstrap');
 
-var modalStyle = {
-    position: 'fixed',
-    zIndex: 1040,
-    top: 0, bottom: 0, left: 0, right: 0
-};
-
-var backdropStyle = _extends({}, modalStyle, {
-    zIndex: 'auto',
-    backgroundColor: '#000',
-    opacity: 0.5
-});
-
-var dialogStyle = function dialogStyle() {
-
-    return {
-        position: 'absolute',
-        width: 400,
-        top: '100px',
-        left: '50%',
-        marginLeft: '-200px',
-        border: '1px solid #e5e5e5',
-        backgroundColor: 'white',
-        boxShadow: '0 5px 15px rgba(0,0,0,.5)',
-        padding: 20
-    };
-};
+var _initialDataConstantsJs = require('../initialData/constants.js');
 
 var SingleNote = (function (_Component) {
     _inherits(SingleNote, _Component);
@@ -48463,10 +48730,10 @@ var SingleNote = (function (_Component) {
 
             if (this.props.params.id != _storeJs2['default'].getState().editNoteId) {
 
-                this.dispatch((0, _actionsActionsJs.set_note_edit_mode)(_storeJs2['default'].getState().activeNoteId));
+                this.dispatch((0, _actionsIndexJs.set_note_edit_mode)(_storeJs2['default'].getState().activeNoteId));
             } else {
 
-                this.dispatch((0, _actionsActionsJs.reset_note_edit_mode)());
+                this.dispatch((0, _actionsIndexJs.reset_note_edit_mode)());
 
                 this.dispatch((0, _actionsFetchNotesJs.fetchNotes)('PUT', self.note)).then(function (data) {
 
@@ -48480,7 +48747,7 @@ var SingleNote = (function (_Component) {
         key: 'showConfirm',
         value: function showConfirm() {
 
-            this.dispatch((0, _actionsActionsJs.show_confirm_modal)());
+            this.dispatch((0, _actionsIndexJs.show_confirm_modal)());
             this.setState(_storeJs2['default'].getState());
         }
     }, {
@@ -48507,7 +48774,7 @@ var SingleNote = (function (_Component) {
         key: 'editingNoteTitle',
         value: function editingNoteTitle(event) {
 
-            this.dispatch((0, _actionsActionsJs.editing_note_title)(event.target.value, _storeJs2['default'].getState().activeNoteId));
+            this.dispatch((0, _actionsIndexJs.editing_note_title)(event.target.value, _storeJs2['default'].getState().activeNoteId));
 
             this.setState(_storeJs2['default'].getState());
         }
@@ -48515,7 +48782,7 @@ var SingleNote = (function (_Component) {
         key: 'editingNoteContent',
         value: function editingNoteContent(event) {
 
-            this.dispatch((0, _actionsActionsJs.editing_note_content)(event.target.value, _storeJs2['default'].getState().activeNoteId));
+            this.dispatch((0, _actionsIndexJs.editing_note_content)(event.target.value, _storeJs2['default'].getState().activeNoteId));
 
             this.setState(_storeJs2['default'].getState());
         }
@@ -48525,7 +48792,7 @@ var SingleNote = (function (_Component) {
 
             var tagIndex = event.target.parentElement.dataset.index;
 
-            this.dispatch((0, _actionsActionsJs.delete_tag)(tagIndex, _storeJs2['default'].getState().activeFolderId));
+            this.dispatch((0, _actionsIndexJs.delete_tag)(tagIndex, _storeJs2['default'].getState().activeFolderId));
 
             this.setState(_storeJs2['default'].getState());
         }
@@ -48537,14 +48804,14 @@ var SingleNote = (function (_Component) {
 
             console.log(event.target.parentElement.children[0].value);
 
-            this.dispatch((0, _actionsActionsJs.add_tag)(tagName, _storeJs2['default'].getState().activeFolderId));
+            this.dispatch((0, _actionsIndexJs.add_tag)(tagName, _storeJs2['default'].getState().activeFolderId));
 
             this.setState(_storeJs2['default'].getState());
         }
     }, {
         key: 'close',
         value: function close() {
-            this.dispatch((0, _actionsActionsJs.hide_confirm_modal)());
+            this.dispatch((0, _actionsIndexJs.hide_confirm_modal)());
             this.setState(_storeJs2['default'].getState());
         }
     }, {
@@ -48579,7 +48846,7 @@ var SingleNote = (function (_Component) {
                         );
                     });
 
-                    this.dispatch((0, _actionsActionsJs.set_note_active)(this.props.params.id));
+                    this.dispatch((0, _actionsIndexJs.set_note_active)(this.props.params.id));
 
                     return _react2['default'].createElement(
                         'section',
@@ -48651,40 +48918,12 @@ var SingleNote = (function (_Component) {
                                 )
                             )
                         ),
-                        _react2['default'].createElement(
-                            _reactBootstrap.Modal,
-                            {
-                                'aria-labelledby': 'modal-label',
-                                style: modalStyle,
-                                backdropStyle: backdropStyle,
-                                show: show_confirm_modal,
-                                onHide: self.close.bind(this)
-                            },
-                            _react2['default'].createElement(
-                                'div',
-                                { style: dialogStyle() },
-                                _react2['default'].createElement(
-                                    'h4',
-                                    { id: 'modal-label' },
-                                    'Do you really want to delete this note ?'
-                                ),
-                                _react2['default'].createElement(
-                                    'div',
-                                    null,
-                                    _react2['default'].createElement(
-                                        _reactBootstrap.Button,
-                                        { bsStyle: 'primary', onClick: self.removeNote.bind(this) },
-                                        'Confirm'
-                                    ),
-                                    _react2['default'].createElement(
-                                        _reactBootstrap.Button,
-                                        { onClick: self.close.bind(this) },
-                                        'Cancel'
-                                    )
-                                ),
-                                _react2['default'].createElement('div', null)
-                            )
-                        )
+                        _react2['default'].createElement(_ConfirmModalJs2['default'], {
+                            onClose: self.close.bind(this),
+                            onSuccess: self.removeNote.bind(this),
+                            is_show: show_confirm_modal,
+                            message: "Do you really want to delete this note ?"
+                        })
                     );
                 }
 
@@ -48701,40 +48940,7 @@ var SingleNote = (function (_Component) {
 exports['default'] = (0, _reactRedux.connect)()(SingleNote);
 module.exports = exports['default'];
 
-},{"../actions/actions.js":703,"../actions/fetchNotes.js":705,"../store.js":724,"./menu.js":711,"lodash/collection/filter.js":34,"react":690,"react-bootstrap":195,"react-redux":501,"react-router":527}],708:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var menuData = [{
-    key: 0,
-    title: "Add",
-    action: "add",
-    page: ["main"],
-    "class": 'fa fa-plus'
-}, {
-    key: 1,
-    title: "Edit",
-    action: "edit",
-    page: ["main", "note"],
-    "class": 'fa fa-pencil'
-}, {
-    key: 2,
-    title: "Remove",
-    action: "remove",
-    page: ["main", "note"],
-    "class": 'fa fa-remove'
-}, {
-    key: 3,
-    title: "Back",
-    action: "back",
-    page: ["note"],
-    "class": 'fa fa-arrow-left'
-}];
-exports.menuData = menuData;
-
-},{}],709:[function(require,module,exports){
+},{"../actions/fetchNotes.js":704,"../actions/index.js":705,"../initialData/constants.js":716,"../store.js":723,"./ConfirmModal.js":707,"./menu.js":712,"lodash/collection/filter.js":34,"react":690,"react-bootstrap":195,"react-redux":501,"react-router":527}],710:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -48759,11 +48965,7 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-//import {foldersData} from './data.js';
-
 var _reactRouter = require('react-router');
-
-//import store from '../store.js'
 
 var FolderItem = (function (_Component) {
     _inherits(FolderItem, _Component);
@@ -48852,10 +49054,6 @@ var folders = (function (_Component2) {
         _classCallCheck(this, folders);
 
         _get(Object.getPrototypeOf(folders.prototype), 'constructor', this).call(this);
-
-        /*this.state = {
-            folders: foldersData
-        }*/
     }
 
     _createClass(folders, [{
@@ -48903,7 +49101,7 @@ var folders = (function (_Component2) {
 exports['default'] = folders;
 module.exports = exports['default'];
 
-},{"react":690,"react-dom":498,"react-router":527}],710:[function(require,module,exports){
+},{"react":690,"react-dom":498,"react-router":527}],711:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -48913,8 +49111,6 @@ Object.defineProperty(exports, '__esModule', {
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -48926,21 +49122,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _actionsActionsJs = require('../actions/actions.js');
+var _actionsIndexJs = require('../actions/index.js');
 
 var _actionsFetchFoldersJs = require('../actions/fetchFolders.js');
 
 var _actionsFetchNotesJs = require('../actions/fetchNotes.js');
 
 var _reactRedux = require('react-redux');
-
-var _lodashCollectionFilterJs = require('lodash/collection/filter.js');
-
-var _lodashCollectionFilterJs2 = _interopRequireDefault(_lodashCollectionFilterJs);
-
-var _lodashCollectionFindJs = require('lodash/collection/find.js');
-
-var _lodashCollectionFindJs2 = _interopRequireDefault(_lodashCollectionFindJs);
 
 var _menuJs = require('./menu.js');
 
@@ -48954,38 +49142,25 @@ var _notesJs = require('./notes.js');
 
 var _notesJs2 = _interopRequireDefault(_notesJs);
 
+var _ConfirmModalJs = require('./ConfirmModal.js');
+
+var _ConfirmModalJs2 = _interopRequireDefault(_ConfirmModalJs);
+
+var _AddModalJs = require('./AddModal.js');
+
+var _AddModalJs2 = _interopRequireDefault(_AddModalJs);
+
 var _storeJs = require('../store.js');
 
 var _storeJs2 = _interopRequireDefault(_storeJs);
 
-var _reactBootstrap = require('react-bootstrap');
+var _lodashCollectionFilterJs = require('lodash/collection/filter.js');
 
-var modalStyle = {
-    position: 'fixed',
-    zIndex: 1040,
-    top: 0, bottom: 0, left: 0, right: 0
-};
+var _lodashCollectionFilterJs2 = _interopRequireDefault(_lodashCollectionFilterJs);
 
-var backdropStyle = _extends({}, modalStyle, {
-    zIndex: 'auto',
-    backgroundColor: '#000',
-    opacity: 0.5
-});
+var _lodashCollectionFindJs = require('lodash/collection/find.js');
 
-var dialogStyle = function dialogStyle() {
-
-    return {
-        position: 'absolute',
-        width: 400,
-        top: '100px',
-        left: '50%',
-        marginLeft: '-200px',
-        border: '1px solid #e5e5e5',
-        backgroundColor: 'white',
-        boxShadow: '0 5px 15px rgba(0,0,0,.5)',
-        padding: 20
-    };
-};
+var _lodashCollectionFindJs2 = _interopRequireDefault(_lodashCollectionFindJs);
 
 var Main = (function (_Component) {
     _inherits(Main, _Component);
@@ -49008,10 +49183,6 @@ var Main = (function (_Component) {
 
             self.setState(_storeJs2['default'].getState());
         });
-
-        this.state = {
-            showModal: false
-        };
     }
 
     _createClass(Main, [{
@@ -49027,7 +49198,7 @@ var Main = (function (_Component) {
         key: 'setEditFolder',
         value: function setEditFolder() {
 
-            this.dispatch((0, _actionsActionsJs.set_folder_edit_mode)(_storeJs2['default'].getState().activeFolderId));
+            this.dispatch((0, _actionsIndexJs.set_folder_edit_mode)(_storeJs2['default'].getState().activeFolderId));
 
             this.setState(_storeJs2['default'].getState());
         }
@@ -49035,7 +49206,7 @@ var Main = (function (_Component) {
         key: 'resetEditFolder',
         value: function resetEditFolder() {
 
-            this.dispatch((0, _actionsActionsJs.reset_folder_edit_mode)());
+            this.dispatch((0, _actionsIndexJs.reset_folder_edit_mode)());
 
             var self = this;
 
@@ -49049,7 +49220,6 @@ var Main = (function (_Component) {
     }, {
         key: 'removeFolder',
         value: function removeFolder() {
-            //this.dispatch(remove_folder());
 
             var self = this;
 
@@ -49057,8 +49227,7 @@ var Main = (function (_Component) {
 
                 self.forcedFolderId = true;
 
-                self.close();
-                //self.setState(store.getState());
+                self.closeConfirm();
             });
         }
     }, {
@@ -49084,7 +49253,7 @@ var Main = (function (_Component) {
 
             this.dispatch((0, _actionsFetchFoldersJs.fetchFolders)('POST', { name: name, level: level, parentId: activeFolder[0].id, index: index })).then(function (data) {
 
-                self.setState(_storeJs2['default'].getState());
+                self.setState({ folders: _storeJs2['default'].getState().folders });
             });
         }
     }, {
@@ -49097,23 +49266,20 @@ var Main = (function (_Component) {
 
             this.dispatch((0, _actionsFetchNotesJs.fetchNotes)('POST', { title: title, description: content, directoryId: directoryId, tags: tagsIDs })).then(function (data) {
 
-                self.setState(_storeJs2['default'].getState());
+                self.setState({ notes: _storeJs2['default'].getState().notes });
             });
         }
     }, {
         key: 'editingFolder',
         value: function editingFolder(value) {
 
-            this.dispatch((0, _actionsActionsJs.editing_folder)(value, _storeJs2['default'].getState().editFolderId));
+            this.dispatch((0, _actionsIndexJs.editing_folder)(value, _storeJs2['default'].getState().editFolderId));
 
             this.setState(_storeJs2['default'].getState());
         }
     }, {
         key: 'updatePosition',
         value: function updatePosition(notes) {
-            var directoryId = parseInt(_storeJs2['default'].getState().activeFolderId),
-                tagsIDs = [directoryId],
-                self = this;
 
             this.dispatch((0, _actionsFetchNotesJs.fetchNotes)('PUT', notes)).then(function (data) {
                 self.setState(_storeJs2['default'].getState());
@@ -49127,8 +49293,6 @@ var Main = (function (_Component) {
                 return item.id == noteId;
             });
 
-            console.log('updateNoteTitle!!', note, noteId, _storeJs2['default'].getState().notes.items);
-
             note.title = newTitle;
             note.title = newTitle;
 
@@ -49140,13 +49304,26 @@ var Main = (function (_Component) {
         key: 'showConfirm',
         value: function showConfirm() {
 
-            this.dispatch((0, _actionsActionsJs.show_confirm_modal)());
+            this.dispatch((0, _actionsIndexJs.show_confirm_modal)());
             this.setState(_storeJs2['default'].getState());
         }
     }, {
-        key: 'close',
-        value: function close() {
-            this.dispatch((0, _actionsActionsJs.hide_confirm_modal)());
+        key: 'closeConfirm',
+        value: function closeConfirm() {
+            this.dispatch((0, _actionsIndexJs.hide_confirm_modal)());
+            this.setState(_storeJs2['default'].getState());
+        }
+    }, {
+        key: 'showAdd',
+        value: function showAdd() {
+
+            this.dispatch((0, _actionsIndexJs.show_add_modal)());
+            this.setState(_storeJs2['default'].getState());
+        }
+    }, {
+        key: 'closeAdd',
+        value: function closeAdd() {
+            this.dispatch((0, _actionsIndexJs.hide_add_modal)());
             this.setState(_storeJs2['default'].getState());
         }
     }, {
@@ -49170,15 +49347,14 @@ var Main = (function (_Component) {
                 }
                 folder = self.folder = self.getFolderById(folderId)[0];
 
-                self.dispatch((0, _actionsActionsJs.set_folder_active)(folderId));
+                self.dispatch((0, _actionsIndexJs.set_folder_active)(folderId));
 
                 return _react2['default'].createElement(
                     'div',
                     null,
                     _react2['default'].createElement(_menuJs2['default'], { page: 'main',
                         set_edit: self.setEditFolder.bind(this),
-                        addFolder: self.addFolder.bind(this),
-                        addNote: self.addNote.bind(this),
+                        showAdd: self.showAdd.bind(this),
                         removeFolder: self.showConfirm.bind(this)
                     }),
                     _react2['default'].createElement(
@@ -49201,40 +49377,20 @@ var Main = (function (_Component) {
                             folder: folder
                         })
                     ),
-                    _react2['default'].createElement(
-                        _reactBootstrap.Modal,
-                        {
-                            'aria-labelledby': 'modal-label',
-                            style: modalStyle,
-                            backdropStyle: backdropStyle,
-                            show: show_confirm_modal,
-                            onHide: self.close.bind(this)
-                        },
-                        _react2['default'].createElement(
-                            'div',
-                            { style: dialogStyle() },
-                            _react2['default'].createElement(
-                                'h4',
-                                { id: 'modal-label' },
-                                'Do you really want to delete this folder ?'
-                            ),
-                            _react2['default'].createElement(
-                                'div',
-                                null,
-                                _react2['default'].createElement(
-                                    _reactBootstrap.Button,
-                                    { bsStyle: 'primary', onClick: self.removeFolder.bind(this) },
-                                    'Confirm'
-                                ),
-                                _react2['default'].createElement(
-                                    _reactBootstrap.Button,
-                                    { onClick: self.close.bind(this) },
-                                    'Cancel'
-                                )
-                            ),
-                            _react2['default'].createElement('div', null)
-                        )
-                    )
+                    _react2['default'].createElement(_ConfirmModalJs2['default'], {
+                        onClose: self.closeConfirm.bind(this),
+                        onSuccess: self.removeFolder.bind(this),
+                        is_show: show_confirm_modal,
+                        message: "Do you really want to delete this folder ?"
+                    }),
+                    _react2['default'].createElement(_AddModalJs2['default'], {
+                        onClose: self.closeAdd.bind(this),
+                        onSuccess: self.removeFolder.bind(this),
+                        is_show: self.state.showAddModal,
+                        message: "What do you want to add ?",
+                        addFolder: self.addFolder.bind(this),
+                        addNote: self.addNote.bind(this)
+                    })
                 );
             } else {
                 return null;
@@ -49250,7 +49406,7 @@ var Main = (function (_Component) {
 exports['default'] = (0, _reactRedux.connect)()(Main);
 module.exports = exports['default'];
 
-},{"../actions/actions.js":703,"../actions/fetchFolders.js":704,"../actions/fetchNotes.js":705,"../store.js":724,"./folders.js":709,"./menu.js":711,"./notes.js":713,"lodash/collection/filter.js":34,"lodash/collection/find.js":35,"react":690,"react-bootstrap":195,"react-redux":501}],711:[function(require,module,exports){
+},{"../actions/fetchFolders.js":703,"../actions/fetchNotes.js":704,"../actions/index.js":705,"../store.js":723,"./AddModal.js":706,"./ConfirmModal.js":707,"./folders.js":710,"./menu.js":712,"./notes.js":714,"lodash/collection/filter.js":34,"lodash/collection/find.js":35,"react":690,"react-redux":501}],712:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -49260,8 +49416,6 @@ Object.defineProperty(exports, '__esModule', {
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -49273,8 +49427,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _dataJs = require('./data.js');
-
 var _lodashCollectionFilterJs = require('lodash/collection/filter.js');
 
 var _lodashCollectionFilterJs2 = _interopRequireDefault(_lodashCollectionFilterJs);
@@ -49285,36 +49437,11 @@ var _lodashArrayIndexOfJs2 = _interopRequireDefault(_lodashArrayIndexOfJs);
 
 var _reactBootstrap = require('react-bootstrap');
 
+var _initialDataConstantsJs = require('../initialData/constants.js');
+
 var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var modalStyle = {
-    position: 'fixed',
-    zIndex: 1040,
-    top: 0, bottom: 0, left: 0, right: 0
-};
-
-var backdropStyle = _extends({}, modalStyle, {
-    zIndex: 'auto',
-    backgroundColor: '#000',
-    opacity: 0.5
-});
-
-var dialogStyle = function dialogStyle() {
-
-    return {
-        position: 'absolute',
-        width: 400,
-        top: '100px',
-        left: '50%',
-        marginLeft: '-200px',
-        border: '1px solid #e5e5e5',
-        backgroundColor: 'white',
-        boxShadow: '0 5px 15px rgba(0,0,0,.5)',
-        padding: 20
-    };
-};
 
 var MenuItem = (function (_Component) {
     _inherits(MenuItem, _Component);
@@ -49337,20 +49464,6 @@ var MenuItem = (function (_Component) {
     }
 
     _createClass(MenuItem, [{
-        key: 'addCommon',
-        value: function addCommon() {
-
-            if (this.state.folderChecked) {
-
-                this.props.addFolder(this.newFolderTitle);
-            } else if (this.state.noteChecked) {
-
-                this.props.addNote(this.newNoteTitle, this.newNoteContent);
-            }
-
-            this.close();
-        }
-    }, {
         key: 'handlerClick',
         value: function handlerClick(event) {
             event.preventDefault();
@@ -49360,8 +49473,11 @@ var MenuItem = (function (_Component) {
 
             switch (action) {
                 case "add":
-                    this.open();
+
+                    this.props.showAdd();
+
                     break;
+
                 case "edit":
 
                     this.props.set_edit();
@@ -49371,6 +49487,7 @@ var MenuItem = (function (_Component) {
                     }
 
                     break;
+
                 case "remove":
 
                     if (this.props.page == 'main') {
@@ -49380,59 +49497,25 @@ var MenuItem = (function (_Component) {
                     }
 
                     break;
+
                 case "back":
+
                     this.props.back();
+
                     break;
             }
-        }
-    }, {
-        key: 'close',
-        value: function close() {
-            this.setState({ showCreateModal: false });
-        }
-    }, {
-        key: 'open',
-        value: function open() {
-            this.setState({ showCreateModal: true });
-        }
-    }, {
-        key: 'setFolderType',
-        value: function setFolderType() {
-            this.setState({ folderChecked: true, noteChecked: false, folderClass: '', noteClass: 'hidden' });
-        }
-    }, {
-        key: 'setNoteType',
-        value: function setNoteType() {
-            this.setState({ folderChecked: false, noteChecked: true, noteClass: '', folderClass: 'hidden' });
-        }
-    }, {
-        key: 'editing',
-        value: function editing(event) {
-            this.setState({
-                title: event.target.value
-            });
-        }
-    }, {
-        key: 'setNewFolderTitle',
-        value: function setNewFolderTitle(event) {
-            this.newFolderTitle = event.target.value;
-        }
-    }, {
-        key: 'setNewNoteTitle',
-        value: function setNewNoteTitle(event) {
-            this.newNoteTitle = event.target.value;
-        }
-    }, {
-        key: 'setNewNoteContent',
-        value: function setNewNoteContent(event) {
-            this.newNoteContent = event.target.value;
         }
     }, {
         key: 'render',
         value: function render() {
 
             var self = this,
-                title = this.state.title;
+                title = this.state.title,
+                tooltip = _react2['default'].createElement(
+                _reactBootstrap.Tooltip,
+                { id: 'tooltip1' },
+                self.props.tooltip
+            );
 
             if (title == "Edit" && self.is_note_edit_mode) {
 
@@ -49443,108 +49526,17 @@ var MenuItem = (function (_Component) {
                 'li',
                 null,
                 _react2['default'].createElement(
-                    'a',
-                    { href: '#', onClick: self.handlerClick.bind(this) },
-                    _react2['default'].createElement('i', { className: this.props.cl }),
+                    _reactBootstrap.OverlayTrigger,
+                    { placement: 'right', overlay: tooltip },
                     _react2['default'].createElement(
-                        'span',
-                        null,
-                        title
-                    )
-                ),
-                _react2['default'].createElement(
-                    _reactBootstrap.Modal,
-                    {
-                        'aria-labelledby': 'modal-label',
-                        style: modalStyle,
-                        backdropStyle: backdropStyle,
-                        show: self.state.showCreateModal,
-                        onHide: self.close.bind(this)
-                    },
-                    _react2['default'].createElement(
-                        'div',
-                        { style: dialogStyle() },
+                        'a',
+                        { href: '#', onClick: self.handlerClick.bind(this) },
+                        _react2['default'].createElement('i', { className: self.props.cl }),
                         _react2['default'].createElement(
-                            'h4',
-                            { id: 'modal-label' },
-                            'What do you want to add ?'
-                        ),
-                        _react2['default'].createElement(
-                            'div',
-                            { className: 'modal-item' },
-                            _react2['default'].createElement(
-                                'label',
-                                { htmlFor: 'folder_type' },
-                                _react2['default'].createElement('input', { name: 'create_type',
-                                    checked: this.state.folderChecked,
-                                    onChange: this.setFolderType.bind(this), id: 'folder_type', type: 'radio' }),
-                                _react2['default'].createElement(
-                                    'span',
-                                    null,
-                                    'Folder'
-                                )
-                            )
-                        ),
-                        _react2['default'].createElement(
-                            'div',
-                            { className: 'modal-item' },
-                            _react2['default'].createElement(
-                                'label',
-                                { htmlFor: 'note_type' },
-                                _react2['default'].createElement('input', { name: 'create_type',
-                                    checked: this.state.noteChecked,
-                                    onChange: this.setNoteType.bind(this), id: 'note_type', type: 'radio' }),
-                                _react2['default'].createElement(
-                                    'span',
-                                    null,
-                                    'Note'
-                                )
-                            )
-                        ),
-                        _react2['default'].createElement(
-                            'div',
-                            { className: self.state.folderClass + " modal-item" },
-                            _react2['default'].createElement(
-                                'label',
-                                { htmlFor: 'note_type' },
-                                _react2['default'].createElement('input', { type: 'text', placeholder: 'Folder\'s name',
-                                    onChange: self.setNewFolderTitle.bind(this),
-                                    className: 'form-control' })
-                            )
-                        ),
-                        _react2['default'].createElement(
-                            'div',
-                            { className: self.state.noteClass + " modal-item" },
-                            _react2['default'].createElement(
-                                'label',
-                                { htmlFor: 'note_type' },
-                                _react2['default'].createElement('input', { type: 'text', placeholder: 'Note\'s title',
-                                    onChange: self.setNewNoteTitle.bind(this),
-                                    className: 'form-control' })
-                            ),
-                            _react2['default'].createElement(
-                                'div',
-                                null,
-                                _react2['default'].createElement('textarea', { className: 'form-control', name: '', id: '', cols: '30', rows: '10',
-                                    onChange: self.setNewNoteContent.bind(this),
-                                    defaultValue: 'Note\'s text' })
-                            )
-                        ),
-                        _react2['default'].createElement(
-                            'div',
+                            'span',
                             null,
-                            _react2['default'].createElement(
-                                _reactBootstrap.Button,
-                                { bsStyle: 'primary', onClick: self.addCommon.bind(this) },
-                                'Add'
-                            ),
-                            _react2['default'].createElement(
-                                _reactBootstrap.Button,
-                                { onClick: self.close.bind(this) },
-                                'Cancel'
-                            )
-                        ),
-                        _react2['default'].createElement('div', null)
+                            title
+                        )
                     )
                 )
             );
@@ -49565,7 +49557,7 @@ var Menu = (function (_Component2) {
         _get(Object.getPrototypeOf(Menu.prototype), 'constructor', this).call(this, props);
 
         this.state = {
-            menu: _dataJs.menuData,
+            menu: _initialDataConstantsJs.menuData,
             showCreateModal: false
         };
     }
@@ -49578,13 +49570,23 @@ var Menu = (function (_Component2) {
                 menu = self.state.menu,
                 page = self.props.page,
                 is_note_edit_mode = self.props.editModeClass == 'visible',
-                set_edit = self.props.set_edit;
+                set_edit = self.props.set_edit,
+                tooltip;
 
             var currentMenu = (0, _lodashCollectionFilterJs2['default'])(menu, function (item) {
                 return (0, _lodashArrayIndexOfJs2['default'])(item.page, page) != -1;
             });
 
             var items = currentMenu.map(function (item) {
+
+                if (page == 'main' || item.tooltips.length == 1) {
+
+                    tooltip = item.tooltips[0];
+                } else {
+
+                    tooltip = item.tooltips[1];
+                }
+
                 return _react2['default'].createElement(MenuItem, { key: item.key,
                     title: item.title,
                     cl: item['class'],
@@ -49594,7 +49596,9 @@ var Menu = (function (_Component2) {
                     addFolder: self.props.addFolder,
                     addNote: self.props.addNote,
                     page: page,
+                    tooltip: tooltip,
                     back: self.props.back,
+                    showAdd: self.props.showAdd,
                     action: item.action });
             });
 
@@ -49618,7 +49622,7 @@ var Menu = (function (_Component2) {
 exports['default'] = Menu;
 module.exports = exports['default'];
 
-},{"./data.js":708,"lodash/array/indexOf.js":31,"lodash/collection/filter.js":34,"react":690,"react-bootstrap":195,"react-dom":498}],712:[function(require,module,exports){
+},{"../initialData/constants.js":716,"lodash/array/indexOf.js":31,"lodash/collection/filter.js":34,"react":690,"react-bootstrap":195,"react-dom":498}],713:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -49658,11 +49662,11 @@ var _reactRouter = require('react-router');
 /**
  * Implements the drag source contract.
  */
-var cardSource = {
+var noteSource = {
     beginDrag: function beginDrag(props) {
         return {
             id: props.id,
-            originalIndex: props.findCard(props.id).index
+            originalIndex: props.findNote(props.id).index
         };
     },
 
@@ -49675,12 +49679,12 @@ var cardSource = {
         var didDrop = monitor.didDrop();
 
         if (!didDrop) {
-            props.moveCard(droppedId, originalIndex);
+            props.moveNote(droppedId, originalIndex);
         }
     }
 };
 
-var cardTarget = {
+var noteTarget = {
     canDrop: function canDrop() {
         return false;
     },
@@ -49692,22 +49696,22 @@ var cardTarget = {
         var overId = props.id;
 
         if (draggedId !== overId) {
-            var _props$findCard = props.findCard(overId);
+            var _props$findNote = props.findNote(overId);
 
-            var overIndex = _props$findCard.index;
+            var overIndex = _props$findNote.index;
 
-            props.moveCard(draggedId, overIndex);
+            props.moveNote(draggedId, overIndex);
         }
     }
 };
 
-var Card = (function (_Component) {
-    _inherits(Card, _Component);
+var Note = (function (_Component) {
+    _inherits(Note, _Component);
 
-    function Card(props) {
-        _classCallCheck(this, Card);
+    function Note(props) {
+        _classCallCheck(this, Note);
 
-        _get(Object.getPrototypeOf(Card.prototype), 'constructor', this).call(this, props);
+        _get(Object.getPrototypeOf(Note.prototype), 'constructor', this).call(this, props);
 
         this.state = {
             editModeClass: 'hidden',
@@ -49717,7 +49721,7 @@ var Card = (function (_Component) {
         };
     }
 
-    _createClass(Card, [{
+    _createClass(Note, [{
         key: 'setEditMode',
         value: function setEditMode() {
             this.setState({
@@ -49786,7 +49790,7 @@ var Card = (function (_Component) {
         }
     }]);
 
-    return Card;
+    return Note;
 })(_react.Component);
 
 function dropCollect(connect) {
@@ -49802,19 +49806,19 @@ function dragCollect(connect, monitor) {
     };
 }
 
-Card.propTypes = {
+Note.propTypes = {
     connectDragSource: _react.PropTypes.func.isRequired,
     connectDropTarget: _react.PropTypes.func.isRequired,
     isDragging: _react.PropTypes.bool.isRequired,
     title: _react.PropTypes.string.isRequired,
-    moveCard: _react.PropTypes.func.isRequired,
-    findCard: _react.PropTypes.func.isRequired
+    moveNote: _react.PropTypes.func.isRequired,
+    findNote: _react.PropTypes.func.isRequired
 };
 
-exports['default'] = (0, _lodashFunctionFlow2['default'])((0, _reactDnd.DropTarget)('card', cardTarget, dropCollect), (0, _reactDnd.DragSource)('card', cardSource, dragCollect))(Card);
+exports['default'] = (0, _lodashFunctionFlow2['default'])((0, _reactDnd.DropTarget)('note', noteTarget, dropCollect), (0, _reactDnd.DragSource)('note', noteSource, dragCollect))(Note);
 module.exports = exports['default'];
 
-},{"lodash/function/flow":38,"react":690,"react-dnd":436,"react-dom":498,"react-router":527,"react/lib/update":661}],713:[function(require,module,exports){
+},{"lodash/function/flow":38,"react":690,"react-dnd":436,"react-dom":498,"react-router":527,"react/lib/update":661}],714:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -49835,8 +49839,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _vendorUtils = require('../vendor/utils');
-
 var _reactDnd = require('react-dnd');
 
 var _reactLibUpdate = require('react/lib/update');
@@ -49855,6 +49857,10 @@ var _noteJs = require('./note.js');
 
 var _noteJs2 = _interopRequireDefault(_noteJs);
 
+var _searchJs = require('./search.js');
+
+var _searchJs2 = _interopRequireDefault(_searchJs);
+
 var _lodashCollectionFilterJs = require('lodash/collection/filter.js');
 
 var _lodashCollectionFilterJs2 = _interopRequireDefault(_lodashCollectionFilterJs);
@@ -49867,117 +49873,65 @@ var _lodashCollectionForEachJs = require('lodash/collection/forEach.js');
 
 var _lodashCollectionForEachJs2 = _interopRequireDefault(_lodashCollectionForEachJs);
 
-var Autocomplete = require('../vendor/Autocomplete.js');
-
-var SearchNotes = (function (_Component) {
-    _inherits(SearchNotes, _Component);
-
-    function SearchNotes() {
-        _classCallCheck(this, SearchNotes);
-
-        _get(Object.getPrototypeOf(SearchNotes.prototype), 'constructor', this).apply(this, arguments);
-    }
-
-    _createClass(SearchNotes, [{
-        key: 'render',
-        value: function render() {
-
-            var self = this;
-
-            return _react2['default'].createElement(Autocomplete, {
-                initialValue: '',
-                items: self.props.notes,
-                getItemValue: function (item) {
-                    return item.title;
-                },
-                shouldItemRender: _vendorUtils.matchStateToTerm,
-                sortItems: _vendorUtils.sortStates,
-                renderItem: function (item, isHighlighted) {
-                    return _react2['default'].createElement(
-                        'div',
-                        {
-                            style: isHighlighted ? _vendorUtils.styles.highlightedItem : _vendorUtils.styles.item,
-                            key: item.key
-                        },
-                        item.title
-                    );
-                }
-            });
-
-            /*
-            * <div className="notes_search">
-             <input type="text" placeholder="search"/>
-             <i className="icon fa fa-search"></i>
-             <a href="#" className="advanced-link">Advanced</a>
-             </div>
-             */
-        }
-    }]);
-
-    return SearchNotes;
-})(_react.Component);
-
-;
-
-var Notes = (function (_Component2) {
-    _inherits(Notes, _Component2);
+var Notes = (function (_Component) {
+    _inherits(Notes, _Component);
 
     function Notes(props) {
         _classCallCheck(this, Notes);
 
         _get(Object.getPrototypeOf(Notes.prototype), 'constructor', this).call(this, props);
 
-        this.moveCard = this.moveCard.bind(this);
-        this.findCard = this.findCard.bind(this);
+        this.moveNote = this.moveNote.bind(this);
+        this.findNote = this.findNote.bind(this);
 
         this.state = {
-            cards: this.props.notes
+            notes: this.props.notes
         };
     }
 
     _createClass(Notes, [{
-        key: 'moveCard',
-        value: function moveCard(id, atIndex) {
-            var _findCard = this.findCard(id);
+        key: 'moveNote',
+        value: function moveNote(id, atIndex) {
+            var _findNote = this.findNote(id);
 
-            var card = _findCard.card;
-            var index = _findCard.index;
+            var note = _findNote.note;
+            var index = _findNote.index;
 
             this.setState((0, _reactLibUpdate2['default'])(this.state, {
-                cards: {
-                    $splice: [[index, 1], [atIndex, 0, card]]
+                notes: {
+                    $splice: [[index, 1], [atIndex, 0, note]]
                 }
             }));
 
             var counter = 0;
-            (0, _lodashCollectionForEachJs2['default'])(this.state.cards, function (item) {
+            (0, _lodashCollectionForEachJs2['default'])(this.state.notes, function (item) {
                 item.position = counter;
                 counter++;
             });
 
-            this.props.updatePosition(this.state.cards);
+            this.props.updatePosition(this.state.notes);
         }
     }, {
-        key: 'findCard',
-        value: function findCard(id) {
-            var cards = this.state.cards;
+        key: 'findNote',
+        value: function findNote(id) {
+            var notes = this.state.notes;
 
-            var card = cards.filter(function (c) {
+            var note = notes.filter(function (c) {
                 return c.id === id;
             })[0];
 
             return {
-                card: card,
-                index: cards.indexOf(card)
+                note: note,
+                index: notes.indexOf(note)
             };
         }
     }, {
-        key: 'getCardsByFolderId',
-        value: function getCardsByFolderId(id) {
+        key: 'getNotesByFolderId',
+        value: function getNotesByFolderId(id) {
 
-            var cards = this.state.cards;
+            var notes = this.state.notes;
 
-            return (0, _lodashCollectionFilterJs2['default'])(cards, function (item) {
+            return (0, _lodashCollectionFilterJs2['default'])(notes, function (item) {
                 return item.directoryId == id;
             });
         }
@@ -49988,16 +49942,16 @@ var Notes = (function (_Component2) {
 
             var self = this;
 
-            var filteredCards = this.getCardsByFolderId(this.props.folder.id);
+            var filteredNotes = this.getNotesByFolderId(this.props.folder.id);
 
-            var items = filteredCards.map(function (item) {
+            var items = filteredNotes.map(function (item) {
 
                 return _react2['default'].createElement(_noteJs2['default'], {
                     key: item.key,
                     id: item.id,
                     title: item.title,
-                    moveCard: self.moveCard,
-                    findCard: self.findCard,
+                    moveNote: self.moveNote,
+                    findNote: self.findNote,
                     updateNoteTitle: self.props.updateNoteTitle
                 });
             });
@@ -50005,7 +49959,7 @@ var Notes = (function (_Component2) {
             return connectDropTarget(_react2['default'].createElement(
                 'div',
                 null,
-                _react2['default'].createElement(SearchNotes, {
+                _react2['default'].createElement(_searchJs2['default'], {
                     notes: self.props.notes
                 }),
                 _react2['default'].createElement(
@@ -50024,7 +49978,7 @@ Notes.propTypes = {
     connectDropTarget: _react.PropTypes.func.isRequired
 };
 
-var cardTarget2 = {
+var noteTarget2 = {
     drop: function drop() {}
 };
 
@@ -50034,10 +49988,213 @@ function dropCollect2(connect) {
     };
 }
 
-exports['default'] = (0, _lodashFunctionFlow2['default'])((0, _reactDnd.DropTarget)('card', cardTarget2, dropCollect2), (0, _reactDnd.DragDropContext)(_reactDndHtml5Backend2['default']))(Notes);
+exports['default'] = (0, _lodashFunctionFlow2['default'])((0, _reactDnd.DropTarget)('note', noteTarget2, dropCollect2), (0, _reactDnd.DragDropContext)(_reactDndHtml5Backend2['default']))(Notes);
 module.exports = exports['default'];
 
-},{"../vendor/Autocomplete.js":725,"../vendor/utils":726,"./note.js":712,"lodash/array/indexOf.js":31,"lodash/collection/filter.js":34,"lodash/collection/forEach.js":36,"lodash/function/flow":38,"react":690,"react-dnd":436,"react-dnd-html5-backend":376,"react/lib/update":661}],714:[function(require,module,exports){
+},{"./note.js":713,"./search.js":715,"lodash/array/indexOf.js":31,"lodash/collection/filter.js":34,"lodash/collection/forEach.js":36,"lodash/function/flow":38,"react":690,"react-dnd":436,"react-dnd-html5-backend":376,"react/lib/update":661}],715:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _vendorAutocompleteJs = require('../vendor/Autocomplete.js');
+
+var _vendorAutocompleteJs2 = _interopRequireDefault(_vendorAutocompleteJs);
+
+var _reactBootstrap = require('react-bootstrap');
+
+var _vendorUtils = require('../vendor/utils');
+
+var SearchNotes = (function (_Component) {
+    _inherits(SearchNotes, _Component);
+
+    function SearchNotes(props) {
+        _classCallCheck(this, SearchNotes);
+
+        _get(Object.getPrototypeOf(SearchNotes.prototype), 'constructor', this).call(this, props);
+
+        this.adv_on_class = "hidden";
+        this.adv_off_class = "visible";
+
+        this.tooltip = _react2['default'].createElement(
+            _reactBootstrap.Tooltip,
+            { id: 'tooltip1' },
+            'Switch on/off advanced mode. Advanced Mode allows you search also through the content of notes and tags.'
+        );
+    }
+
+    _createClass(SearchNotes, [{
+        key: 'triggerAdvMode',
+        value: function triggerAdvMode() {
+
+            var self = this;
+
+            if (self.is_advanced_mode) {
+
+                self.is_advanced_mode = false;
+                self.adv_on_class = "hidden";
+                self.adv_off_class = "visible";
+            } else {
+                self.is_advanced_mode = true;
+                self.adv_on_class = "visible";
+                self.adv_off_class = "hidden";
+            }
+
+            this.forceUpdate();
+        }
+    }, {
+        key: 'goToNote',
+        value: function goToNote(label, item) {
+            window.location.hash = "#/note/" + item.id;
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            var self = this,
+                items = self.props.notes;
+
+            return _react2['default'].createElement(
+                'div',
+                null,
+                _react2['default'].createElement(_vendorAutocompleteJs2['default'], {
+                    initialValue: '',
+                    items: items,
+                    getItemValue: function (item) {
+                        return item.title;
+                    },
+                    shouldItemRender: _vendorUtils.matchStateToTerm.bind(this, self.is_advanced_mode),
+                    sortItems: _vendorUtils.sortStates,
+                    onSelect: self.goToNote,
+                    renderItem: function (item, isHighlighted) {
+                        return _react2['default'].createElement(
+                            'div',
+                            {
+                                style: isHighlighted ? _vendorUtils.styles.highlightedItem : _vendorUtils.styles.item,
+                                key: item.key
+                            },
+                            item.title
+                        );
+                    }
+                }),
+                _react2['default'].createElement(
+                    _reactBootstrap.OverlayTrigger,
+                    { placement: 'right', overlay: self.tooltip },
+                    _react2['default'].createElement(
+                        'span',
+                        { className: 'advanced-link',
+                            onClick: self.triggerAdvMode.bind(this)
+                        },
+                        _react2['default'].createElement(
+                            'span',
+                            { style: { color: 'blue' }, className: self.adv_on_class },
+                            'Adv on'
+                        ),
+                        _react2['default'].createElement(
+                            'span',
+                            { style: { color: 'gray' }, className: self.adv_off_class },
+                            'Adv off'
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return SearchNotes;
+})(_react.Component);
+
+;
+
+exports['default'] = SearchNotes;
+module.exports = exports['default'];
+
+},{"../vendor/Autocomplete.js":724,"../vendor/utils":725,"react":690,"react-bootstrap":195}],716:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var modalStyle = {
+    position: 'fixed',
+    zIndex: 1040,
+    top: 0, bottom: 0, left: 0, right: 0
+};
+
+exports.modalStyle = modalStyle;
+var backdropStyle = _extends({}, modalStyle, {
+    zIndex: 'auto',
+    backgroundColor: '#000',
+    opacity: 0.5
+});
+
+exports.backdropStyle = backdropStyle;
+var dialogStyle = function dialogStyle() {
+
+    return {
+        position: 'absolute',
+        width: 400,
+        top: '100px',
+        left: '50%',
+        marginLeft: '-200px',
+        border: '1px solid #e5e5e5',
+        backgroundColor: 'white',
+        boxShadow: '0 5px 15px rgba(0,0,0,.5)',
+        padding: 20
+    };
+};
+
+exports.dialogStyle = dialogStyle;
+var menuData = [{
+    key: 0,
+    title: "Add",
+    action: "add",
+    page: ["main"],
+    tooltips: ["Add folder or note"],
+    'class': 'fa fa-plus'
+}, {
+    key: 1,
+    title: "Edit",
+    action: "edit",
+    page: ["main", "note"],
+    tooltips: ["Edit folder", "Edit note"],
+    'class': 'fa fa-pencil'
+}, {
+    key: 2,
+    title: "Remove",
+    action: "remove",
+    page: ["main", "note"],
+    tooltips: ["Remove folder", "Remove note"],
+    'class': 'fa fa-remove'
+}, {
+    key: 3,
+    title: "Back",
+    action: "back",
+    page: ["note"],
+    tooltips: ["Go back"],
+    'class': 'fa fa-arrow-left'
+}];
+exports.menuData = menuData;
+
+},{}],717:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -50050,17 +50207,17 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactRouter = require('react-router');
-
 var _storeJs = require('./store.js');
 
 var _storeJs2 = _interopRequireDefault(_storeJs);
 
-var _reactRedux = require('react-redux');
-
 var _routeConfigJs = require('./routeConfig.js');
 
 var _routeConfigJs2 = _interopRequireDefault(_routeConfigJs);
+
+var _reactRouter = require('react-router');
+
+var _reactRedux = require('react-redux');
 
 _reactDom2['default'].render(_react2['default'].createElement(
     _reactRedux.Provider,
@@ -50068,23 +50225,23 @@ _reactDom2['default'].render(_react2['default'].createElement(
     _react2['default'].createElement(_reactRouter.Router, { routes: _routeConfigJs2['default'] })
 ), document.querySelector('.app'));
 
-},{"./routeConfig.js":723,"./store.js":724,"react":690,"react-dom":498,"react-redux":501,"react-router":527}],715:[function(require,module,exports){
+},{"./routeConfig.js":722,"./store.js":723,"react":690,"react-dom":498,"react-redux":501,"react-router":527}],718:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _actionsActionsJs = require('../actions/actions.js');
+var _actionsIndexJs = require('../actions/index.js');
 
-function activeFolderIdReducer(state, action) {
+function activeFolderId(state, action) {
     if (state === undefined) state = 0;
 
     console.log(action.type, action);
 
     switch (action.type) {
 
-        case _actionsActionsJs.SET_FOLDER_ACTIVE:
+        case _actionsIndexJs.SET_FOLDER_ACTIVE:
 
             return action.activeFolderId;
 
@@ -50093,26 +50250,14 @@ function activeFolderIdReducer(state, action) {
     }
 }
 
-exports['default'] = activeFolderIdReducer;
-module.exports = exports['default'];
-
-},{"../actions/actions.js":703}],716:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _actionsActionsJs = require('../actions/actions.js');
-
-function activeNoteIdReducer(state, action) {
+function activeNoteId(state, action) {
     if (state === undefined) state = 0;
 
     console.log(action.type, action);
 
     switch (action.type) {
 
-        case _actionsActionsJs.SET_NOTE_ACTIVE:
+        case _actionsIndexJs.SET_NOTE_ACTIVE:
 
             return action.activeNoteId;
 
@@ -50121,30 +50266,18 @@ function activeNoteIdReducer(state, action) {
     }
 }
 
-exports['default'] = activeNoteIdReducer;
-module.exports = exports['default'];
-
-},{"../actions/actions.js":703}],717:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _actionsActionsJs = require('../actions/actions.js');
-
-function editFolderIdReducer(state, action) {
+function editFolderId(state, action) {
     if (state === undefined) state = null;
 
     console.log(action.type, action);
 
     switch (action.type) {
 
-        case _actionsActionsJs.SET_FOLDER_EDIT_MODE:
+        case _actionsIndexJs.SET_FOLDER_EDIT_MODE:
 
             return parseInt(action.activeFolderId);
 
-        case _actionsActionsJs.RESET_FOLDER_EDIT_MODE:
+        case _actionsIndexJs.RESET_FOLDER_EDIT_MODE:
 
             return null;
 
@@ -50153,30 +50286,18 @@ function editFolderIdReducer(state, action) {
     }
 }
 
-exports['default'] = editFolderIdReducer;
-module.exports = exports['default'];
-
-},{"../actions/actions.js":703}],718:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _actionsActionsJs = require('../actions/actions.js');
-
-function editNoteIdReducer(state, action) {
+function editNoteId(state, action) {
     if (state === undefined) state = null;
 
     console.log(action.type, action);
 
     switch (action.type) {
 
-        case _actionsActionsJs.SET_NOTE_EDIT_MODE:
+        case _actionsIndexJs.SET_NOTE_EDIT_MODE:
 
             return action.activeNoteId;
 
-        case _actionsActionsJs.RESET_NOTE_EDIT_MODE:
+        case _actionsIndexJs.RESET_NOTE_EDIT_MODE:
 
             return null;
 
@@ -50185,10 +50306,54 @@ function editNoteIdReducer(state, action) {
     }
 }
 
-exports['default'] = editNoteIdReducer;
-module.exports = exports['default'];
+function showConfirmModal(state, action) {
+    if (state === undefined) state = false;
 
-},{"../actions/actions.js":703}],719:[function(require,module,exports){
+    console.log(action.type, action);
+
+    switch (action.type) {
+
+        case _actionsIndexJs.SHOW_CONFIRM_MODAL:
+
+            return true;
+
+        case _actionsIndexJs.HIDE_CONFIRM_MODAL:
+
+            return false;
+
+        default:
+            return state;
+    }
+}
+
+function showAddModal(state, action) {
+    if (state === undefined) state = false;
+
+    console.log(action.type, action);
+
+    switch (action.type) {
+
+        case _actionsIndexJs.SHOW_ADD_MODAL:
+
+            return true;
+
+        case _actionsIndexJs.HIDE_ADD_MODAL:
+
+            return false;
+
+        default:
+            return state;
+    }
+}
+
+exports.editFolderId = editFolderId;
+exports.activeFolderId = activeFolderId;
+exports.editNoteId = editNoteId;
+exports.activeNoteId = activeNoteId;
+exports.showConfirmModal = showConfirmModal;
+exports.showAddModal = showAddModal;
+
+},{"../actions/index.js":705}],719:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -50213,7 +50378,7 @@ var _lodashMathMaxJs = require('lodash/math/max.js');
 
 var _lodashMathMaxJs2 = _interopRequireDefault(_lodashMathMaxJs);
 
-var _actionsActionsJs = require('../actions/actions.js');
+var _actionsIndexJs = require('../actions/index.js');
 
 function foldersReducer(state, action) {
             if (state === undefined) state = {};
@@ -50222,7 +50387,7 @@ function foldersReducer(state, action) {
 
             switch (action.type) {
 
-                        case _actionsActionsJs.EDITING_FOLDER:
+                        case _actionsIndexJs.EDITING_FOLDER:
 
                                     var newFoldersData = (0, _lodashCollectionMapJs2['default'])(state.items, function (item) {
                                                 if (item.id == action.editFolderId) {
@@ -50237,13 +50402,13 @@ function foldersReducer(state, action) {
 
                                     });
 
-                        case _actionsActionsJs.GET_FOLDERS_REQUEST:
+                        case _actionsIndexJs.GET_FOLDERS_REQUEST:
 
                                     return Object.assign({}, state, {
                                                 isFetching: true
                                     });
 
-                        case _actionsActionsJs.GET_FOLDERS_RESPONSE:
+                        case _actionsIndexJs.GET_FOLDERS_RESPONSE:
 
                                     return Object.assign({}, state, {
 
@@ -50252,13 +50417,13 @@ function foldersReducer(state, action) {
 
                                     });
 
-                        case _actionsActionsJs.CREATE_FOLDERS_REQUEST:
+                        case _actionsIndexJs.CREATE_FOLDERS_REQUEST:
 
                                     return Object.assign({}, state, {
                                                 isFetching: true
                                     });
 
-                        case _actionsActionsJs.CREATE_FOLDERS_RESPONSE:
+                        case _actionsIndexJs.CREATE_FOLDERS_RESPONSE:
 
                                     state.items.splice(action.data.index + 1, 0, action.data);
 
@@ -50269,13 +50434,13 @@ function foldersReducer(state, action) {
 
                                     });
 
-                        case _actionsActionsJs.DELETE_FOLDERS_REQUEST:
+                        case _actionsIndexJs.DELETE_FOLDERS_REQUEST:
 
                                     return Object.assign({}, state, {
                                                 isFetching: true
                                     });
 
-                        case _actionsActionsJs.DELETE_FOLDERS_RESPONSE:
+                        case _actionsIndexJs.DELETE_FOLDERS_RESPONSE:
 
                                     return Object.assign({}, state, {
 
@@ -50292,7 +50457,7 @@ function foldersReducer(state, action) {
 exports['default'] = foldersReducer;
 module.exports = exports['default'];
 
-},{"../actions/actions.js":703,"lodash/collection/filter.js":34,"lodash/collection/forEach.js":36,"lodash/collection/map.js":37,"lodash/math/max.js":115}],720:[function(require,module,exports){
+},{"../actions/index.js":705,"lodash/collection/filter.js":34,"lodash/collection/forEach.js":36,"lodash/collection/map.js":37,"lodash/math/max.js":115}],720:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -50311,37 +50476,15 @@ var _notesReducer = require("./notesReducer");
 
 var _notesReducer2 = _interopRequireDefault(_notesReducer);
 
-var _editFolderIdReducer = require("./editFolderIdReducer");
-
-var _editFolderIdReducer2 = _interopRequireDefault(_editFolderIdReducer);
-
-var _activeFolderIdReducer = require("./activeFolderIdReducer");
-
-var _activeFolderIdReducer2 = _interopRequireDefault(_activeFolderIdReducer);
-
-var _editNoteIdReducer = require("./editNoteIdReducer");
-
-var _editNoteIdReducer2 = _interopRequireDefault(_editNoteIdReducer);
-
-var _activeNoteIdReducer = require("./activeNoteIdReducer");
-
-var _activeNoteIdReducer2 = _interopRequireDefault(_activeNoteIdReducer);
-
-var _showConfirmModalReducerJs = require("./showConfirmModalReducer.js");
-
-var _showConfirmModalReducerJs2 = _interopRequireDefault(_showConfirmModalReducerJs);
-
-/*const reducer = combineReducers({
-    foldersReducer,
-    notesReducer
-});*/
+var _commonReducerJs = require("./commonReducer.js");
 
 var reducer = (0, _redux.combineReducers)({
-    editFolderId: _editFolderIdReducer2["default"],
-    activeFolderId: _activeFolderIdReducer2["default"],
-    editNoteId: _editNoteIdReducer2["default"],
-    activeNoteId: _activeNoteIdReducer2["default"],
-    showConfirmModal: _showConfirmModalReducerJs2["default"],
+    editFolderId: _commonReducerJs.editFolderId,
+    activeFolderId: _commonReducerJs.activeFolderId,
+    editNoteId: _commonReducerJs.editNoteId,
+    activeNoteId: _commonReducerJs.activeNoteId,
+    showConfirmModal: _commonReducerJs.showConfirmModal,
+    showAddModal: _commonReducerJs.showAddModal,
     folders: _foldersReducer2["default"],
     notes: _notesReducer2["default"]
 });
@@ -50349,7 +50492,7 @@ var reducer = (0, _redux.combineReducers)({
 exports["default"] = reducer;
 module.exports = exports["default"];
 
-},{"./activeFolderIdReducer":715,"./activeNoteIdReducer":716,"./editFolderIdReducer":717,"./editNoteIdReducer":718,"./foldersReducer":719,"./notesReducer":721,"./showConfirmModalReducer.js":722,"redux":694}],721:[function(require,module,exports){
+},{"./commonReducer.js":718,"./foldersReducer":719,"./notesReducer":721,"redux":694}],721:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -50374,7 +50517,7 @@ var _lodashMathMaxJs = require('lodash/math/max.js');
 
 var _lodashMathMaxJs2 = _interopRequireDefault(_lodashMathMaxJs);
 
-var _actionsActionsJs = require('../actions/actions.js');
+var _actionsIndexJs = require('../actions/index.js');
 
 function notesReducer(state, action) {
             if (state === undefined) state = {};
@@ -50383,7 +50526,7 @@ function notesReducer(state, action) {
 
             switch (action.type) {
 
-                        case _actionsActionsJs.EDITING_NOTE_TITLE:
+                        case _actionsIndexJs.EDITING_NOTE_TITLE:
 
                                     var newNotesData = (0, _lodashCollectionMapJs2['default'])(state.items, function (item) {
                                                 if (item.id == action.editNoteId) {
@@ -50398,7 +50541,7 @@ function notesReducer(state, action) {
 
                                     });
 
-                        case _actionsActionsJs.EDITING_NOTE_CONTENT:
+                        case _actionsIndexJs.EDITING_NOTE_CONTENT:
 
                                     newNotesData = (0, _lodashCollectionMapJs2['default'])(state.items, function (item) {
                                                 if (item.id == action.editNoteId) {
@@ -50413,14 +50556,14 @@ function notesReducer(state, action) {
 
                                     });
 
-                        case _actionsActionsJs.GET_NOTES_REQUEST:
+                        case _actionsIndexJs.GET_NOTES_REQUEST:
 
                                     return Object.assign({}, state, {
                                                 isFetching: true,
                                                 items: state.items
                                     });
 
-                        case _actionsActionsJs.GET_NOTES_RESPONSE:
+                        case _actionsIndexJs.GET_NOTES_RESPONSE:
 
                                     return Object.assign({}, state, {
 
@@ -50429,14 +50572,14 @@ function notesReducer(state, action) {
 
                                     });
 
-                        case _actionsActionsJs.CREATE_NOTES_REQUEST:
+                        case _actionsIndexJs.CREATE_NOTES_REQUEST:
 
                                     return Object.assign({}, state, {
                                                 isFetching: true,
                                                 items: state.items
                                     });
 
-                        case _actionsActionsJs.CREATE_NOTES_RESPONSE:
+                        case _actionsIndexJs.CREATE_NOTES_RESPONSE:
 
                                     var items = state.items;
 
@@ -50456,18 +50599,18 @@ function notesReducer(state, action) {
 
                                     return Object.assign({}, state, {
 
-                                                isFetching: true,
+                                                isFetching: false,
                                                 items: items
 
                                     });
 
-                        case _actionsActionsJs.UPDATE_NOTES_REQUEST:
+                        case _actionsIndexJs.UPDATE_NOTES_REQUEST:
 
                                     return Object.assign({}, state, {
                                                 isFetching: true
                                     });
 
-                        case _actionsActionsJs.UPDATE_NOTES_RESPONSE:
+                        case _actionsIndexJs.UPDATE_NOTES_RESPONSE:
 
                                     return Object.assign({}, state, {
 
@@ -50476,7 +50619,7 @@ function notesReducer(state, action) {
 
                                     });
 
-                        case _actionsActionsJs.UPDATE_SINGLENOTE_RESPONSE:
+                        case _actionsIndexJs.UPDATE_SINGLENOTE_RESPONSE:
 
                                     items = state.items;
 
@@ -50493,13 +50636,13 @@ function notesReducer(state, action) {
 
                                     });
 
-                        case _actionsActionsJs.DELETE_NOTES_REQUEST:
+                        case _actionsIndexJs.DELETE_NOTES_REQUEST:
 
                                     return Object.assign({}, state, {
                                                 isFetching: true
                                     });
 
-                        case _actionsActionsJs.DELETE_NOTES_RESPONSE:
+                        case _actionsIndexJs.DELETE_NOTES_RESPONSE:
 
                                     console.log('===', action.data, (0, _lodashCollectionFilterJs2['default'])(state.items, function (item) {
 
@@ -50516,7 +50659,7 @@ function notesReducer(state, action) {
 
                                     });
 
-                        case _actionsActionsJs.DELETE_TAG:
+                        case _actionsIndexJs.DELETE_TAG:
 
                                     (0, _lodashCollectionForEachJs2['default'])(state.items, function (item) {
 
@@ -50532,7 +50675,7 @@ function notesReducer(state, action) {
 
                                     });
 
-                        case _actionsActionsJs.ADD_TAG:
+                        case _actionsIndexJs.ADD_TAG:
 
                                     (0, _lodashCollectionForEachJs2['default'])(state.items, function (item) {
 
@@ -50556,39 +50699,7 @@ function notesReducer(state, action) {
 exports['default'] = notesReducer;
 module.exports = exports['default'];
 
-},{"../actions/actions.js":703,"lodash/collection/filter.js":34,"lodash/collection/forEach.js":36,"lodash/collection/map.js":37,"lodash/math/max.js":115}],722:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _actionsActionsJs = require('../actions/actions.js');
-
-function showConfirmModalReducer(state, action) {
-    if (state === undefined) state = false;
-
-    console.log(action.type, action);
-
-    switch (action.type) {
-
-        case _actionsActionsJs.SHOW_CONFIRM_MODAL:
-
-            return true;
-
-        case _actionsActionsJs.HIDE_CONFIRM_MODAL:
-
-            return false;
-
-        default:
-            return state;
-    }
-}
-
-exports['default'] = showConfirmModalReducer;
-module.exports = exports['default'];
-
-},{"../actions/actions.js":703}],723:[function(require,module,exports){
+},{"../actions/index.js":705,"lodash/collection/filter.js":34,"lodash/collection/forEach.js":36,"lodash/collection/map.js":37,"lodash/math/max.js":115}],722:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -50618,7 +50729,7 @@ var routeConfig = [{ path: '/',
 exports['default'] = routeConfig;
 module.exports = exports['default'];
 
-},{"./components/app.js":706,"./components/content.js":707,"./components/main.js":710}],724:[function(require,module,exports){
+},{"./components/app.js":708,"./components/content.js":709,"./components/main.js":711}],723:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -50650,8 +50761,12 @@ loggerMiddleware // neat middleware that logs actions
 exports['default'] = createStoreWithMiddleware(_reducersIndexJs2['default']);
 module.exports = exports['default'];
 
-},{"./reducers/index.js":720,"redux":694,"redux-logger":691,"redux-thunk":692}],725:[function(require,module,exports){
+},{"./reducers/index.js":720,"redux":694,"redux-logger":691,"redux-thunk":692}],724:[function(require,module,exports){
 'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -50986,9 +51101,10 @@ var Autocomplete = React.createClass({
   }
 });
 
-module.exports = Autocomplete;
+exports['default'] = Autocomplete;
+module.exports = exports['default'];
 
-},{"dom-scroll-into-view":1,"react":690,"react-dom":498}],726:[function(require,module,exports){
+},{"dom-scroll-into-view":1,"react":690,"react-dom":498}],725:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -50998,6 +51114,13 @@ exports.matchStateToTerm = matchStateToTerm;
 exports.sortStates = sortStates;
 exports.fakeRequest = fakeRequest;
 exports.getStates = getStates;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _lodashCollectionFindJs = require('lodash/collection/find.js');
+
+var _lodashCollectionFindJs2 = _interopRequireDefault(_lodashCollectionFindJs);
+
 var styles = {
   item: {
     padding: '2px 6px',
@@ -51018,9 +51141,17 @@ var styles = {
 
 exports.styles = styles;
 
-function matchStateToTerm(state, value) {
+function matchStateToTerm(isAdv, state, value) {
 
-  return state.title.toLowerCase().indexOf(value.toLowerCase()) !== -1;
+  if (isAdv) {
+
+    return state.title.toLowerCase().indexOf(value.toLowerCase()) !== -1 || state.description.toLowerCase().indexOf(value.toLowerCase()) !== -1 || (0, _lodashCollectionFindJs2['default'])(state.tags, function (item) {
+      return item.toLowerCase().indexOf(value.toLowerCase()) !== -1;
+    }) !== undefined;
+  } else {
+
+    return state.title.toLowerCase().indexOf(value.toLowerCase()) !== -1;
+  }
 }
 
 function sortStates(a, b, value) {
@@ -51041,4 +51172,4 @@ function getStates() {
   return [{ abbr: "AL", name: "Alabama" }, { abbr: "AK", name: "Alaska" }, { abbr: "AZ", name: "Arizona" }, { abbr: "AR", name: "Arkansas" }, { abbr: "CA", name: "California" }, { abbr: "CO", name: "Colorado" }, { abbr: "CT", name: "Connecticut" }, { abbr: "DE", name: "Delaware" }, { abbr: "FL", name: "Florida" }, { abbr: "GA", name: "Georgia" }, { abbr: "HI", name: "Hawaii" }, { abbr: "ID", name: "Idaho" }, { abbr: "IL", name: "Illinois" }, { abbr: "IN", name: "Indiana" }, { abbr: "IA", name: "Iowa" }, { abbr: "KS", name: "Kansas" }, { abbr: "KY", name: "Kentucky" }, { abbr: "LA", name: "Louisiana" }, { abbr: "ME", name: "Maine" }, { abbr: "MD", name: "Maryland" }, { abbr: "MA", name: "Massachusetts" }, { abbr: "MI", name: "Michigan" }, { abbr: "MN", name: "Minnesota" }, { abbr: "MS", name: "Mississippi" }, { abbr: "MO", name: "Missouri" }, { abbr: "MT", name: "Montana" }, { abbr: "NE", name: "Nebraska" }, { abbr: "NV", name: "Nevada" }, { abbr: "NH", name: "New Hampshire" }, { abbr: "NJ", name: "New Jersey" }, { abbr: "NM", name: "New Mexico" }, { abbr: "NY", name: "New York" }, { abbr: "NC", name: "North Carolina" }, { abbr: "ND", name: "North Dakota" }, { abbr: "OH", name: "Ohio" }, { abbr: "OK", name: "Oklahoma" }, { abbr: "OR", name: "Oregon" }, { abbr: "PA", name: "Pennsylvania" }, { abbr: "RI", name: "Rhode Island" }, { abbr: "SC", name: "South Carolina" }, { abbr: "SD", name: "South Dakota" }, { abbr: "TN", name: "Tennessee" }, { abbr: "TX", name: "Texas" }, { abbr: "UT", name: "Utah" }, { abbr: "VT", name: "Vermont" }, { abbr: "VA", name: "Virginia" }, { abbr: "WA", name: "Washington" }, { abbr: "WV", name: "West Virginia" }, { abbr: "WI", name: "Wisconsin" }, { abbr: "WY", name: "Wyoming" }];
 }
 
-},{}]},{},[714]);
+},{"lodash/collection/find.js":35}]},{},[717]);

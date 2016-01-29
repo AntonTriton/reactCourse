@@ -326,5 +326,5 @@ let Autocomplete = React.createClass({
   }
 })
 
-module.exports = Autocomplete
+export default Autocomplete
 

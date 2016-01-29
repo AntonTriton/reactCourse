@@ -27,5 +27,8 @@
   },
   "scripts": {
     "start": "watchify public/main.js -v -t babelify -o public/bundle.js"
+  },
+  "devDependencies": {
+    "react-hot-loader": "^1.3.0"
   }
 }

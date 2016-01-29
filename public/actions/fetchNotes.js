@@ -1,6 +1,6 @@
 
 import {get_notes_request, create_notes_request, update_notes_request, delete_notes_request,
-    get_notes_response, create_notes_response, update_notes_response, update_singlenote_response, delete_notes_response } from './actions.js';
+    get_notes_response, create_notes_response, update_notes_response, update_singlenote_response, delete_notes_response } from './index.js';
 
 import fetch from 'isomorphic-fetch'
 

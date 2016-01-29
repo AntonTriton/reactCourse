@@ -13,6 +13,7 @@ router
   .post('/', function (req, res) {
 
     var directory = _.pick(req.body, [
+          'key',
           'parentId',
           'name',
           'index',
@@ -40,6 +41,7 @@ router
   .put('/:id', function (req, res) {
 
     var directory = _.pick(req.body, [
+          'key',
           'id',
           'parentId',
           'name',

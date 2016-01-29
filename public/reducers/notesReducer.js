@@ -7,7 +7,7 @@ import max from 'lodash/math/max.js';
 import {EDITING_NOTE_TITLE, EDITING_NOTE_CONTENT,
     GET_NOTES_REQUEST, GET_NOTES_RESPONSE, CREATE_NOTES_REQUEST, CREATE_NOTES_RESPONSE,
     UPDATE_NOTES_REQUEST, UPDATE_NOTES_RESPONSE, DELETE_NOTES_REQUEST, DELETE_NOTES_RESPONSE,
-    UPDATE_SINGLENOTE_RESPONSE, DELETE_TAG, ADD_TAG} from '../actions/actions.js'
+    UPDATE_SINGLENOTE_RESPONSE, DELETE_TAG, ADD_TAG} from '../actions/index.js'
 
 function notesReducer(state = {}, action) {
 
@@ -88,7 +88,7 @@ function notesReducer(state = {}, action) {
 
             return Object.assign({}, state, {
 
-                isFetching: true,
+                isFetching: false,
                 items: items
 
             });

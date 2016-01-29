@@ -20,6 +20,9 @@ export const ADD_TAG = 'ADD_TAG';
 export const SHOW_CONFIRM_MODAL = 'SHOW_CONFIRM_MODAL';
 export const HIDE_CONFIRM_MODAL = 'HIDE_CONFIRM_MODAL';
 
+export const SHOW_ADD_MODAL = 'SHOW_ADD_MODAL';
+export const HIDE_ADD_MODAL = 'HIDE_ADD_MODAL';
+
 /* fetching folders actions */
 export const GET_FOLDERS_REQUEST = 'GET_FOLDERS_REQUEST';
 export const GET_FOLDERS_RESPONSE = 'GET_FOLDERS_RESPONSE';
@@ -96,6 +99,12 @@ export function show_confirm_modal() {
 }
 export function hide_confirm_modal() {
     return { type: HIDE_CONFIRM_MODAL}
+}
+export function show_add_modal() {
+    return { type: SHOW_ADD_MODAL}
+}
+export function hide_add_modal() {
+    return { type: HIDE_ADD_MODAL}
 }
 
 export function get_folders_request() {

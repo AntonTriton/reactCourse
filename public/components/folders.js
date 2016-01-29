@@ -4,11 +4,8 @@ import React, { Component, PropTypes } from 'react';
 
 import ReactDOM from 'react-dom';
 
-//import {foldersData} from './data.js';
-
 import { Link } from 'react-router';
 
-//import store from '../store.js'
 
 class FolderItem extends Component {
 
@@ -79,10 +76,6 @@ class folders extends Component {
 
     constructor(){
         super();
-
-        /*this.state = {
-            folders: foldersData
-        }*/
     }
 
     render(){

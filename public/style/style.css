@@ -24,9 +24,14 @@ nav {
   width: 100px;
   float: left;
 }
+nav ul {
+  text-align: center;
+}
 nav li {
   text-align: center;
   margin-bottom: 20px;
+  width: 70px;
+  display: inline-block;
 }
 nav li a {
   text-decoration: none;
@@ -123,23 +128,23 @@ nav .fa {
   top: -5px;
   cursor: pointer;
 }
-.notes_search {
-  float: right;
-  margin-top: -50px;
-  position: relative;
-}
-.notes_search .fa {
-  position: absolute;
-  left: 5px;
-  margin: 4px 0 0 0;
-}
-.notes_search input {
-  padding-left: 25px;
-}
-.notes_search .advanced-link {
-  font-size: 12px;
+/*.notes_search
+  float right
+  margin-top -50px
+  position relative
+  .fa
+    position absolute
+    left 5px
+    margin 4px 0 0 0
+  input
+    padding-left 25px*/
+.advanced-link {
+  font-size: 14px;
   display: inline-block;
   margin-left: 5px;
+  cursor: pointer;
+  color: #2944c1;
+  text-decoration: underline;
 }
 .modal-content {
   text-align: center;

@@ -5,7 +5,7 @@ import forEach from 'lodash/collection/forEach.js';
 import max from 'lodash/math/max.js';
 
 import { EDITING_FOLDER, GET_FOLDERS_REQUEST, GET_FOLDERS_RESPONSE, CREATE_FOLDERS_REQUEST, CREATE_FOLDERS_RESPONSE,
-    UPDATE_FOLDERS_REQUEST, UPDATE_FOLDERS_RESPONSE, DELETE_FOLDERS_REQUEST, DELETE_FOLDERS_RESPONSE } from '../actions/actions.js'
+    UPDATE_FOLDERS_REQUEST, UPDATE_FOLDERS_RESPONSE, DELETE_FOLDERS_REQUEST, DELETE_FOLDERS_RESPONSE } from '../actions/index.js'
 
 function foldersReducer(state = {}, action) {
 

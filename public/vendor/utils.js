@@ -1,3 +1,6 @@
+
+import find from 'lodash/collection/find.js';
+
 export let styles = {
   item: {
     padding: '2px 6px',
@@ -17,11 +20,26 @@ export let styles = {
 }
 
 
-export function matchStateToTerm (state, value) {
+export function matchStateToTerm (isAdv, state, value) {
 
-  return (
-    state.title.toLowerCase().indexOf(value.toLowerCase()) !== -1
-  )
+  if(isAdv){
+
+    return (
+      state.title.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
+      state.description.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
+      find(state.tags,function(item){
+        return item.toLowerCase().indexOf(value.toLowerCase()) !== -1
+      }) !== undefined
+    )
+
+  }else{
+
+    return (
+        state.title.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    )
+
+  }
+
 }
 
 export function sortStates (a, b, value) {

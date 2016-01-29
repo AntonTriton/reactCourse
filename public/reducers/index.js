@@ -2,16 +2,8 @@ import { combineReducers } from 'redux'
 
 import folders from "./foldersReducer"
 import notes from "./notesReducer"
-import editFolderId from "./editFolderIdReducer"
-import activeFolderId from "./activeFolderIdReducer"
-import editNoteId from "./editNoteIdReducer"
-import activeNoteId from "./activeNoteIdReducer"
-import showConfirmModal from "./showConfirmModalReducer.js"
 
-/*const reducer = combineReducers({
-    foldersReducer,
-    notesReducer
-});*/
+import {editFolderId, activeFolderId, editNoteId, activeNoteId, showConfirmModal, showAddModal} from "./commonReducer.js"
 
 const reducer = combineReducers({
     editFolderId,
@@ -19,6 +11,7 @@ const reducer = combineReducers({
     editNoteId,
     activeNoteId,
     showConfirmModal,
+    showAddModal,
     folders,
     notes
 });

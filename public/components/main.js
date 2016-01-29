@@ -3,15 +3,13 @@
 import React, { Component } from 'react';
 
 import {set_folder_edit_mode ,reset_folder_edit_mode, set_folder_active,editing_folder,
-    remove_folder, add_folder, add_note, show_confirm_modal, hide_confirm_modal} from '../actions/actions.js';
+    remove_folder, add_folder, add_note, show_confirm_modal, hide_confirm_modal,
+    show_add_modal, hide_add_modal} from '../actions/index.js';
 
 import {fetchFolders} from '../actions/fetchFolders.js';
 import {fetchNotes} from '../actions/fetchNotes.js';
 
 import { connect } from 'react-redux'
-
-import filter from 'lodash/collection/filter.js';
-import find from 'lodash/collection/find.js';
 
 import Menu from './menu.js';
 
@@ -19,37 +17,14 @@ import Folders from './folders.js';
 
 import Notes from './notes.js';
 
+import ConfirmModal from './ConfirmModal.js';
+
+import AddModal from './AddModal.js';
+
 import store from '../store.js'
 
-import {Modal, Button} from 'react-bootstrap';
-
-const modalStyle = {
-    position: 'fixed',
-    zIndex: 1040,
-    top: 0, bottom: 0, left: 0, right: 0
-};
-
-const backdropStyle = {
-    ...modalStyle,
-    zIndex: 'auto',
-    backgroundColor: '#000',
-    opacity: 0.5
-};
-
-const dialogStyle = function() {
-
-    return {
-        position: 'absolute',
-        width: 400,
-        top: '100px',
-        left: '50%',
-        marginLeft: '-200px',
-        border: '1px solid #e5e5e5',
-        backgroundColor: 'white',
-        boxShadow: '0 5px 15px rgba(0,0,0,.5)',
-        padding: 20
-    };
-};
+import filter from 'lodash/collection/filter.js';
+import find from 'lodash/collection/find.js';
 
 
 class Main extends Component {
@@ -72,17 +47,14 @@ class Main extends Component {
 
         });
 
-        this.state = {
-            showModal : false
-        }
     }
 
     getFolderById(id){
 
-
         return filter(store.getState().folders.items, function(item){
 
             return item.id == id
+
         });
 
     }
@@ -112,7 +84,6 @@ class Main extends Component {
     }
 
     removeFolder(){
-        //this.dispatch(remove_folder());
 
         var self = this;
 
@@ -120,8 +91,7 @@ class Main extends Component {
 
             self.forcedFolderId = true;
 
-            self.close();
-            //self.setState(store.getState());
+            self.closeConfirm();
 
         });
 
@@ -147,7 +117,7 @@ class Main extends Component {
 
         this.dispatch(fetchFolders('POST',{name : name, level: level, parentId: activeFolder[0].id ,index: index})).then(function(data){
 
-            self.setState(store.getState());
+            self.setState({folders: store.getState().folders});
 
         });
 
@@ -161,7 +131,7 @@ class Main extends Component {
 
         this.dispatch(fetchNotes('POST',{title : title, description: content, directoryId: directoryId , tags: tagsIDs})).then(function(data){
 
-            self.setState(store.getState());
+            self.setState({notes: store.getState().notes});
 
         });
     }
@@ -175,13 +145,11 @@ class Main extends Component {
     }
 
     updatePosition(notes){
-        var directoryId = parseInt(store.getState().activeFolderId),
-            tagsIDs = [directoryId],
-            self = this;
 
         this.dispatch(fetchNotes('PUT', notes)).then(function(data){
             self.setState(store.getState());
         });
+
     }
 
     updateNoteTitle(noteId, newTitle){
@@ -189,8 +157,6 @@ class Main extends Component {
             note = find(store.getState().notes.items,function(item){
                 return item.id == noteId
             });
-
-        console.log('updateNoteTitle!!', note, noteId, store.getState().notes.items);
 
         note.title = newTitle;
         note.title = newTitle;
@@ -207,8 +173,20 @@ class Main extends Component {
 
     }
 
-    close() {
+    closeConfirm() {
         this.dispatch(hide_confirm_modal());
+        this.setState(store.getState());
+    }
+
+    showAdd(){
+
+        this.dispatch(show_add_modal());
+        this.setState(store.getState());
+
+    }
+
+    closeAdd() {
+        this.dispatch(hide_add_modal());
         this.setState(store.getState());
     }
 
@@ -229,15 +207,13 @@ class Main extends Component {
                 }
                 folder = self.folder = self.getFolderById(folderId)[0];
 
-
             self.dispatch(set_folder_active(folderId));
 
             return (
                 <div>
                     <Menu page="main"
                           set_edit={self.setEditFolder.bind(this)}
-                          addFolder={self.addFolder.bind(this)}
-                          addNote={self.addNote.bind(this)}
+                          showAdd={self.showAdd.bind(this)}
                           removeFolder={self.showConfirm.bind(this)}
                         />
 
@@ -259,26 +235,22 @@ class Main extends Component {
                             />
                     </section>
 
-                    <Modal
-                        aria-labelledby='modal-label'
-                        style={modalStyle}
-                        backdropStyle={backdropStyle}
-                        show={show_confirm_modal}
-                        onHide={self.close.bind(this)}
-                        >
+                    <ConfirmModal
+                        onClose={self.closeConfirm.bind(this)}
+                        onSuccess={self.removeFolder.bind(this)}
+                        is_show={show_confirm_modal}
+                        message={"Do you really want to delete this folder ?"}
+                        />
 
-                        <div style={dialogStyle()}>
+                    <AddModal
+                        onClose={self.closeAdd.bind(this)}
+                        onSuccess={self.removeFolder.bind(this)}
+                        is_show={self.state.showAddModal}
+                        message={"What do you want to add ?"}
+                        addFolder={self.addFolder.bind(this)}
+                        addNote={self.addNote.bind(this)}
+                        />
 
-                            <h4 id='modal-label'>Do you really want to delete this folder ?</h4>
-
-                            <div>
-                                <Button bsStyle="primary" onClick={self.removeFolder.bind(this)}>Confirm</Button>
-                                <Button onClick={self.close.bind(this)}>Cancel</Button>
-                            </div>
-
-                            <div></div>
-                        </div>
-                    </Modal>
                 </div>
             );
         }else{
