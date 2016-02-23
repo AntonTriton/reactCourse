@@ -12,7 +12,6 @@ import { Router, Route, Link } from 'react-router'
 
 import { Provider } from 'react-redux'
 
-
 ReactDOM.render(
     <Provider store={store}>
         <Router routes={routeConfig} />

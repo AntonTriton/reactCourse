@@ -2,7 +2,7 @@
 import App from './components/app.js'
 import Main from './components/main.js'
 import Content from './components/content.js'
-
+//
 const routeConfig = [
     { path: '/',
         component: App,
