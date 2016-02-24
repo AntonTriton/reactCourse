@@ -86,8 +86,6 @@ class SingleNote extends Component {
 
             self.close();
 
-            // вернуться на главную страницу
-
             self.back();
 
         });
@@ -155,17 +153,22 @@ class SingleNote extends Component {
             }
 
             if(note) {
-                var tags = note.tags.map(function (item) {
-                    tagsCounter++;
-                    return (
-                        <span className="tag-item" key={tagsCounter} data-index={tagsCounter}>
+
+                var tags = "";
+
+                if (note.tags){
+                    tags = note.tags.map(function (item) {
+                        tagsCounter++;
+                        return (
+                          <span className="tag-item" key={tagsCounter} data-index={tagsCounter}>
                         {item}
-                            <i className={editModeClass+" fa fa-close"}
-                               onClick={self.deleteTag.bind(self)}
+                              <i className={editModeClass+" fa fa-close"}
+                                 onClick={self.deleteTag.bind(self)}
                                 ></i>
                     </span>
-                    )
-                });
+                        )
+                    });
+                }
 
                 this.dispatch(set_note_active(this.props.params.id));
 

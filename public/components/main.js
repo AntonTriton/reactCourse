@@ -126,10 +126,10 @@ class Main extends Component {
     addNote(title, content){
 
         var directoryId = parseInt(store.getState().activeFolderId),
-            tagsIDs = [directoryId],
+            /*tagsIDs = [directoryId],*/
             self = this;
 
-        this.dispatch(fetchNotes('POST',{title : title, description: content, directoryId: directoryId , tags: tagsIDs})).then(function(data){
+        this.dispatch(fetchNotes('POST',{title : title, description: content, directoryId: directoryId})).then(function(data){
 
             self.setState({notes: store.getState().notes});
 
@@ -145,6 +145,7 @@ class Main extends Component {
     }
 
     updatePosition(notes){
+        var self = this;
 
         this.dispatch(fetchNotes('PUT', notes)).then(function(data){
             self.setState(store.getState());

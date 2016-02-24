@@ -43,7 +43,8 @@ class FolderItem extends Component {
             reset_edit= this.props.reset_edit,
             name = this.props.name;
 
-        this.props.status == 'closed' ? cl = 'fa-folder' : cl = "fa-folder-open";
+        //this.props.status == 'closed' ? cl = 'fa-folder' : cl = "fa-folder-open";
+        cl = 'fa-folder';
 
         if(this.props.isEdit){
             textModeClass = 'hidden';

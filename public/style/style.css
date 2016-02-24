@@ -164,3 +164,7 @@ nav .fa {
 .modal-content .btn {
   margin-left: 10px;
 }
+.not-found {
+  text-align: center;
+  font-size: 40px;
+}

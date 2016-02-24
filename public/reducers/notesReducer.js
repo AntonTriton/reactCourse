@@ -83,7 +83,7 @@ function notesReducer(state = {}, action) {
                 description: action.data.description,
                 directoryId: action.data.directoryId,
                 tags: [],
-                tagsIDs: action.data.tags
+                tagsIDs: []
             });
 
             return Object.assign({}, state, {
@@ -171,6 +171,8 @@ function notesReducer(state = {}, action) {
             forEach(state.items, function (item) {
 
                 if(item.id != action.activeNoteId){
+
+                    if(!item.tags) item.tags = [];
                     item.tags.push(action.tagName);
                 }
 

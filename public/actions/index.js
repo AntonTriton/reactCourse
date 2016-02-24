@@ -52,111 +52,145 @@ export const DELETE_NOTES_REQUEST = 'DELETE_NOTES_REQUEST';
 export const DELETE_NOTES_RESPONSE = 'DELETE_NOTES_RESPONSE';
 
 
+/* start folder's title editing */
 export function set_folder_edit_mode(activeFolderId) {
     return { type: SET_FOLDER_EDIT_MODE, activeFolderId: activeFolderId}
 }
 
+/* finish folder's title editing */
 export function reset_folder_edit_mode() {
     return { type: RESET_FOLDER_EDIT_MODE}
 }
 
+/* mark folder as active in menu and show it's notes */
 export function set_folder_active(id) {
     return { type: SET_FOLDER_ACTIVE, activeFolderId : id}
 }
 
+/* handler for editing folder title */
 export function editing_folder(value, editFolderId) {
     return { type: EDITING_FOLDER, value : value, editFolderId: editFolderId}
 }
 
-
+/* start note's editing on note page */
 export function set_note_edit_mode(activeNoteId) {
     return { type: SET_NOTE_EDIT_MODE, activeNoteId: activeNoteId}
 }
 
+/* finish note's editing on note page */
 export function reset_note_edit_mode() {
     return { type: RESET_NOTE_EDIT_MODE}
 }
 
+/* mark note as active for displaying on note page */
 export function set_note_active(id) {
     return { type: SET_NOTE_ACTIVE, activeNoteId : id}
 }
 
+/* handler for editing note's title */
 export function editing_note_title(value, editNoteId) {
     return { type: EDITING_NOTE_TITLE, value : value, editNoteId: editNoteId}
 }
+
+/* handler for editing note's content */
 export function editing_note_content(value, editNoteId) {
     return { type: EDITING_NOTE_CONTENT, value : value, editNoteId: editNoteId}
 }
+
+/* handler for delete note's tag */
 export function delete_tag(tagIndex, editFolderId) {
     return { type: DELETE_TAG, tagIndex : tagIndex, editFolderId: editFolderId}
 }
+
+/* handler for add note's tag */
 export function add_tag(tagName,editFolderId) {
     return { type: ADD_TAG, tagName:tagName,editFolderId: editFolderId}
 }
 
+/* set flag for showing confirm modal, which we use for confirmation of removing smth  */
 export function show_confirm_modal() {
     return { type: SHOW_CONFIRM_MODAL}
 }
+/* reset flag for showing confirm modal */
 export function hide_confirm_modal() {
     return { type: HIDE_CONFIRM_MODAL}
 }
+
+/* set flag for showing add modal, which we use when add folder or note  */
 export function show_add_modal() {
     return { type: SHOW_ADD_MODAL}
 }
+/* reset flag for showing add modal */
 export function hide_add_modal() {
     return { type: HIDE_ADD_MODAL}
 }
 
+/* get folders from the server begin  */
 export function get_folders_request() {
     return { type: GET_FOLDERS_REQUEST}
 }
+/* get folders from the server end  */
 export function get_folders_response(data) {
     return { type: GET_FOLDERS_RESPONSE, data: data, receivedAt: Date.now()}
 }
+/* create folder (POST request to the server) begin  */
 export function create_folders_request() {
     return { type: CREATE_FOLDERS_REQUEST}
 }
+/* create folder (POST request to the server) end  */
 export function create_folders_response(data) {
     return { type: CREATE_FOLDERS_RESPONSE, data: data, receivedAt: Date.now()}
 }
+/* update folder (PUT request to the server) begin  */
 export function update_folders_request() {
     return { type: UPDATE_FOLDERS_REQUEST}
 }
+/* update folder (PUT request to the server) end  */
 export function update_folders_response(data) {
     return { type: UPDATE_FOLDERS_RESPONSE, data: data, receivedAt: Date.now()}
 }
+/* delete folder (DELETE request to the server) begin  */
 export function delete_folders_request() {
     return { type: DELETE_FOLDERS_REQUEST}
 }
+/* delete folder (DELETE request to the server) end  */
 export function delete_folders_response(data) {
     return { type: DELETE_FOLDERS_RESPONSE, data: data, receivedAt: Date.now()}
 }
 
-
+/* get notes from the server begin  */
 export function get_notes_request() {
     return { type: GET_NOTES_REQUEST}
 }
+/* get notes from the server end  */
 export function get_notes_response(data) {
     return { type: GET_NOTES_RESPONSE, data: data, receivedAt: Date.now()}
 }
+/* create note (POST request to the server) begin  */
 export function create_notes_request() {
     return { type: CREATE_NOTES_REQUEST}
 }
+/* create note (POST request to the server) end  */
 export function create_notes_response(data) {
     return { type: CREATE_NOTES_RESPONSE, data: data, receivedAt: Date.now()}
 }
+/* update note (PUT request to the server) begin  */
 export function update_notes_request() {
     return { type: UPDATE_NOTES_REQUEST}
 }
+/* update note (PUT request to the server) end. Case when we edit note's title or drag and drop notes.  */
 export function update_notes_response(data) {
     return { type: UPDATE_NOTES_RESPONSE, data: data, receivedAt: Date.now()}
 }
+/* update note (PUT request to the server) end. Case when we edit note on note page.  */
 export function update_singlenote_response(data) {
     return { type: UPDATE_SINGLENOTE_RESPONSE, data: data, receivedAt: Date.now()}
 }
+/* delete note (DELETE request to the server) begin  */
 export function delete_notes_request() {
     return { type: DELETE_NOTES_REQUEST}
 }
+/* delete note (DELETE request to the server) end  */
 export function delete_notes_response(data) {
     return { type: DELETE_NOTES_RESPONSE, data: data, receivedAt: Date.now()}
 }

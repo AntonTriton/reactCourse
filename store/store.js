@@ -4,7 +4,7 @@ var store = {
       key: 0,
       id: 0,
       name : "Root",
-      status: 'open',
+      status: 'closed',
       level:0
     },
     {
