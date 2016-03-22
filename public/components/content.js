@@ -22,8 +22,6 @@ import ConfirmModal from './ConfirmModal.js';
 
 import {Modal, Button} from 'react-bootstrap';
 
-import {modalStyle,backdropStyle,dialogStyle} from '../initialData/constants.js';
-
 
 class SingleNote extends Component {
 

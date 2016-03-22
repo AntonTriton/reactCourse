@@ -1,6 +1,5 @@
 
-import {get_folders_request,create_folders_request,update_folders_request,delete_folders_request,
-    get_folders_response, create_folders_response, update_folders_response, delete_folders_response } from './index.js';
+import * from './index.js';
 
 import fetch from 'isomorphic-fetch'
 
