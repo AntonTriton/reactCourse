@@ -4,8 +4,10 @@ import filter from 'lodash/collection/filter.js';
 import forEach from 'lodash/collection/forEach.js';
 import max from 'lodash/math/max.js';
 
-import { EDITING_FOLDER, GET_FOLDERS_REQUEST, GET_FOLDERS_RESPONSE, CREATE_FOLDERS_REQUEST, CREATE_FOLDERS_RESPONSE,
-    UPDATE_FOLDERS_REQUEST, UPDATE_FOLDERS_RESPONSE, DELETE_FOLDERS_REQUEST, DELETE_FOLDERS_RESPONSE } from '../actions/index.js'
+/*import { EDITING_FOLDER, GET_FOLDERS_REQUEST, GET_FOLDERS_RESPONSE, CREATE_FOLDERS_REQUEST, CREATE_FOLDERS_RESPONSE,
+    UPDATE_FOLDERS_REQUEST, UPDATE_FOLDERS_RESPONSE, DELETE_FOLDERS_REQUEST, DELETE_FOLDERS_RESPONSE } from '../actions/index.js'*/
+
+import * as actions from '../actions/index.js';
 
 function foldersReducer(state = {}, action) {
 
@@ -13,7 +15,7 @@ function foldersReducer(state = {}, action) {
 
     switch (action.type) {
 
-        case EDITING_FOLDER:
+        case actions.EDITING_FOLDER:
 
             let newFoldersData = map(state.items,function(item){
                 if(item.id == action.editFolderId){
@@ -28,13 +30,13 @@ function foldersReducer(state = {}, action) {
 
             });
 
-        case GET_FOLDERS_REQUEST:
+        case actions.GET_FOLDERS_REQUEST:
 
             return Object.assign({}, state, {
                 isFetching: true
             });
 
-        case GET_FOLDERS_RESPONSE:
+        case actions.GET_FOLDERS_RESPONSE:
 
             return Object.assign({}, state, {
 
@@ -43,13 +45,13 @@ function foldersReducer(state = {}, action) {
 
             });
 
-        case CREATE_FOLDERS_REQUEST:
+        case actions.CREATE_FOLDERS_REQUEST:
 
             return Object.assign({}, state, {
                 isFetching: true
             });
 
-        case CREATE_FOLDERS_RESPONSE:
+        case actions.CREATE_FOLDERS_RESPONSE:
 
             state.items.splice(action.data.index+1,0,action.data);
 
@@ -60,13 +62,13 @@ function foldersReducer(state = {}, action) {
 
             });
 
-        case DELETE_FOLDERS_REQUEST:
+        case actions.DELETE_FOLDERS_REQUEST:
 
             return Object.assign({}, state, {
                 isFetching: true
             });
 
-        case DELETE_FOLDERS_RESPONSE:
+        case actions.DELETE_FOLDERS_RESPONSE:
 
             return Object.assign({}, state, {
 

@@ -24,15 +24,15 @@ class Notes extends Component {
     constructor(props){
         super(props);
 
-        this.moveNote = this.moveNote.bind(this);
-        this.findNote = this.findNote.bind(this);
+        this.moveNote = this.props.moveNote;
+        this.findNote = this.props.findNote;
 
-        this.state = {
+        /*this.state = {
             notes: this.props.notes
-        };
+        };*/
     }
 
-    moveNote(id, atIndex) {
+    /*moveNote(id, atIndex) {
         const { note, index } = this.findNote(id);
 
         this.setState(update(this.state, {
@@ -52,9 +52,9 @@ class Notes extends Component {
 
         this.props.updatePosition(this.state.notes);
 
-    }
+    }*/
 
-    findNote(id) {
+    /*findNote(id) {
         const { notes } = this.state;
         const note = notes.filter(c => c.id === id)[0];
 
@@ -62,12 +62,12 @@ class Notes extends Component {
             note,
             index: notes.indexOf(note)
         };
-    }
+    }*/
 
 
     getNotesByFolderId(id){
 
-        const notes = this.state.notes;
+        const notes = this.props.notes;
 
         return filter(notes,function(item){
             return item.directoryId == id ;
@@ -88,8 +88,10 @@ class Notes extends Component {
                 key={item.key}
                 id={item.id}
                 title={item.title}
+                notes={self.props.notes}
                 moveNote={self.moveNote}
                 findNote={self.findNote}
+                saveNotePosition={self.props.saveNotePosition}
                 updateNoteTitle={self.props.updateNoteTitle}
                 />
         });

@@ -1,10 +1,12 @@
 'use strict';
 
 import React, { Component } from 'react';
-
+/*
 import {set_folder_edit_mode ,reset_folder_edit_mode, set_folder_active,editing_folder,
-    remove_folder, add_folder, add_note, show_confirm_modal, hide_confirm_modal,
-    show_add_modal, hide_add_modal} from '../actions/index.js';
+    show_confirm_modal, hide_confirm_modal,
+    show_add_modal, hide_add_modal} from '../actions/index.js';*/
+
+import * as actions from '../actions/index.js';
 
 import {fetchFolders} from '../actions/fetchFolders.js';
 import {fetchNotes} from '../actions/fetchNotes.js';
@@ -24,7 +26,8 @@ import AddModal from './AddModal.js';
 import store from '../store.js'
 
 import filter from 'lodash/collection/filter.js';
-import find from 'lodash/collection/find.js';
+//import forEach from 'lodash/collection/forEach.js';
+//import find from 'lodash/collection/find.js';
 
 
 class Main extends Component {
@@ -32,11 +35,16 @@ class Main extends Component {
     constructor(props){
         super(props);
 
-        this.dispatch = this.props.dispatch;
+        //this.dispatch = this.props.dispatch;
 
-        var self = this;
+    }
 
-        this.dispatch(fetchNotes('GET')).then(function(data){
+    componentWillMount(){
+
+        this.props.fetchNotes('GET');
+        this.props.fetchFolders('GET');
+
+        /*this.dispatch(fetchNotes('GET')).then(function(data){
 
             self.setState(store.getState());
         });
@@ -45,13 +53,13 @@ class Main extends Component {
 
             self.setState(store.getState());
 
-        });
-
+        });*/
     }
 
     getFolderById(id){
 
-        return filter(store.getState().folders.items, function(item){
+        //return filter(store.getState().folders.items, function(item){
+        return filter(this.props.folders.items, function(item){
 
             return item.id == id
 
@@ -59,17 +67,20 @@ class Main extends Component {
 
     }
 
-    setEditFolder(){
+    /*setEditFolder(){
 
-        this.dispatch(set_folder_edit_mode(store.getState().activeFolderId));
+        this.dispatch(actions.set_folder_edit_mode(store.getState().activeFolderId));
 
         this.setState(store.getState());
 
-    }
+    }*/
 
-    resetEditFolder(){
+    /*resetEditFolder(folder){
 
-        this.dispatch(reset_folder_edit_mode());
+        this.props.resetFolderEditMode();
+        this.props.fetchFolders('PUT',this.folder);
+
+        *//*this.dispatch(actions.reset_folder_edit_mode());
 
         var self = this;
 
@@ -79,13 +90,21 @@ class Main extends Component {
 
         });
 
-        this.setState(store.getState());
+        this.setState(store.getState());*//*
 
-    }
+    }*/
 
-    removeFolder(){
+    /*removeFolder(){
 
-        var self = this;
+        let self = this;
+
+        this.props.fetchFolders('DELETE',self.folder).then(function(){
+            //self.forcedFolderId = true;
+
+            self.props.closeConfirm();
+        });
+
+        *//*var self = this;
 
         this.dispatch(fetchFolders('DELETE', self.folder)).then(function(data){
 
@@ -93,14 +112,14 @@ class Main extends Component {
 
             self.closeConfirm();
 
-        });
+        });*//*
 
-    }
+    }*/
 
     getFolderIndexById(id){
 
-        for(var i = 0 , len = store.getState().folders.items.length; i < len; i++){
-            if(store.getState().folders.items[i].id == id){
+        for(var i = 0 , len = this.props.folders.items.length; i < len; i++){
+            if(this.props.folders.items[i].id == id){
                 return i
             }
         }
@@ -108,148 +127,190 @@ class Main extends Component {
         return -1;
     }
 
-    addFolder(name){
+    /*addFolder(name){
 
-        var activeFolder= this.getFolderById(store.getState().activeFolderId),
+        var activeFolder= this.getFolderById(this.props.activeFolderId),
             level = activeFolder[0].level + 1,
-            index = this.getFolderIndexById(store.getState().activeFolderId),
+            index = this.getFolderIndexById(this.props.activeFolderId),
             self = this;
 
-        this.dispatch(fetchFolders('POST',{name : name, level: level, parentId: activeFolder[0].id ,index: index})).then(function(data){
+        this.props.fetchFolders('POST',{name : name, level: level, parentId: activeFolder[0].id ,index: index});
+
+        *//*this.dispatch(fetchFolders('POST',{name : name, level: level, parentId: activeFolder[0].id ,index: index})).then(function(data){
 
             self.setState({folders: store.getState().folders});
 
-        });
+        });*//*
 
-    }
+    }*/
 
-    addNote(title, content){
+    /*addNote(title, content){
 
-        var directoryId = parseInt(store.getState().activeFolderId),
-            /*tagsIDs = [directoryId],*/
+        var directoryId = parseInt(this.props.activeFolderId),
+            *//*tagsIDs = [directoryId],*//*
             self = this;
 
-        this.dispatch(fetchNotes('POST',{title : title, description: content, directoryId: directoryId})).then(function(data){
+        this.props.fetchNotes('POST',{title : title, description: content, directoryId: directoryId})
+
+        *//*this.dispatch(fetchNotes('POST',{title : title, description: content, directoryId: directoryId})).then(function(data){
 
             self.setState({notes: store.getState().notes});
 
-        });
-    }
+        });*//*
+    }*/
 
-    editingFolder(value){
+    /*editingFolder(value){
 
-        this.dispatch(editing_folder(value,store.getState().editFolderId));
+        this.dispatch(actions.editing_folder(value,store.getState().editFolderId));
 
         this.setState(store.getState());
 
-    }
+    }*/
 
-    updatePosition(notes){
-        var self = this;
+    /*saveNotePosition(notes){
+
+        this.props.fetchNotes('PUT',notes);
+
+        *//*var self = this;
 
         this.dispatch(fetchNotes('PUT', notes)).then(function(data){
             self.setState(store.getState());
-        });
+        });*//*
 
-    }
+    }*/
 
-    updateNoteTitle(noteId, newTitle){
+   /* moveNote(id, atIndex) {
+        let { note, index } = this.findNote(id);
+
+        this.props.updateNotePosition(index,atIndex,note);
+
+        *//*var counter = 0;
+        forEach(this.props.notes.items,function(item){
+            item.position = counter;
+            counter++;
+        });*//*
+
+        //if(this.props.notes.isFetching === false) {
+            //this.saveNotePosition(this.props.notes.items);
+        //}
+
+    }*/
+
+   /* findNote(id) {
+        const notes = this.props.notes.items;
+        //const note = notes.filter(c => c.id === id)[0];
+        const note = filter(notes, function(item){
+            return item.id === id
+        })[0];
+
+        return {
+            note,
+            index: notes.indexOf(note)
+        };
+    }*/
+
+   /* updateNoteTitle(noteId, newTitle){
         var self = this,
-            note = find(store.getState().notes.items,function(item){
+            note = find(this.props.notes.items,function(item){
                 return item.id == noteId
             });
 
         note.title = newTitle;
-        note.title = newTitle;
 
-        this.dispatch(fetchNotes('PUT', note)).then(function(data){
+        this.props.fetchNotes('PUT', note);
+
+        *//*this.dispatch(fetchNotes('PUT', note)).then(function(data){
             self.setState(store.getState());
-        });
-    }
+        });*//*
+    }*/
 
-    showConfirm(){
+    /*showConfirm(){
 
-        this.dispatch(show_confirm_modal());
+        this.dispatch(actions.show_confirm_modal());
         this.setState(store.getState());
 
-    }
+    }*/
 
-    closeConfirm() {
-        this.dispatch(hide_confirm_modal());
+    /*closeConfirm() {
+        this.dispatch(actions.hide_confirm_modal());
         this.setState(store.getState());
-    }
+    }*/
 
-    showAdd(){
+    /*showAdd(){
 
-        this.dispatch(show_add_modal());
+        this.dispatch(actions.show_add_modal());
         this.setState(store.getState());
 
-    }
+    }*/
 
-    closeAdd() {
-        this.dispatch(hide_add_modal());
+    /*closeAdd() {
+        this.dispatch(actions.hide_add_modal());
         this.setState(store.getState());
-    }
+    }*/
 
     render() {
 
-        var state = store.getState(),
+        var props = this.props,
             self = this;
 
-        if(!state.notes.isFetching && !state.folders.isFetching) {
+        if(props.notes.isFetching === false && props.folders.isFetching === false) {
 
-            var folders = store.getState().folders.items, folderId, folder,
-                show_confirm_modal = state.showConfirmModal;
+            var folders = props.folders.items, folderId, folder,
+                show_confirm_modal = props.showConfirmModal;
 
                 folderId = self.props.params.id || 0;
                 if( !self.getFolderById(folderId)[0] ){
                     folderId = 0;
-                    self.forcedFolderId = false;
+                    //self.forcedFolderId = false;
                 }
                 folder = self.folder = self.getFolderById(folderId)[0];
 
-            self.dispatch(set_folder_active(folderId));
+            //self.dispatch(actions.set_folder_active(folderId));
+            props.setFolderActive(folderId);
+
+            console.log('render',props);
 
             return (
                 <div>
                     <Menu page="main"
-                          set_edit={self.setEditFolder.bind(this)}
-                          showAdd={self.showAdd.bind(this)}
-                          removeFolder={self.showConfirm.bind(this)}
+                          set_edit={self.props.setEditFolder.bind(this,self.props.activeFolderId)}
+                          showAdd={self.props.showAdd.bind(this)}
+                          removeFolder={self.props.showConfirm.bind(this)}
                         />
 
                     <section className="folders col-md-3">
                         <Folders
                             activeFolderId={folderId}
                             foldersData={folders}
-                            editFolderId={state.editFolderId}
-                            reset_edit={self.resetEditFolder.bind(this)}
-                            editingFolder={self.editingFolder.bind(this)}/>
+                            editFolderId={self.props.editFolderId}
+                            reset_edit={self.props.resetEditFolder.bind(this,self.folder)}
+                            editingFolder={self.props.editingFolder.bind(this,self.props.editFolderId)}/>
                     </section>
 
                     <section className="notes col-md-8">
                         <Notes
-                            notes={state.notes.items}
-                            updatePosition={self.updatePosition.bind(this)}
-                            updateNoteTitle={self.updateNoteTitle.bind(this)}
+                            notes={self.props.notes.items}
+                            moveNote={self.props.moveNote.bind(this)}
+                            findNote={self.props.findNote.bind(this)}
+                            saveNotePosition={self.props.saveNotePosition.bind(this)}
+                            updateNoteTitle={self.props.updateNoteTitle.bind(this,self.props.notes.items)}
                             folder={folder}
                             />
                     </section>
 
                     <ConfirmModal
-                        onClose={self.closeConfirm.bind(this)}
-                        onSuccess={self.removeFolder.bind(this)}
+                        onClose={self.props.closeConfirm.bind(this)}
+                        onSuccess={self.props.removeFolder.bind(this,self.folder)}
                         is_show={show_confirm_modal}
                         message={"Do you really want to delete this folder ?"}
                         />
 
                     <AddModal
-                        onClose={self.closeAdd.bind(this)}
-                        onSuccess={self.removeFolder.bind(this)}
-                        is_show={self.state.showAddModal}
+                        onClose={self.props.closeAdd.bind(this)}
+                        is_show={self.props.showAddModal}
                         message={"What do you want to add ?"}
-                        addFolder={self.addFolder.bind(this)}
-                        addNote={self.addNote.bind(this)}
+                        addFolder={self.props.addFolder.bind(this,self.props.activeFolderId)}
+                        addNote={self.props.addNote.bind(this,self.props.activeFolderId)}
                         />
 
                 </div>
