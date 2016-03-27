@@ -1,6 +1,8 @@
 
-import {get_notes_request, create_notes_request, update_notes_request, delete_notes_request,
-    get_notes_response, create_notes_response, update_notes_response, update_singlenote_response, delete_notes_response } from './index.js';
+/*import {get_notes_request, create_notes_request, update_notes_request, delete_notes_request,
+    get_notes_response, create_notes_response, update_notes_response, update_singlenote_response, delete_notes_response } from './index.js';*/
+
+import * as actions from './index.js';
 
 import fetch from 'isomorphic-fetch'
 
@@ -27,7 +29,7 @@ export function fetchNotes(method, noteData) {
 
             case 'GET' :
 
-                dispatch(get_notes_request());
+                dispatch(actions.get_notes_request());
 
                 break;
 
@@ -41,7 +43,7 @@ export function fetchNotes(method, noteData) {
                     }
                 });
 
-                dispatch(create_notes_request());
+                dispatch(actions.create_notes_request());
 
                 break;
 
@@ -58,7 +60,7 @@ export function fetchNotes(method, noteData) {
                         }
                     });
 
-                    dispatch(update_notes_request());
+                    dispatch(actions.update_notes_request());
 
                 }else{
                     params = "/"+noteData.id;
@@ -71,7 +73,7 @@ export function fetchNotes(method, noteData) {
                         }
                     });
 
-                    dispatch(update_notes_request());
+                    dispatch(actions.update_notes_request());
 
                 }
                 break;
@@ -79,9 +81,7 @@ export function fetchNotes(method, noteData) {
 
                 params = "/"+noteData.id;
 
-                console.log('fetch Notes 1');
-
-                dispatch(delete_notes_request());
+                dispatch(actions.delete_notes_request());
 
                 break;
         }
@@ -101,29 +101,29 @@ export function fetchNotes(method, noteData) {
 
                     case 'GET' :
 
-                        dispatch(get_notes_response(data));
+                        dispatch(actions.get_notes_response(data));
 
                         break;
 
                     case 'POST' :
 
-                        dispatch(create_notes_response(data));
+                        dispatch(actions.create_notes_response(data));
 
                         break;
 
                     case 'PUT' :
 
                         if(params == '/all') {
-                            dispatch(update_notes_response(data));
+                            dispatch(actions.update_notes_response(data));
                         }else{
-                            dispatch(update_singlenote_response(data));
+                            dispatch(actions.update_singlenote_response(data));
                         }
 
                         break;
 
                     case 'DELETE' :
 
-                        dispatch(delete_notes_response(data));
+                        dispatch(actions.delete_notes_response(data));
 
                         break;
                 }

@@ -12,6 +12,8 @@ import flow from 'lodash/function/flow';
 
 import { Link } from 'react-router';
 
+import forEach from 'lodash/collection/forEach.js';
+
 /**
  * Implements the drag source contract.
  */
@@ -26,6 +28,14 @@ const noteSource = {
     endDrag(props, monitor) {
         const { id: droppedId, originalIndex } = monitor.getItem();
         const didDrop = monitor.didDrop();
+
+        var counter = 0;
+        forEach(props.notes,function(item){
+            item.position = counter;
+            counter++;
+        });
+
+        props.saveNotePosition(props.notes);
 
         if (!didDrop) {
             props.moveNote(droppedId, originalIndex);

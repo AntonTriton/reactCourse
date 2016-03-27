@@ -1,20 +1,22 @@
 'use strict';
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 
-import { Link } from 'react-router';
+//import { Link } from 'react-router';
 
-import {set_note_edit_mode ,reset_note_edit_mode,set_note_active, editing_note,
-    remove_note, editing_note_title, editing_note_content, delete_tag, add_tag,
-    show_confirm_modal, hide_confirm_modal} from '../actions/index.js';
+/*import {set_note_edit_mode ,reset_note_edit_mode,set_note_active,
+    editing_note_title, editing_note_content, delete_tag, add_tag,
+    show_confirm_modal, hide_confirm_modal} from '../actions/index.js';*/
 
-import {fetchNotes} from '../actions/fetchNotes.js';
+//import * as actions from '../actions/index.js';
+
+//import {fetchNotes} from '../actions/fetchNotes.js';
 
 import { connect } from 'react-redux'
 
 import filter from 'lodash/collection/filter.js';
 
-import store from '../store.js'
+//import store from '../store.js'
 
 import Menu from './menu.js';
 
@@ -28,20 +30,28 @@ class SingleNote extends Component {
     constructor(props) {
         super(props);
 
-        this.dispatch = this.props.dispatch;
+        console.log('singleNote',props);
+
+        //this.dispatch = this.props.dispatch;
+    }
+
+    componentWillMount(){
 
         var self = this;
 
-        this.dispatch(fetchNotes('GET')).then(function(data){
+        console.log('componentWillMount');
+
+        this.props.fetchNotes('GET');
+
+        /*this.dispatch(fetchNotes('GET')).then(function(data){
 
             self.setState(store.getState());
-        });
-
+        });*/
     }
 
     findNote(id){
 
-        return filter(store.getState().notes.items,function(item){
+        return filter(this.props.notes.items,function(item){
             return item.id == id
         });
     }
@@ -50,43 +60,55 @@ class SingleNote extends Component {
 
         var self = this;
 
-        if(this.props.params.id != store.getState().editNoteId) {
+        if(this.props.params.id != this.props.editNoteId) {
 
-            this.dispatch(set_note_edit_mode(store.getState().activeNoteId));
+            //this.dispatch(actions.set_note_edit_mode(this.props.activeNoteId));
+            this.props.setNoteEditMode(this.props.activeNoteId);
 
         }else{
 
-            this.dispatch(reset_note_edit_mode());
+            //this.dispatch(actions.reset_note_edit_mode());
+            this.props.resetNoteEditMode();
 
-            this.dispatch(fetchNotes('PUT', self.note)).then(function(data){
+            this.props.fetchNotes('PUT',self.note);
+
+            /*this.dispatch(fetchNotes('PUT', self.note)).then(function(data){
 
                 self.setState(store.getState());
 
-            });
+            });*/
         }
 
-        this.setState(store.getState());
+        //this.setState(store.getState());
 
     }
 
-    showConfirm(){
+    /*showConfirm(){
 
-        this.dispatch(show_confirm_modal());
+        //this.dispatch(actions.show_confirm_modal());
+        this.showConfirm();
+
         this.setState(store.getState());
 
-    }
+    }*/
 
     removeNote(){
 
         var self = this;
 
-        this.dispatch(fetchNotes('DELETE', self.note)).then(function(data){
+        this.props.fetchNotes('DELETE',self.note).then(function(){
+            self.props.close();
+
+            self.back();
+        });
+
+        /*this.dispatch(fetchNotes('DELETE', self.note)).then(function(data){
 
             self.close();
 
             self.back();
 
-        });
+        });*/
 
     }
 
@@ -94,58 +116,58 @@ class SingleNote extends Component {
         window.history.back()
     }
 
-    editingNoteTitle(event){
+    /*editingNoteTitle(event){
 
-        this.dispatch(editing_note_title(event.target.value, store.getState().activeNoteId));
-
-        this.setState(store.getState());
-    }
-
-    editingNoteContent(event){
-
-        this.dispatch(editing_note_content(event.target.value, store.getState().activeNoteId));
+        this.dispatch(actions.editing_note_title(event.target.value, this.props.activeNoteId));
 
         this.setState(store.getState());
-    }
+    }*/
 
-    deleteTag(event){
+    /*editingNoteContent(event){
+
+        this.dispatch(actions.editing_note_content(event.target.value, this.props.activeNoteId));
+
+        this.setState(store.getState());
+    }*/
+
+    /*deleteTag(event){
 
         var tagIndex = event.target.parentElement.dataset.index;
 
-        this.dispatch(delete_tag(tagIndex,store.getState().activeFolderId));
+        this.dispatch(actions.delete_tag(tagIndex,this.props.activeFolderId));
 
         this.setState(store.getState());
-    }
+    }*/
 
-    addTag(event){
+    /*addTag(event){
 
         var tagName = event.target.parentElement.children[0].value;
 
         console.log(event.target.parentElement.children[0].value);
 
-        this.dispatch(add_tag(tagName,store.getState().activeFolderId));
+        this.dispatch(actions.add_tag(tagName,this.props.activeFolderId));
 
         this.setState(store.getState());
-    }
+    }*/
 
-    close() {
-        this.dispatch(hide_confirm_modal());
+    /*close() {
+        this.dispatch(actions.hide_confirm_modal());
         this.setState(store.getState());
-    }
+    }*/
 
     render() {
-        var state = store.getState();
+        //var state = store.getState();
 
-        if (!state.notes.isFetching) {
+        if (!this.props.notes.isFetching) {
 
             var self = this,
                 note = self.note = self.findNote(this.props.params.id)[0],
                 tagsCounter = 0,
                 textModeClass = 'visible',
                 editModeClass = 'hidden',
-                show_confirm_modal = store.getState().showConfirmModal;
+                show_confirm_modal = this.props.showConfirmModal;
 
-            if (this.props.params.id == store.getState().editNoteId) {
+            if (this.props.params.id == this.props.editNoteId) {
                 textModeClass = 'hidden';
                 editModeClass = 'visible';
             }
@@ -161,21 +183,22 @@ class SingleNote extends Component {
                           <span className="tag-item" key={tagsCounter} data-index={tagsCounter}>
                         {item}
                               <i className={editModeClass+" fa fa-close"}
-                                 onClick={self.deleteTag.bind(self)}
+                                 onClick={self.props.deleteTag.bind(self,self.props.activeFolderId)}
                                 ></i>
                     </span>
                         )
                     });
                 }
 
-                this.dispatch(set_note_active(this.props.params.id));
+                //this.dispatch(actions.set_note_active(this.props.params.id));
+                this.props.setNoteActive(this.props.params.id);
 
                 return (
                     <section className="single-note">
 
                         <Menu page="note"
                               set_edit={self.setEditNote.bind(this)}
-                              removeNote={self.showConfirm.bind(this)}
+                              removeNote={self.props.showConfirm.bind(this)}
                               back={self.back.bind(this)}
                             />
 
@@ -186,7 +209,7 @@ class SingleNote extends Component {
                                 <div className={textModeClass+" content-block"}>{note.title}</div>
 
                                 <input className={editModeClass}
-                                       onChange={self.editingNoteTitle.bind(this)}
+                                       onChange={self.props.editingNoteTitle.bind(this,self.props.activeNoteId)}
                                        ref="noteTitelInput"
                                        type="text" value={note.title}/>
                             </div>
@@ -197,7 +220,7 @@ class SingleNote extends Component {
                                 <div className={textModeClass+" content-block"}>{note.description}</div>
 
                         <textarea className={editModeClass+" form-control"}
-                                  onChange={self.editingNoteContent.bind(this)}
+                                  onChange={self.props.editingNoteContent.bind(this,self.props.activeNoteId)}
                                   ref="noteContentInput"
                                   type="text" value={note.description}></textarea>
                             </div>
@@ -212,7 +235,7 @@ class SingleNote extends Component {
                                         <input placeholder="add Tag" className="add-tag" type="text"/>
 
                                         <i className="fa fa-plus"
-                                           onClick={self.addTag.bind(this)}
+                                           onClick={self.props.addTag.bind(this,self.props.activeFolderId)}
                                             ></i>
                                     </div>
 
@@ -221,7 +244,7 @@ class SingleNote extends Component {
                         </div>
 
                         <ConfirmModal
-                            onClose={self.close.bind(this)}
+                            onClose={self.props.close.bind(this)}
                             onSuccess={self.removeNote.bind(this)}
                             is_show={show_confirm_modal}
                             message={"Do you really want to delete this note ?"}

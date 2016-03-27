@@ -1,5 +1,5 @@
 
-import * from './index.js';
+import * as actions from './index.js';
 
 import fetch from 'isomorphic-fetch'
 
@@ -27,7 +27,7 @@ export function fetchFolders(method, folderData) {
 
             case 'GET' :
 
-                dispatch(get_folders_request());
+                dispatch(actions.get_folders_request());
 
                 break;
 
@@ -41,7 +41,7 @@ export function fetchFolders(method, folderData) {
                     }
                 });
 
-                dispatch(create_folders_request());
+                dispatch(actions.create_folders_request());
 
                 break;
 
@@ -57,7 +57,7 @@ export function fetchFolders(method, folderData) {
                     }
                 });
 
-                dispatch(update_folders_request());
+                dispatch(actions.update_folders_request());
 
                 break;
 
@@ -65,7 +65,7 @@ export function fetchFolders(method, folderData) {
 
                 params = "/"+folderData.id;
 
-                dispatch(delete_folders_request());
+                dispatch(actions.delete_folders_request());
 
                 break;
         }
@@ -85,25 +85,25 @@ export function fetchFolders(method, folderData) {
 
                     case 'GET' :
 
-                        dispatch(get_folders_response(data));
+                        dispatch(actions.get_folders_response(data));
 
                         break;
 
                     case 'POST' :
 
-                        dispatch(create_folders_response(data));
+                        dispatch(actions.create_folders_response(data));
 
                         break;
 
                     case 'PUT' :
 
-                        dispatch(update_folders_response(data));
+                        dispatch(actions.update_folders_response(data));
 
                         break;
 
                     case 'DELETE' :
 
-                        dispatch(delete_folders_response(data));
+                        dispatch(actions.delete_folders_response(data));
 
                         break;
                 }

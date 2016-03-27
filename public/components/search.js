@@ -5,7 +5,7 @@ import Autocomplete from '../vendor/Autocomplete.js';
 
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-import { getStates, matchStateToTerm, sortStates, styles } from '../vendor/utils';
+import { matchStateToTerm, sortStates, styles } from '../vendor/utils';
 
 class SearchNotes extends Component{
 

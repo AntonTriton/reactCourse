@@ -4,10 +4,12 @@ import filter from 'lodash/collection/filter.js';
 import forEach from 'lodash/collection/forEach.js';
 import max from 'lodash/math/max.js';
 
-import {EDITING_NOTE_TITLE, EDITING_NOTE_CONTENT,
+/*import {EDITING_NOTE_TITLE, EDITING_NOTE_CONTENT,
     GET_NOTES_REQUEST, GET_NOTES_RESPONSE, CREATE_NOTES_REQUEST, CREATE_NOTES_RESPONSE,
     UPDATE_NOTES_REQUEST, UPDATE_NOTES_RESPONSE, DELETE_NOTES_REQUEST, DELETE_NOTES_RESPONSE,
-    UPDATE_SINGLENOTE_RESPONSE, DELETE_TAG, ADD_TAG} from '../actions/index.js'
+    UPDATE_SINGLENOTE_RESPONSE, DELETE_TAG, ADD_TAG} from '../actions/index.js'*/
+
+import * as actions from '../actions/index.js';
 
 function notesReducer(state = {}, action) {
 
@@ -15,7 +17,38 @@ function notesReducer(state = {}, action) {
 
     switch (action.type) {
 
-        case EDITING_NOTE_TITLE:
+        case actions.UPDATE_NOTE_POSITION:
+
+            //action.index
+
+//            this.setState(update(this.state, {
+//                notes: {
+//                    $splice: [
+//                        [index, 1],
+//                        [atIndex, 0, note]
+//                    ]
+//                }
+//            }));
+
+            state.items.splice(action.index,1);
+            state.items.splice(action.atIndex,0,action.note);
+
+            /*var newNotesData = map(state.items, function (item) {
+                if (item.id == action.editNoteId) {
+                    item.title = action.value;
+                }
+                return item;
+            });*/
+
+
+
+            return Object.assign({}, state, {
+
+                items: state.items
+
+            });
+
+        case actions.EDITING_NOTE_TITLE:
 
             var newNotesData = map(state.items, function (item) {
                 if (item.id == action.editNoteId) {
@@ -30,7 +63,7 @@ function notesReducer(state = {}, action) {
 
             });
 
-        case EDITING_NOTE_CONTENT:
+        case actions.EDITING_NOTE_CONTENT:
 
             newNotesData = map(state.items, function (item) {
                 if (item.id == action.editNoteId) {
@@ -45,14 +78,14 @@ function notesReducer(state = {}, action) {
 
             });
 
-        case GET_NOTES_REQUEST:
+        case actions.GET_NOTES_REQUEST:
 
             return Object.assign({}, state, {
                 isFetching: true,
                 items: state.items
             });
 
-        case GET_NOTES_RESPONSE:
+        case actions.GET_NOTES_RESPONSE:
 
             return Object.assign({}, state, {
 
@@ -61,14 +94,14 @@ function notesReducer(state = {}, action) {
 
             });
 
-        case CREATE_NOTES_REQUEST:
+        case actions.CREATE_NOTES_REQUEST:
 
             return Object.assign({}, state, {
                 isFetching: true,
                 items: state.items
             });
 
-        case CREATE_NOTES_RESPONSE:
+        case actions.CREATE_NOTES_RESPONSE:
 
             var items = state.items;
 
@@ -93,13 +126,13 @@ function notesReducer(state = {}, action) {
 
             });
 
-        case UPDATE_NOTES_REQUEST:
+        case actions.UPDATE_NOTES_REQUEST:
 
             return Object.assign({}, state, {
                     isFetching: true
             });
 
-        case UPDATE_NOTES_RESPONSE:
+        case actions.UPDATE_NOTES_RESPONSE:
 
             return Object.assign({}, state, {
 
@@ -108,7 +141,7 @@ function notesReducer(state = {}, action) {
 
             });
 
-        case UPDATE_SINGLENOTE_RESPONSE:
+        case actions.UPDATE_SINGLENOTE_RESPONSE:
 
             items = state.items;
 
@@ -125,14 +158,14 @@ function notesReducer(state = {}, action) {
 
             });
 
-        case DELETE_NOTES_REQUEST:
+        case actions.DELETE_NOTES_REQUEST:
 
             return Object.assign({}, state, {
                 isFetching: true
             });
 
 
-        case DELETE_NOTES_RESPONSE:
+        case actions.DELETE_NOTES_RESPONSE:
 
             console.log('===',action.data,filter(state.items, function (item) {
 
@@ -149,7 +182,7 @@ function notesReducer(state = {}, action) {
 
             });
 
-        case DELETE_TAG:
+        case actions.DELETE_TAG:
 
             forEach(state.items, function (item) {
 
@@ -166,7 +199,7 @@ function notesReducer(state = {}, action) {
 
             });
 
-        case ADD_TAG:
+        case actions.ADD_TAG:
 
             forEach(state.items, function (item) {
 

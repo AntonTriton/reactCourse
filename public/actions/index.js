@@ -23,6 +23,8 @@ export const HIDE_CONFIRM_MODAL = 'HIDE_CONFIRM_MODAL';
 export const SHOW_ADD_MODAL = 'SHOW_ADD_MODAL';
 export const HIDE_ADD_MODAL = 'HIDE_ADD_MODAL';
 
+export const UPDATE_NOTE_POSITION = 'UPDATE_NOTE_POSITION';
+
 /* fetching folders actions */
 export const GET_FOLDERS_REQUEST = 'GET_FOLDERS_REQUEST';
 export const GET_FOLDERS_RESPONSE = 'GET_FOLDERS_RESPONSE';
@@ -123,6 +125,11 @@ export function show_add_modal() {
 /* reset flag for showing add modal */
 export function hide_add_modal() {
     return { type: HIDE_ADD_MODAL}
+}
+
+/* update note position immidiately */
+export function update_note_position(index,atIndex,note) {
+    return { type: UPDATE_NOTE_POSITION, index: index,atIndex:atIndex,note:note}
 }
 
 /* get folders from the server begin  */
